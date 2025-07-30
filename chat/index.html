@@ -807,6 +807,23 @@ transform: translate(-50%, -50%);
 font-size: 1.5rem;
 color: white;
 }
+
+/* Adicione estilos CSS para o estado desabilitado no input */
+.input-area input:disabled { 
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #222;
+}
+
+.input-area button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.input-area button:disabled:hover {
+  opacity: 0.5;
+  transform: none;
+}
 </style>
 
 <!-- Meta Pixel Code -->
@@ -996,6 +1013,7 @@ let audioSent = false;
 let chatEnabled = true;
 let currentAudio = null;
 let audioPlaying = false;
+let canSendMessage = false; // Nova variável para controlar envio de mensagens
 
 // Função para obter imagem de perfil correta
 function getProfileImage() {
@@ -1022,9 +1040,8 @@ window.onload = function() {
       document.getElementById('saldoValorChat').innerText = saldoFormatado;
   }
 
-  // Habilitar input e botão de envio
-  document.getElementById('userInput').disabled = false;
-  document.getElementById('sendButton').disabled = false;
+  // Inicializar com envio bloqueado
+  updateSendButtonState();
 
   // Iniciar primeiro áudio após 3 segundos
   setTimeout(() => { 
@@ -1035,6 +1052,25 @@ window.onload = function() {
   
   updateMicButton();
 };
+
+function updateSendButtonState() {
+  const sendButton = document.getElementById('sendButton');
+  const userInput = document.getElementById('userInput');
+  
+  if (canSendMessage) {
+    sendButton.disabled = false;
+    sendButton.style.opacity = '1';
+    sendButton.style.cursor = 'pointer';
+    sendButton.classList.remove('opacity-50', 'cursor-not-allowed');
+    userInput.disabled = false;
+  } else {
+    sendButton.disabled = true;
+    sendButton.style.opacity = '0.5';
+    sendButton.style.cursor = 'not-allowed';
+    sendButton.classList.add('opacity-50', 'cursor-not-allowed');
+    userInput.disabled = true;
+  }
+}
 
 function sendFirstAudio() {
 if (audioSent) return;
@@ -1060,7 +1096,10 @@ if (totalMatches >= 2 && !isPremium) {
   setTimeout(() => {
     document.getElementById('status').innerText = '';
     sendWhatsAppAudio('../assets/audios/audio1.mp4', () => {
-      // Só enviar mensagem emocional APÓS o áudio terminar
+      // Desbloquear envio de mensagem após o primeiro áudio
+      canSendMessage = true;
+      updateSendButtonState();
+      
       setTimeout(() => {
         sendEmotionalMessage();
       }, 1000);
@@ -1226,12 +1265,20 @@ bars.forEach(bar => {
 }
 
 function sendSecondAudio() {
-sendWhatsAppAudio('../assets/audios/audio2.mp4');
+sendWhatsAppAudio('../assets/audios/audio2.mp4', () => {
+  // Desbloquear envio após segundo áudio
+  canSendMessage = true;
+  updateSendButtonState();
+});
 chatEnabled = true;
 }
 
 function sendThirdAudio() {
-sendWhatsAppAudio('../assets/audios/audio3.mp4');
+sendWhatsAppAudio('../assets/audios/audio3.mp4', () => {
+  // Desbloquear envio após terceiro áudio
+  canSendMessage = true;
+  updateSendButtonState();
+});
 setTimeout(showPresentPopup, 2000);
 }
 
@@ -1313,7 +1360,7 @@ function sendMessage() {
 const input = document.getElementById('userInput');
 const text = input.value.trim();
 
-if (!chatEnabled || !text) return;
+if (!chatEnabled || !text || !canSendMessage) return;
 
 const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
 const isPremium = localStorage.getItem('isPremium') === 'true';
@@ -1340,6 +1387,10 @@ msg.innerText = text;
 messages.appendChild(msg);
 messages.scrollTop = messages.scrollHeight;
 input.value = '';
+
+// Bloquear envio após mensagem enviada
+canSendMessage = false;
+updateSendButtonState();
 
 userMessagesSent++;
 
