@@ -1216,7 +1216,7 @@ document.head.appendChild(a);
 </div>
 <div class="profile-content">
 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-<h3>Bio</h3><button onclick="abrirPresentes()" style="background:#ff69b4; color:white; border:none; padding:8px 16px; border-radius:20px; font-size:14px; cursor:pointer;">🎁color:white;border:none;padding:8px 16px;border-radius:20px;font-size:14px;cursor:pointer;">🎁
+<h3>Bio</h3><button onclick="abrirPresentes()" style="background:#ff69b4; color:white; border:none; padding:8px 16px; border-radius:20px; font-size:14px; cursor:pointer;">🎁
                           Enviar Presente</button>
 </div>
 <p>Olhar marcante, conversas provocantes. Adoro explorar fantasias e viver momentos intensos sem
@@ -1734,7 +1734,6 @@ document.head.appendChild(a);
                 let currentIndex = 0;
                 let curtidas = 0;
                 let profileOrder = []; // Array para controlar a ordem dos perfis
-                let profilesReorganized = false; // Flag para evitar reorganização múltipla
                 
                 // Função para embaralhar array (Fisher-Yates shuffle)
                 function shuffleArray(array) {
@@ -1748,19 +1747,10 @@ document.head.appendChild(a);
                 
                 // Função para embaralhar perfis após primeiro match
                 function shuffleProfilesAfterFirstMatch() {
-                  // Evitar reorganização múltipla
-                  if (profilesReorganized) {
-                    console.log('🔄 Perfis já foram reorganizados, pulando...');
-                    return;
-                  }
-                  
                   const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
-                  console.log(`🎯 Total de matches: ${totalMatches}`);
                   
                   // Se já teve pelo menos 1 match, embaralhar os perfis (exceto o último)
                   if (totalMatches >= 1) {
-                    console.log('🔀 Embaralhando perfis após primeiro match...');
-                    
                     // Criar array com índices dos perfis (0 a 11, excluindo o 12 que é o limite)
                     const profileIndices = Array.from({length: 12}, (_, i) => i);
                     
@@ -1772,65 +1762,44 @@ document.head.appendChild(a);
                     
                     // Reorganizar os perfis no DOM
                     reorganizeProfiles();
-                    profilesReorganized = true; // Marcar como reorganizado
                   } else {
                     // Primeira vez, manter ordem original
                     profileOrder = Array.from({length: 13}, (_, i) => i);
-                    console.log('🆕 Primeira visita, mantendo ordem original');
                   }
                 }
                 
                 // Função para reorganizar perfis no DOM
                 function reorganizeProfiles() {
-                  console.log('🔧 Reorganizando perfis no DOM...');
-                  
                   const profilesContainer = document.getElementById('profiles');
-                  if (!profilesContainer) {
-                    console.error('❌ Container de perfis não encontrado!');
-                    return;
-                  }
-                  
                   const profiles = Array.from(profilesContainer.children);
-                  if (profiles.length === 0) {
-                    console.error('❌ Nenhum perfil encontrado!');
-                    return;
-                  }
                   
-                  console.log(`📊 Encontrados ${profiles.length} perfis para reorganizar`);
-                  
-                  // Criar um fragment para evitar múltiplas manipulações do DOM
-                  const fragment = document.createDocumentFragment();
+                  // Limpar container
+                  profilesContainer.innerHTML = '';
                   
                   // Adicionar perfis na nova ordem
                   profileOrder.forEach((originalIndex, newIndex) => {
-                    if (originalIndex < profiles.length) {
-                      const profile = profiles[originalIndex].cloneNode(true);
-                      profile.id = `profile${newIndex}`;
-                      
-                      // Atualizar data-index dos carousels
-                      const carouselContainer = profile.querySelector('.carousel-container');
-                      if (carouselContainer) {
-                        carouselContainer.setAttribute('data-index', newIndex);
-                      }
-                      
-                      const carouselImages = profile.querySelector('.carousel-images');
-                      if (carouselImages) {
-                        carouselImages.id = `carousel${newIndex}`;
-                      }
-                      
-                      // Atualizar onclick dos botões do carousel
-                      const leftBtn = profile.querySelector('.carousel-btn.left');
-                      const rightBtn = profile.querySelector('.carousel-btn.right');
-                      if (leftBtn) leftBtn.setAttribute('onclick', `moveSlide(${newIndex}, -1)`);
-                      if (rightBtn) rightBtn.setAttribute('onclick', `moveSlide(${newIndex}, 1)`);
-                      
-                      fragment.appendChild(profile);
+                    const profile = profiles[originalIndex].cloneNode(true);
+                    profile.id = `profile${newIndex}`;
+                    
+                    // Atualizar data-index dos carousels
+                    const carouselContainer = profile.querySelector('.carousel-container');
+                    if (carouselContainer) {
+                      carouselContainer.setAttribute('data-index', newIndex);
                     }
+                    
+                    const carouselImages = profile.querySelector('.carousel-images');
+                    if (carouselImages) {
+                      carouselImages.id = `carousel${newIndex}`;
+                    }
+                    
+                    // Atualizar onclick dos botões do carousel
+                    const leftBtn = profile.querySelector('.carousel-btn.left');
+                    const rightBtn = profile.querySelector('.carousel-btn.right');
+                    if (leftBtn) leftBtn.setAttribute('onclick', `moveSlide(${newIndex}, -1)`);
+                    if (rightBtn) rightBtn.setAttribute('onclick', `moveSlide(${newIndex}, 1)`);
+                    
+                    profilesContainer.appendChild(profile);
                   });
-                  
-                  // Limpar container e adicionar novos perfis de uma vez
-                  profilesContainer.innerHTML = '';
-                  profilesContainer.appendChild(fragment);
                   
                   // Ativar o primeiro perfil
                   const firstProfile = profilesContainer.children[0];
@@ -1840,8 +1809,6 @@ document.head.appendChild(a);
                   
                   // Reset do índice atual
                   currentIndex = 0;
-                  
-                  console.log('✅ Perfis reorganizados com sucesso!');
                 }
                 
                 function exibirPopupMatch() {
@@ -1962,30 +1929,11 @@ document.head.appendChild(a);
                 }
 
                 function nextProfile() {
-                  const perfis = document.querySelectorAll('.profile');
-                  let proximoIndice = currentIndex;
-                  let encontrouProximo = false;
-                  
-                  // Remove active do atual
-                  if (perfis[currentIndex]) {
-                    perfis[currentIndex].classList.remove('active');
-                  }
-                  
-                  // Procura próximo perfil disponível
-                  for (let i = currentIndex + 1; i < perfis.length; i++) {
-                    if (perfis[i] && perfis[i].style.display !== 'none') {
-                      proximoIndice = i;
-                      encontrouProximo = true;
-                      break;
-                    }
-                  }
-                  
-                  if (encontrouProximo) {
-                    currentIndex = proximoIndice;
-                    perfis[currentIndex].classList.add('active');
-                  } else {
-                    // Não há mais perfis, mostrar popup de limite
-                    openPopupLimite();
+                  const p = document.querySelectorAll('.profile');
+                  if (currentIndex < p.length - 1) {
+                    p[currentIndex].classList.remove('active');
+                    currentIndex++;
+                    p[currentIndex].classList.add('active');
                   }
                 }
 
@@ -2037,6 +1985,32 @@ document.head.appendChild(a);
                   
                   // Se não há mais perfis disponíveis, mostrar popup de limite
                   if (!encontrouDisponivel) {
+                    openPopupLimite();
+                  }
+                }
+
+                function nextProfile() {
+                  const perfis = document.querySelectorAll('.profile');
+                  let proximoIndice = currentIndex;
+                  let encontrouProximo = false;
+                  
+                  // Remove active do atual
+                  perfis[currentIndex].classList.remove('active');
+                  
+                  // Procura próximo perfil disponível
+                  for (let i = currentIndex + 1; i < perfis.length; i++) {
+                    if (perfis[i].style.display !== 'none') {
+                      proximoIndice = i;
+                      encontrouProximo = true;
+                      break;
+                    }
+                  }
+                  
+                  if (encontrouProximo) {
+                    currentIndex = proximoIndice;
+                    perfis[currentIndex].classList.add('active');
+                  } else {
+                    // Não há mais perfis, mostrar popup de limite
                     openPopupLimite();
                   }
                 }
@@ -2119,8 +2093,6 @@ document.head.appendChild(a);
                   }
 
                   const carousel = document.getElementById(`carousel${profileIndex}`);
-                  if (!carousel) return;
-                  
                   const images = carousel.children;
                   const totalImages = images.length;
 
@@ -2197,40 +2169,38 @@ document.head.appendChild(a);
                 }
 
                 function doSaque() {
-                  const input = document.getElementById('keyInput');
-                  if (input.value.trim() === '') {
-                    alert('Por favor, digite sua chave PIX');
-                    return;
-                  }
-                  
-                  // Simular processamento
-                  const btn = document.getElementById('btnSacar');
-                  btn.innerHTML = '⏳ PROCESSANDO...';
-                  btn.disabled = true;
-                  
-                  setTimeout(() => {
-                    // Redirecionar para a página de pagamento
-                    window.open('https://pay.kirvano.com/cf633cc9-2437-4aec-a68e-eac70640f35e', '_blank');
-                    closeSaquePopup();
-                    
-                    // Reset do formulário
-                    input.value = '';
-                    btn.innerHTML = '🔒 SACAR TUDO';
-                    validateSaqueButton();
-                  }, 1500);
-                }
+  const input = document.getElementById('keyInput');
+  if (input.value.trim() === '') {
+    alert('Por favor, digite sua chave PIX');
+    return;
+  }
+  
+  // Simular processamento
+  const btn = document.getElementById('btnSacar');
+  btn.innerHTML = '⏳ PROCESSANDO...';
+  btn.disabled = true;
+  
+  setTimeout(() => {
+    // Redirecionar para a página de pagamento
+    window.open('https://pay.kirvano.com/cf633cc9-2437-4aec-a68e-eac70640f35e', '_blank');
+    closeSaquePopup();
+    
+    // Reset do formulário
+    input.value = '';
+    btn.innerHTML = '🔒 SACAR TUDO';
+    validateSaqueButton();
+  }, 1500);
+}
 
                 // Inicialização
                 document.addEventListener('DOMContentLoaded', function() {
-                  console.log('🚀 Inicializando aplicação...');
-                  
                   // Carregar saldo salvo
                   const saldoSalvo = localStorage.getItem('saldoUsuario');
                   if (saldoSalvo) {
                     document.getElementById('saldoValor').innerText = parseFloat(saldoSalvo).toFixed(2).replace('.', ',');
                   }
                   
-                  // Embaralhar perfis se necessário (apenas uma vez)
+                  // Embaralhar perfis se necessário
                   shuffleProfilesAfterFirstMatch();
                   
                   // Ocultar perfis já curtidos
@@ -2244,8 +2214,6 @@ document.head.appendChild(a);
                       currentIndex = Array.from(document.querySelectorAll('.profile')).indexOf(primeiroDisponivel);
                     }
                   }
-                  
-                  console.log('✅ Aplicação inicializada com sucesso!');
                 });
               </script>
 </body>
