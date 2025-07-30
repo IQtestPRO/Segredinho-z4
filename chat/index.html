@@ -1185,45 +1185,20 @@ img.className = 'message-avatar';
 const audioContainer = document.createElement('div');
 audioContainer.className = 'whatsapp-audio-player blocked';
 
-// Verificar se é segundo match ou mais para mensagem mais impactante
-const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
-const isSecondMatchOrMore = totalMatches >= 2;
-
-if (isSecondMatchOrMore) {
-  // Versão mais impactante para segundo match em diante
-  audioContainer.innerHTML = `
-    <button class="audio-play-button">
-      <svg viewBox="0 0 24 24">
-        <path d="M8 5v14l11-7z"/>
-      </svg>
-    </button>
-    <div class="audio-waveform">
-      ${generateWaveform(20)}
-    </div>
-    <div class="audio-duration">0:15</div>
-    <div class="audio-lock-overlay">🔒</div>
-    <div class="audio-premium-text">Apenas para Assinantes</div>
-    <!-- Mensagem de destaque mais impactante -->
-    <div style="position: absolute; top: -4rem; left: 50%; transform: translateX(-50%); background: #fefce8; border: 2px solid #eab308; color: #a16207; padding: 1rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 500; text-align: center; max-width: 18rem; width: max-content; z-index: 10; box-shadow: 0 4px 12px rgba(234, 179, 8, 0.3); animation: fadeIn 0.5s ease-in;">
-      🔒 Esta mensagem de voz é exclusiva para membros VIP. Assine para desbloquear.
-    </div>
-  `;
-} else {
-  // Versão normal para primeiro match
-  audioContainer.innerHTML = `
-    <button class="audio-play-button">
-      <svg viewBox="0 0 24 24">
-        <path d="M8 5v14l11-7z"/>
-      </svg>
-    </button>
-    <div class="audio-waveform">
-      ${generateWaveform(20)}
-    </div>
-    <div class="audio-duration">0:15</div>
-    <div class="audio-lock-overlay">🔒</div>
-    <div class="audio-premium-text">Apenas para Assinantes</div>
-  `;
-}
+// Usar o mesmo layout para todos os matches - apenas áudio ofuscado
+audioContainer.innerHTML = `
+  <button class="audio-play-button">
+    <svg viewBox="0 0 24 24">
+      <path d="M8 5v14l11-7z"/>
+    </svg>
+  </button>
+  <div class="audio-waveform">
+    ${generateWaveform(20)}
+  </div>
+  <div class="audio-duration">0:15</div>
+  <div class="audio-lock-overlay">🔒</div>
+  <div class="audio-premium-text">Apenas para Assinantes</div>
+`;
 
 audioContainer.addEventListener('click', function() {
   document.getElementById('popupPremiumImagem').style.display = 'flex';
