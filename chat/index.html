@@ -934,11 +934,11 @@ src="https://www.facebook.com/tr?id=1453046616041191&ev=PageView&noscript=1"/>
     <h2 class="text-xl font-bold text-gray-800 m-0">Saque PIX</h2>
   </div>
 
-  <div class="p-4 rounded-lg mb-6 border border-gray-200 bg-gray-50 text-center">
-    <p class="text-sm text-gray-600 mb-2 font-medium">Seu saldo disponível</p>
-    <div class="text-2xl font-bold text-purple-600 mb-2" id="saqueSaldo">R$ 0,00</div>
-    <p class="text-xs text-gray-500 m-0 leading-relaxed">Valor mínimo para saque: R$ 20,00</p>
-  </div>
+  <div style="background:#f8f9fa; padding:1rem; border-radius:0.75rem; margin-bottom:1.5rem; border:1px solid #e9ecef;">
+  <p style="font-size:0.875rem; color:#666; margin:0 0 0.5rem 0; font-weight:500;">Seu saldo disponível</p>
+  <div style="font-size:1.75rem; color:#9333ea; font-weight:bold; margin-bottom:0.5rem;" id="saqueSaldo">R$ 0,00</div>
+  <p style="font-size:0.75rem; color:#888; margin:0; line-height:1.4;">Valor mínimo para saque: R$ 20,00</p>
+</div>
 
   <div class="mb-6">
     <p class="text-base font-medium text-gray-700 mb-4">Selecione o tipo da sua chave PIX</p>
@@ -1296,7 +1296,7 @@ messages.appendChild(wrapper);
 messages.scrollTop = messages.scrollHeight;
 
 chatEnabled = true;
-document.getElementById('backArrow').style.display = 'flex';
+document.getElementById('backArrow').style = 'display: flex';
 }
 
 function abrirPopupPremium() {
