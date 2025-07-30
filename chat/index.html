@@ -1084,25 +1084,54 @@ function updateSendButtonState() {
     sendButton.classList.add('opacity-50', 'cursor-not-allowed');
     userInput.disabled = true;
     
-    // Adicionar mensagem de bloqueio visível
-    const blockedMessage = document.createElement('div');
-    blockedMessage.id = 'blocked-message';
-    blockedMessage.style.cssText = `
-      background: #fef2f2;
-      color: #dc2626;
-      border: 2px solid #fca5a5;
-      padding: 0.75rem 1rem;
-      margin-bottom: 0.5rem;
-      border-radius: 0.5rem;
-      text-align: center;
-      font-size: 0.875rem;
-      font-weight: 500;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      animation: fadeIn 0.3s ease-in;
-    `;
-    blockedMessage.innerHTML = '💬 Envie mensagens ilimitadas após assinar o plano VIP';
+    // Verificar se é segundo match ou mais para mensagem mais impactante
+    const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
+    const isSecondMatchOrMore = totalMatches >= 2;
     
-    inputArea.parentNode.insertBefore(blockedMessage, inputArea);
+    if (isSecondMatchOrMore) {
+      // Versão mais impactante para segundo match em diante
+      const blockedMessage = document.createElement('div');
+      blockedMessage.id = 'blocked-message';
+      blockedMessage.style.cssText = `
+        background: #fef2f2;
+        color: #dc2626;
+        border: 2px solid #fca5a5;
+        padding: 1rem;
+        margin-bottom: 0.75rem;
+        border-radius: 0.5rem;
+        text-align: center;
+        font-size: 0.875rem;
+        font-weight: 500;
+        box-shadow: 0 4px 12px rgba(252, 165, 165, 0.3);
+        animation: fadeIn 0.5s ease-in;
+        max-width: 20rem;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+      `;
+      blockedMessage.innerHTML = '💬 Envie mensagens ilimitadas após assinar o plano VIP';
+      
+      inputArea.parentNode.insertBefore(blockedMessage, inputArea);
+    } else {
+      // Versão mais discreta para primeiro match
+      const blockedMessage = document.createElement('div');
+      blockedMessage.id = 'blocked-message';
+      blockedMessage.style.cssText = `
+        background: #f3f4f6;
+        color: #6b7280;
+        border: 1px solid #d1d5db;
+        padding: 0.5rem 0.75rem;
+        margin-bottom: 0.5rem;
+        border-radius: 0.375rem;
+        text-align: center;
+        font-size: 0.75rem;
+        font-weight: 400;
+        opacity: 0.8;
+      `;
+      blockedMessage.innerHTML = 'Aguarde para enviar mensagens...';
+      
+      inputArea.parentNode.insertBefore(blockedMessage, inputArea);
+    }
   }
 }
 
@@ -1156,23 +1185,45 @@ img.className = 'message-avatar';
 const audioContainer = document.createElement('div');
 audioContainer.className = 'whatsapp-audio-player blocked';
 
-audioContainer.innerHTML = `
-  <button class="audio-play-button">
-    <svg viewBox="0 0 24 24">
-      <path d="M8 5v14l11-7z"/>
-    </svg>
-  </button>
-  <div class="audio-waveform">
-    ${generateWaveform(20)}
-  </div>
-  <div class="audio-duration">0:15</div>
-  <div class="audio-lock-overlay">🔒</div>
-  <div class="audio-premium-text">Apenas para Assinantes</div>
-  <!-- Nova mensagem de destaque -->
-  <div style="position: absolute; top: -3rem; left: 50%; transform: translateX(-50%); background: #fef3c7; border: 2px solid #f59e0b; color: #92400e; padding: 0.75rem 1rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 500; text-align: center; white-space: nowrap; z-index: 10; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-    🔒 Mensagem de voz exclusiva para membros VIP
-  </div>
-`;
+// Verificar se é segundo match ou mais para mensagem mais impactante
+const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
+const isSecondMatchOrMore = totalMatches >= 2;
+
+if (isSecondMatchOrMore) {
+  // Versão mais impactante para segundo match em diante
+  audioContainer.innerHTML = `
+    <button class="audio-play-button">
+      <svg viewBox="0 0 24 24">
+        <path d="M8 5v14l11-7z"/>
+      </svg>
+    </button>
+    <div class="audio-waveform">
+      ${generateWaveform(20)}
+    </div>
+    <div class="audio-duration">0:15</div>
+    <div class="audio-lock-overlay">🔒</div>
+    <div class="audio-premium-text">Apenas para Assinantes</div>
+    <!-- Mensagem de destaque mais impactante -->
+    <div style="position: absolute; top: -4rem; left: 50%; transform: translateX(-50%); background: #fefce8; border: 2px solid #eab308; color: #a16207; padding: 1rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 500; text-align: center; max-width: 18rem; width: max-content; z-index: 10; box-shadow: 0 4px 12px rgba(234, 179, 8, 0.3); animation: fadeIn 0.5s ease-in;">
+      🔒 Esta mensagem de voz é exclusiva para membros VIP. Assine para desbloquear.
+    </div>
+  `;
+} else {
+  // Versão normal para primeiro match
+  audioContainer.innerHTML = `
+    <button class="audio-play-button">
+      <svg viewBox="0 0 24 24">
+        <path d="M8 5v14l11-7z"/>
+      </svg>
+    </button>
+    <div class="audio-waveform">
+      ${generateWaveform(20)}
+    </div>
+    <div class="audio-duration">0:15</div>
+    <div class="audio-lock-overlay">🔒</div>
+    <div class="audio-premium-text">Apenas para Assinantes</div>
+  `;
+}
 
 audioContainer.addEventListener('click', function() {
   document.getElementById('popupPremiumImagem').style.display = 'flex';
