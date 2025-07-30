@@ -298,6 +298,8 @@ color: #999;
 filter: blur(2px);
 opacity: 0.7;
 cursor: pointer;
+position: relative;
+margin-top: 3rem;
 }
 
 .audio-play-button {
@@ -824,6 +826,11 @@ color: white;
   opacity: 0.5;
   transform: none;
 }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 </style>
 
 <!-- Meta Pixel Code -->
@@ -1056,6 +1063,13 @@ window.onload = function() {
 function updateSendButtonState() {
   const sendButton = document.getElementById('sendButton');
   const userInput = document.getElementById('userInput');
+  const inputArea = document.querySelector('.input-area');
+  
+  // Remove mensagem anterior se existir
+  const existingMessage = document.getElementById('blocked-message');
+  if (existingMessage) {
+    existingMessage.remove();
+  }
   
   if (canSendMessage) {
     sendButton.disabled = false;
@@ -1069,6 +1083,26 @@ function updateSendButtonState() {
     sendButton.style.cursor = 'not-allowed';
     sendButton.classList.add('opacity-50', 'cursor-not-allowed');
     userInput.disabled = true;
+    
+    // Adicionar mensagem de bloqueio visível
+    const blockedMessage = document.createElement('div');
+    blockedMessage.id = 'blocked-message';
+    blockedMessage.style.cssText = `
+      background: #fef2f2;
+      color: #dc2626;
+      border: 2px solid #fca5a5;
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.5rem;
+      border-radius: 0.5rem;
+      text-align: center;
+      font-size: 0.875rem;
+      font-weight: 500;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      animation: fadeIn 0.3s ease-in;
+    `;
+    blockedMessage.innerHTML = '💬 Envie mensagens ilimitadas após assinar o plano VIP';
+    
+    inputArea.parentNode.insertBefore(blockedMessage, inputArea);
   }
 }
 
@@ -1134,6 +1168,10 @@ audioContainer.innerHTML = `
   <div class="audio-duration">0:15</div>
   <div class="audio-lock-overlay">🔒</div>
   <div class="audio-premium-text">Apenas para Assinantes</div>
+  <!-- Nova mensagem de destaque -->
+  <div style="position: absolute; top: -3rem; left: 50%; transform: translateX(-50%); background: #fef3c7; border: 2px solid #f59e0b; color: #92400e; padding: 0.75rem 1rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 500; text-align: center; white-space: nowrap; z-index: 10; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    🔒 Mensagem de voz exclusiva para membros VIP
+  </div>
 `;
 
 audioContainer.addEventListener('click', function() {
