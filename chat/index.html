@@ -82,7 +82,7 @@ img.wp-smiley, img.emoji {
 				}
 			}
 		</style>
-			<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit:cover" />
+			<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <!-- Meta Pixel Code -->
 <script>
  !function(f,b,e,v,n,t,s)
@@ -912,44 +912,44 @@ img:not([src])::after, img[src=""]::after, img[src*=".html"]::after {
  </div>
 </div>
 
-<!-- Popup Saque PIX Otimizado -->
+<!-- Popup Saque PIX - Layout Original Corrigido -->
 <div id="popupSaquePIX" style="display:none; align-items:center; justify-content:center; position:fixed; top:0; left:0; width:100%; height:100vh; background:rgba(0,0,0,0.85); z-index:9999; padding: 1rem; box-sizing: border-box;">
- <div class="max-w-sm mx-auto w-full bg-white p-6 rounded-xl shadow-2xl text-gray-800 relative" style="font-family: 'Poppins', sans-serif;">
-   <button class="close-saque absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl font-bold cursor-pointer bg-none border-none p-1" onclick="closeSaquePopup()">×</button>
+ <div style="background:white; padding:1.5rem; border-radius:1rem; box-shadow:0 4px 20px rgba(0,0,0,0.15); text-align:center; color:#333; width:100%; max-width:22rem; position:relative; font-family: 'Poppins', sans-serif;">
+   <button class="close-saque" onclick="closeSaquePopup()" style="position:absolute; top:1rem; right:1rem; background:none; border:none; color:#666; font-size:1.5rem; cursor:pointer; padding: 0.25rem;">×</button>
    
-   <div class="flex items-center gap-3 mb-6 justify-center">
+   <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1.5rem; justify-content:center;">
      <svg width="28" height="28" viewBox="0 0 24 24" fill="#9333ea">
        <path d="M3 6a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V6zm0 5h16a1 1 0 011 1v2a1 1 0 01-1 1H3a1 1 0 01-1-1v-2a1 1 0 011-1zm0 5h10a1 1 0 011 1v2a1 1 0 01-1 1H3a1 1 0 01-1-1v-2a1 1 0 011-1z"/>
      </svg>
-     <h2 class="text-xl font-bold text-gray-800 m-0">Saque PIX</h2>
+     <h2 style="font-size:1.25rem; font-weight:600; margin: 0; color:#333;">Saque PIX</h2>
    </div>
 
-   <div class="p-4 rounded-lg mb-6 border border-gray-200 bg-gray-50 text-center">
-     <p class="text-sm text-gray-600 mb-2 font-medium">Seu saldo disponível</p>
-     <div class="text-2xl font-bold text-purple-600 mb-2" id="saqueSaldo">R$ 0,00</div>
-     <p class="text-xs text-gray-500 m-0 leading-relaxed">Valor mínimo para saque: R$ 20,00</p>
+   <div style="background:#f8f9fa; padding:1rem; border-radius:0.75rem; margin-bottom:1.5rem; border:1px solid #e9ecef;">
+     <p style="font-size:0.875rem; color:#666; margin:0 0 0.5rem 0; font-weight:500;">Seu saldo disponível</p>
+     <div style="font-size:1.75rem; color:#9333ea; font-weight:bold; margin-bottom:0.5rem;" id="saqueSaldo">R$ 0,00</div>
+     <p style="font-size:0.75rem; color:#888; margin:0; line-height:1.4;">Valor mínimo para saque: R$ 20,00</p>
    </div>
 
-   <div class="mb-6">
-     <p class="text-base font-medium text-gray-700 mb-4">Selecione o tipo da sua chave PIX</p>
-     <div class="grid grid-cols-2 gap-2 mb-4">
-       <button onclick="selectKeyType('cpf')" class="pix-key-btn p-3 bg-purple-600 text-white border-none rounded-lg text-sm font-medium cursor-pointer" data-key-type="cpf">CPF/CNPJ</button>
-       <button onclick="selectKeyType('telefone')" class="pix-key-btn p-3 bg-gray-100 text-gray-700 border border-gray-300 rounded-lg text-sm font-medium cursor-pointer" data-key-type="telefone">Telefone</button>
-       <button onclick="selectKeyType('email')" class="pix-key-btn p-3 bg-gray-100 text-gray-700 border border-gray-300 rounded-lg text-sm font-medium cursor-pointer" data-key-type="email">E-mail</button>
-       <button onclick="selectKeyType('aleatoria')" class="pix-key-btn p-3 bg-gray-100 text-gray-700 border border-gray-300 rounded-lg text-sm font-medium cursor-pointer" data-key-type="aleatoria">Chave Aleatória</button>
+   <div style="margin-bottom:1.5rem;">
+     <p style="font-size:1rem; margin-bottom:1rem; font-weight:500; color:#333;">Selecione o tipo da sua chave PIX</p>
+     <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:0.5rem; margin-bottom:1rem;">
+       <button onclick="selectKeyType('cpf')" class="pix-key-btn" data-key-type="cpf" style="padding:0.75rem; background:#9333ea; color:white; border:none; border-radius:0.5rem; font-size:0.875rem; font-weight:500; cursor:pointer;">CPF/CNPJ</button>
+       <button onclick="selectKeyType('telefone')" class="pix-key-btn" data-key-type="telefone" style="padding:0.75rem; background:#f8f9fa; color:#333; border:1px solid #dee2e6; border-radius:0.5rem; font-size:0.875rem; font-weight:500; cursor:pointer;">Telefone</button>
+       <button onclick="selectKeyType('email')" class="pix-key-btn" data-key-type="email" style="padding:0.75rem; background:#f8f9fa; color:#333; border:1px solid #dee2e6; border-radius:0.5rem; font-size:0.875rem; font-weight:500; cursor:pointer;">E-mail</button>
+       <button onclick="selectKeyType('aleatoria')" class="pix-key-btn" data-key-type="aleatoria" style="padding:0.75rem; background:#f8f9fa; color:#333; border:1px solid #dee2e6; border-radius:0.5rem; font-size:0.875rem; font-weight:500; cursor:pointer;">Chave Aleatória</button>
      </div>
    </div>
 
-   <input id="keyInput" placeholder="Informe sua chave PIX para sacar" type="text" class="w-full p-4 bg-gray-50 border border-gray-300 rounded-lg text-gray-800 mb-4 text-base focus:ring-2 focus:ring-purple-500 focus:border-transparent box-border"/>
+   <input id="keyInput" placeholder="Informe sua chave PIX para sacar" type="text" style="width:100%; padding:0.875rem; background:#f8f9fa; border:1px solid #dee2e6; border-radius:0.5rem; color:#333; margin-bottom:1rem; font-size:0.875rem; box-sizing:border-box;"/>
    
-   <button id="btnSacar" onclick="doSaque()" class="w-full bg-gray-400 text-white p-4 rounded-lg font-bold cursor-not-allowed text-base opacity-60 mb-4" disabled>
+   <button id="btnSacar" onclick="doSaque()" style="background:#6c757d; padding:1rem; border:none; border-radius:0.75rem; font-weight:bold; cursor:not-allowed; width:100%; color:white; font-size:1rem; opacity:0.6; margin-bottom:1rem;" disabled>
      🔒 Sacar Valor Total
    </button>
    
-   <div class="p-4 rounded-lg border border-gray-200 bg-gray-50">
-     <p class="text-xs text-gray-600 m-1 leading-relaxed">• Saques processados em até 24 horas</p>
-     <p class="text-xs text-gray-600 m-1 leading-relaxed">• Sem taxas para saques PIX</p>
-     <p class="text-xs text-gray-600 m-1 leading-relaxed">• Verifique se sua chave está correta</p>
+   <div style="background:#f8f9fa; padding:0.75rem; border-radius:0.5rem; border:1px solid #e9ecef;">
+     <p style="font-size:0.75rem; color:#666; margin:0.25rem 0; line-height:1.4;">• Saques processados em até 24 horas</p>
+     <p style="font-size:0.75rem; color:#666; margin:0.25rem 0; line-height:1.4;">• Sem taxas para saques PIX</p>
+     <p style="font-size:0.75rem; color:#666; margin:0.25rem 0; line-height:1.4;">• Verifique se sua chave está correta</p>
    </div>
  </div>
 </div>
