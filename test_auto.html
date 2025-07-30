@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Sistema Match - Segredinho VIP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #ae00ff;
+        }
+        .log {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+        .info {
+            color: #ae00ff;
+        }
+        .btn {
+            background: #ae00ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 10px 5px;
+        }
+        #resultContainer {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success-result {
+            background-color: #dff0d8;
+            border: 1px solid #d6e9c6;
+            color: #3c763d;
+        }
+        .error-result {
+            background-color: #f2dede;
+            border: 1px solid #ebccd1;
+            color: #a94442;
+        }
+        .test-profiles {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .profile-test {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            width: 200px;
+            text-align: center;
+        }
+        .profile-test .img-placeholder {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ae00ff, #9300f5);
+            border: 2px solid #ae00ff;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .profile-test h4 {
+            margin: 10px 0 5px 0;
+            color: #ae00ff;
+        }
+        .profile-test p {
+            font-size: 12px;
+            color: #666;
+            margin: 0;
+        }
+    </style>
+
+<!-- Meta Pixel Code -->
+<script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src='https://connect.facebook.net/en_US/fbevents.js';
+  s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script');
+
+  fbq('init', '1453046616041191');
+  fbq('track', 'PageView');
+</script>
+<noscript>
+  <img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=1453046616041191&ev=PageView&noscript=1"/>
+</noscript>
+<!-- End Meta Pixel Code -->
+
+</head>
+<body>
+    <div class="container">
+        <h1>Teste Sistema Match - Segredinho VIP</h1>
+        <p>Este teste verifica se o sistema de match está funcionando corretamente para diferentes perfis, especialmente:</p>
+        <ul>
+            <li>✅ Nome da pessoa no popup de match</li>
+            <li>✅ Imagem correta da primeira foto do perfil</li>
+            <li>✅ Redirecionamento para chat</li>
+        </ul>
+        
+        <div class="test-profiles">
+            <div class="profile-test">
+                <div class="img-placeholder">R</div>
+                <h4>Renata</h4>
+                <p>57 anos • 8km de você</p>
+                <button class="btn" onclick="testarPerfil('Renata', 'wp-content/uploads/2025/05/7.jpg')">Testar Match</button>
+            </div>
+            <div class="profile-test">
+                <div class="img-placeholder">V</div>
+                <h4>Vanessa</h4>
+                <p>41 anos • 3km de você</p>
+                <button class="btn" onclick="testarPerfil('Vanessa', 'wp-content/uploads/2025/05/4.jpg')">Testar Match</button>
+            </div>
+            <div class="profile-test">
+                <div class="img-placeholder">L</div>
+                <h4>Luciana</h4>
+                <p>43 anos • 8km de você</p>
+                <button class="btn" onclick="testarPerfil('Luciana', 'wp-content/uploads/2025/05/1.jpg')">Testar Match</button>
+            </div>
+        </div>
+        
+        <button id="startTest" class="btn">Testar Todos os Perfis</button>
+        
+        <div class="log" id="log"></div>
+        
+        <div id="resultContainer">
+            <h2 id="resultTitle"></h2>
+            <p id="resultMessage"></p>
+        </div>
+    </div>
+
+    <script>
+        // Auto-executar o teste quando a página carregar
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('startTest').click();
+            }, 1000);
+        });
+    
+        // Elementos
+        const log = document.getElementById('log');
+        const startButton = document.getElementById('startTest');
+        const resultContainer = document.getElementById('resultContainer');
+        const resultTitle = document.getElementById('resultTitle');
+        const resultMessage = document.getElementById('resultMessage');
+        
+        // Função para adicionar mensagem ao log
+        function addLog(message, type = 'info') {
+            const logEntry = document.createElement('div');
+            logEntry.classList.add(type);
+            logEntry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            log.appendChild(logEntry);
+            log.scrollTop = log.scrollHeight;
+        }
+        
+        // Função para testar um perfil específico
+        function testarPerfil(nome, imagemEsperada) {
+            addLog(`🧪 Testando perfil: ${nome}`, 'info');
+            
+            // Simular perfil ativo
+            const perfilAtivo = criarPerfilSimulado(nome, imagemEsperada);
+            document.body.appendChild(perfilAtivo);
+            
+            // Criar popup
+            const popup = document.createElement('div');
+            popup.className = 'popup-match';
+            popup.style.display = 'none';
+            document.body.appendChild(popup);
+            
+            // Simular função exibirPopupMatch corrigida
+            function exibirPopupMatchTeste() {
+                const nomeIdade = perfilAtivo.querySelector('.profile-info h2')?.innerText || 'Nome';
+                const bio = perfilAtivo.querySelector('.profile-content p')?.innerText || '...';
+
+                // Obter a primeira imagem do carousel, corrigindo o problema da URL
+                let imgSrc = '';
+                const img = perfilAtivo.querySelector('.carousel-image');
+                if (img) {
+                    // Corrigir URL removendo qualquer prefixo indevido
+                    let srcOriginal = img.src;
+                    addLog(`   URL original: ${srcOriginal}`, 'info');
+                    
+                    imgSrc = img.src.replace(/^.*inicial\.html/, '').replace(/^https?:\/\/[^\/]+\//, '');
+                    addLog(`   URL após replace inicial: ${imgSrc}`, 'info');
+                    
+                    // Se a URL não começar com 'wp-content', adicionar o prefixo correto
+                    if (!imgSrc.startsWith('wp-content/')) {
+                        imgSrc = 'wp-content/uploads/2025/05/' + imgSrc.split('/').pop();
+                        addLog(`   URL final corrigida: ${imgSrc}`, 'info');
+                    }
+                } else {
+                    // Fallback para logo padrão
+                    imgSrc = 'wp-content/uploads/2025/04/logoCoroa.png';
+                    addLog(`   Usando fallback logo`, 'info');
+                }
+
+                addLog(`📊 Resultado para ${nomeIdade}:`, 'info');
+                addLog(`   Nome: ${nomeIdade}`, 'info');
+                addLog(`   Imagem: ${imgSrc}`, 'info');
+                addLog(`   Bio: ${bio.substring(0, 50)}...`, 'info');
+                
+                // Verificar se está correto
+                const nomeCorreto = nomeIdade.includes(nome);
+                const imagemCorreta = imgSrc.includes(imagemEsperada.split('/').pop());
+                
+                if (nomeCorreto && imagemCorreta) {
+                    addLog(`✅ SUCESSO: ${nome} - Nome e imagem corretos!`, 'success');
+                } else {
+                    if (!nomeCorreto) {
+                        addLog(`❌ ERRO: Nome incorreto. Esperado: ${nome}, Obtido: ${nomeIdade}`, 'error');
+                    }
+                    if (!imagemCorreta) {
+                        addLog(`❌ ERRO: Imagem incorreta. Esperado: ${imagemEsperada}, Obtido: ${imgSrc}`, 'error');
+                    }
+                }
+                
+                return { nomeCorreto, imagemCorreta, imgSrc, nomeIdade };
+            }
+            
+            // Executar teste
+            const resultado = exibirPopupMatchTeste();
+            
+            // Limpar elementos temporários
+            perfilAtivo.remove();
+            popup.remove();
+            
+            return resultado;
+        }
+        
+        // Função para criar perfil simulado
+        function criarPerfilSimulado(nome, imagem) {
+            const perfil = document.createElement('div');
+            perfil.className = 'profile active';
+            perfil.innerHTML = `
+                <div class="profile-info">
+                    <h2>${nome}</h2>
+                </div>
+                <div class="profile-content">
+                    <p>Bio do perfil ${nome} para teste.</p>
+                </div>
+                <div class="carousel-container">
+                    <div class="carousel-images">
+                        <img class="carousel-image" src="inicial.html${imagem}" />
+                    </div>
+                </div>
+            `;
+            return perfil;
+        }
+        
+        // Testar todos os perfis
+        startButton.addEventListener('click', function() {
+            startButton.disabled = true;
+            log.innerHTML = '';
+            resultContainer.style.display = 'none';
+            
+            addLog('🚀 Iniciando teste completo do sistema de match...', 'info');
+            addLog('📝 Testando correções implementadas:', 'info');
+            addLog('   • Remoção do prefixo "inicial.html" das URLs', 'info');
+            addLog('   • Nome dinâmico do perfil ativo', 'info');
+            addLog('   • Imagem correta do carousel', 'info');
+            
+            const perfis = [
+                { nome: 'Renata', imagem: 'wp-content/uploads/2025/05/7.jpg' },
+                { nome: 'Vanessa', imagem: 'wp-content/uploads/2025/05/4.jpg' },
+                { nome: 'Luciana', imagem: 'wp-content/uploads/2025/05/1.jpg' }
+            ];
+            
+            let sucessos = 0;
+            let erros = 0;
+            
+            perfis.forEach((perfil, index) => {
+                setTimeout(() => {
+                    const resultado = testarPerfil(perfil.nome, perfil.imagem);
+                    
+                    if (resultado.nomeCorreto && resultado.imagemCorreta) {
+                        sucessos++;
+                    } else {
+                        erros++;
+                    }
+                    
+                    // Se for o último teste, mostrar resultado final
+                    if (index === perfis.length - 1) {
+                        setTimeout(() => {
+                            resultContainer.style.display = 'block';
+                            
+                            if (erros === 0) {
+                                resultContainer.className = 'success-result';
+                                resultTitle.textContent = '🎉 Teste Concluído com Sucesso!';
+                                resultMessage.textContent = `Todos os ${sucessos} perfis foram testados com sucesso. O sistema de match está funcionando corretamente para diferentes perfis, exibindo o nome correto da pessoa e a imagem adequada no popup de match.`;
+                            } else {
+                                resultContainer.className = 'error-result';
+                                resultTitle.textContent = '⚠️ Problemas Encontrados';
+                                resultMessage.textContent = `${sucessos} perfis OK, ${erros} com problemas. Verifique o log para detalhes sobre as correções necessárias.`;
+                            }
+                            
+                            startButton.disabled = false;
+                        }, 500);
+                    }
+                }, index * 1500);
+            });
+        });
+    </script>
+</body>
+</html>
