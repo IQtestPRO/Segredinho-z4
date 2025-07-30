@@ -149,18 +149,18 @@ body {
   align-items: center;
   min-height: 100vh;
   width: 100%;
-  max-width: 24rem; /* max-w-sm */
-  padding: 1rem; /* px-4 */
+  max-width: 26rem; /* Aumentado de 24rem para 26rem */
+  padding: 1rem;
   box-sizing: border-box;
 }
 
 .chat-container { 
   width: 100%;
-  height: 100vh;
-  max-height: 100vh;
+  height: 80vh; /* Diminuído de 100vh para 80vh */
+  max-height: 80vh;
   background: #181818; 
-  border-radius: 0.75rem; /* rounded-xl */
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   display: flex; 
   flex-direction: column; 
   overflow: hidden;
@@ -169,12 +169,12 @@ body {
 
 .chat-header { 
   background: #1f1f1f; 
-  padding: 0.75rem 1rem; /* py-3 px-4 */
+  padding: 1rem; /* Aumentado de 0.75rem para 1rem */
   border-top-left-radius: 0.75rem; 
   border-top-right-radius: 0.75rem; 
   display: flex; 
   align-items: center; 
-  gap: 0.5rem; 
+  gap: 0.75rem; /* Aumentado de 0.5rem para 0.75rem */
   position: relative;
   flex-shrink: 0;
 }
@@ -182,16 +182,16 @@ body {
 .back-arrow { 
   display: none; 
   color: white; 
-  font-size: 1.25rem; /* text-xl */
+  font-size: 1.5rem; /* Aumentado de 1.25rem para 1.5rem */
   cursor: pointer; 
   font-weight: bold; 
-  padding: 0.25rem;
+  padding: 0.5rem; /* Aumentado de 0.25rem para 0.5rem */
 }
 
 .profile-header { 
   display: flex; 
   align-items: center; 
-  gap: 0.5rem; 
+  gap: 0.75rem; /* Aumentado de 0.5rem para 0.75rem */
 }
 
 .profile-info { 
@@ -203,20 +203,20 @@ body {
 
 .profile-name { 
   font-weight: 700; 
-  font-size: 0.875rem; /* text-sm */
+  font-size: 1rem; /* Aumentado de 0.875rem para 1rem */
   color: white; 
 }
 
 .profile-status { 
   font-weight: 400; 
-  font-size: 0.75rem; /* text-xs */
+  font-size: 0.875rem; /* Aumentado de 0.75rem para 0.875rem */
   color: #aaa; 
   margin-top: 0.125rem; 
 }
 
 .profile-header img { 
-  width: 2.5rem; /* w-10 */
-  height: 2.5rem; /* h-10 */
+  width: 3rem; /* Aumentado de 2.5rem para 3rem */
+  height: 3rem; /* Aumentado de 2.5rem para 3rem */
   border-radius: 50%; 
   object-fit: cover; 
 }
@@ -224,10 +224,10 @@ body {
 .messages {
   flex: 1;
   overflow-y: auto;
-  padding: 1rem 0.75rem; /* py-4 px-3 */
+  padding: 1rem; /* Aumentado de 1rem 0.75rem para 1rem */
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem; /* Aumentado de 0.75rem para 1rem */
   background: url('../wp-content/uploads/2025/04/fundochat.jpg') no-repeat center center;
   background-size: cover;
   -webkit-overflow-scrolling: touch;
@@ -235,11 +235,11 @@ body {
 
 .message { 
   background: #282828; 
-  padding: 0.5rem 0.75rem; /* py-2 px-3 */
+  padding: 0.75rem 1rem; /* Aumentado de 0.5rem 0.75rem para 0.75rem 1rem */
   border-radius: 0.75rem; 
   max-width: 85%; 
-  font-size: 0.875rem; /* text-sm */
-  line-height: 1.4; 
+  font-size: 1rem; /* Aumentado de 0.875rem para 1rem */
+  line-height: 1.5; /* Aumentado de 1.4 para 1.5 */
   word-wrap: break-word;
 }
 
@@ -247,7 +247,7 @@ body {
   align-self: flex-start; 
   display: flex; 
   align-items: flex-start; 
-  gap: 0.5rem; 
+  gap: 0.75rem; /* Aumentado de 0.5rem para 0.75rem */
 }
 
 .message.user { 
@@ -257,8 +257,8 @@ body {
 
 .input-area { 
   display: flex; 
-  gap: 0.5rem; 
-  padding: 0.75rem; /* p-3 */
+  gap: 0.75rem; /* Aumentado de 0.5rem para 0.75rem */
+  padding: 1rem; /* Aumentado de 0.75rem para 1rem */
   background: #1f1f1f; 
   border-bottom-left-radius: 0.75rem; 
   border-bottom-right-radius: 0.75rem;
@@ -268,12 +268,12 @@ body {
 
 .input-area input { 
   flex: 1; 
-  padding: 0.5rem 0.75rem; /* py-2 px-3 */
+  padding: 0.75rem 1rem; /* Aumentado de 0.5rem 0.75rem para 0.75rem 1rem */
   border-radius: 1rem; 
   border: none; 
   background: #333; 
   color: white; 
-  font-size: 0.875rem; /* text-sm */
+  font-size: 1rem; /* Aumentado de 0.875rem para 1rem */
   outline: none; 
   width: 100%;
   max-width: 100%;
@@ -287,19 +287,19 @@ body {
 .input-area button { 
   background: #ae00ff; 
   border: none; 
-  padding: 0.5rem 0.75rem; /* py-2 px-3 */
+  padding: 0.75rem 1rem; /* Aumentado de 0.5rem 0.75rem para 0.75rem 1rem */
   border-radius: 1rem; 
   color: white; 
   cursor: pointer; 
   font-weight: 600;
-  font-size: 0.875rem; /* text-sm */
+  font-size: 1rem; /* Aumentado de 0.875rem para 1rem */
   white-space: nowrap;
 }
 
 .mic-button {
   background: #555;
   border: none;
-  padding: 0.5rem; /* p-2 */
+  padding: 0.75rem; /* Aumentado de 0.5rem para 0.75rem */
   border-radius: 50%;
   color: #999;
   cursor: not-allowed;
@@ -325,23 +325,23 @@ body {
 
 .present-popup { 
   background: #252525; 
-  padding: 0.75rem; 
+  padding: 1rem; /* Aumentado de 0.75rem para 1rem */
   border-radius: 0.75rem; 
   border: 1px solid #00ff99; 
   text-align: center;
-  font-size: 0.875rem; /* text-sm */
+  font-size: 1rem; /* Aumentado de 0.875rem para 1rem */
 }
 
 .present-popup button { 
-  margin-top: 0.5rem; 
+  margin-top: 0.75rem; /* Aumentado de 0.5rem para 0.75rem */
   background: #00d26a; 
   border: none; 
-  padding: 0.5rem 1rem; 
+  padding: 0.75rem 1.25rem; /* Aumentado de 0.5rem 1rem para 0.75rem 1.25rem */
   border-radius: 1rem; 
   color: white; 
   font-weight: bold; 
   cursor: pointer;
-  font-size: 0.875rem; /* text-sm */
+  font-size: 1rem; /* Aumentado de 0.875rem para 1rem */
 }
 
 .present-popup button.resgatado { 
@@ -381,7 +381,7 @@ body {
   background: none; 
   border: none; 
   color: white; 
-  font-size: 1.25rem; 
+  font-size: 1.5rem; /* Aumentado de 1.25rem para 1.5rem */
   cursor: pointer; 
 }
 
@@ -390,11 +390,11 @@ body {
   background: #ffc107; 
   color: black; 
   font-weight: bold; 
-  padding: 0.5rem 1rem; 
+  padding: 0.75rem 1.25rem; /* Aumentado de 0.5rem 1rem para 0.75rem 1.25rem */
   border: none; 
   border-radius: 0.5rem; 
   cursor: pointer;
-  font-size: 0.875rem; /* text-sm */
+  font-size: 1rem; /* Aumentado de 0.875rem para 1rem */
 }
 
 /* Header fixo mobile */
@@ -403,8 +403,8 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  height: 3.5rem; /* h-14 */
-  padding: 0.5rem 1rem; /* py-2 px-4 */
+  height: 4rem; /* Aumentado de 3.5rem para 4rem */
+  padding: 0.75rem 1rem; /* Aumentado de 0.5rem 1rem para 0.75rem 1rem */
   background: #252525;
   color: white;
   display: flex;
@@ -417,15 +417,15 @@ body {
 .mobile-header-content {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem; /* Aumentado de 0.5rem para 0.75rem */
 }
 
 .mobile-header img {
-  height: 1.75rem; /* h-7 */
+  height: 2rem; /* Aumentado de 1.75rem para 2rem */
 }
 
 .mobile-header-title {
-  font-size: 1rem; /* text-base */
+  font-size: 1.125rem; /* Aumentado de 1rem para 1.125rem */
   font-weight: 600;
   color: white;
 }
@@ -433,25 +433,25 @@ body {
 .mobile-header-actions {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem; /* Aumentado de 0.5rem para 0.75rem */
 }
 
 .saldo-button {
   border: 1px solid #9300f5;
-  padding: 0.25rem 0.5rem; /* py-1 px-2 */
+  padding: 0.5rem 0.75rem; /* Aumentado de 0.25rem 0.5rem para 0.5rem 0.75rem */
   border-radius: 1rem;
   cursor: pointer;
   background: transparent;
   color: white;
   font-family: 'Poppins', sans-serif;
-  font-size: 0.75rem; /* text-xs */
+  font-size: 0.875rem; /* Aumentado de 0.75rem para 0.875rem */
   white-space: nowrap;
 }
 
 .chat-button {
   background: linear-gradient(145deg, #ae00ff, #9300f5);
   border: none;
-  padding: 0.5rem; /* p-2 */
+  padding: 0.75rem; /* Aumentado de 0.5rem para 0.75rem */
   border-radius: 50%;
   cursor: pointer;
   box-shadow: 0 0 6px #ae00ff, 0 0 10px #9300f5;
@@ -462,14 +462,14 @@ body {
 
 /* Ajuste do container principal para mobile */
 .main-container {
-  padding-top: 3.5rem; /* pt-14 para compensar header fixo */
+  padding-top: 4rem; /* Aumentado de 3.5rem para 4rem */
 }
 
 /* Responsividade */
 @media (min-width: 640px) {
   .main-container {
-    max-width: 28rem; /* max-w-md */
-    padding: 1.5rem; /* px-6 py-6 */
+    max-width: 30rem; /* Aumentado de 28rem para 30rem */
+    padding: 1.5rem;
   }
   
   .chat-container {
@@ -479,20 +479,20 @@ body {
 
 @media (min-width: 768px) {
   .main-container {
-    max-width: 32rem; /* max-w-lg */
+    max-width: 34rem; /* Aumentado de 32rem para 34rem */
   }
 }
 
 /* Áudio responsivo */
 audio {
   width: 100% !important;
-  max-width: 12rem; /* max-w-48 */
-  height: 2rem; /* h-8 */
+  max-width: 14rem; /* Aumentado de 12rem para 14rem */
+  height: 2.5rem; /* Aumentado de 2rem para 2.5rem */
 }
 
 /* Scroll suave */
 .messages::-webkit-scrollbar {
-  width: 4px;
+  width: 6px; /* Aumentado de 4px para 6px */
 }
 
 .messages::-webkit-scrollbar-track {
@@ -501,7 +501,7 @@ audio {
 
 .messages::-webkit-scrollbar-thumb {
   background: #555;
-  border-radius: 2px;
+  border-radius: 3px; /* Aumentado de 2px para 3px */
 }
 
 .messages::-webkit-scrollbar-thumb:hover {
@@ -516,13 +516,13 @@ audio {
 .chamada-vip-button {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.5rem; /* Aumentado de 0.25rem para 0.5rem */
   background: rgba(147, 51, 234, 0.1);
   color: #9333ea;
   border: 1px solid #9333ea;
   border-radius: 9999px;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
+  padding: 0.5rem 0.75rem; /* Aumentado de 0.25rem 0.5rem para 0.5rem 0.75rem */
+  font-size: 0.875rem; /* Aumentado de 0.75rem para 0.875rem */
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -537,13 +537,13 @@ audio {
 .chamada-vip-chat-button {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.5rem; /* Aumentado de 0.25rem para 0.5rem */
   background: rgba(147, 51, 234, 0.1);
   color: #9333ea;
   border: 1px solid #9333ea;
   border-radius: 9999px;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
+  padding: 0.5rem 0.75rem; /* Aumentado de 0.25rem 0.5rem para 0.5rem 0.75rem */
+  font-size: 0.875rem; /* Aumentado de 0.75rem para 0.875rem */
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -562,9 +562,106 @@ audio {
   }
   
   .chamada-vip-chat-button {
-    padding: 0.375rem;
+    padding: 0.5rem; /* Aumentado de 0.375rem para 0.5rem */
     border-radius: 50%;
   }
+}
+
+/* Popup de Vídeo Chamada */
+.video-call-popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.95);
+  z-index: 10000;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.video-call-content {
+  background: #1a1a1a;
+  border: 2px solid #9333ea;
+  border-radius: 1rem;
+  padding: 2rem;
+  width: 100%;
+  max-width: 24rem;
+  text-align: center;
+  color: white;
+  position: relative;
+  box-shadow: 0 0 20px rgba(147, 51, 234, 0.5);
+}
+
+.video-call-avatar {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  border: 3px solid #9333ea;
+  object-fit: cover;
+}
+
+.video-call-status {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #9333ea;
+}
+
+.video-call-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+.video-call-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.video-call-btn {
+  padding: 0.75rem;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.video-call-btn.accept {
+  background: #22c55e;
+  color: white;
+}
+
+.video-call-btn.accept:hover {
+  background: #16a34a;
+  transform: scale(1.1);
+}
+
+.video-call-btn.decline {
+  background: #ef4444;
+  color: white;
+}
+
+.video-call-btn.decline:hover {
+  background: #dc2626;
+  transform: scale(1.1);
+}
+
+.calling-animation {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
 }
 </style>
 
@@ -604,14 +701,14 @@ audio {
     </button>
     <!-- Novo botão Chamada VIP -->
     <button onclick="handleChamadaVIP()" class="chamada-vip-button">
-      <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
         <path d="M23 7l-7 5 7 5V7z"/>
         <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
       </svg>
       <span>VIP</span>
     </button>
     <button onclick="rolarParaChat()" class="chat-button">
-      <svg viewBox="0 0 24 24" width="16" height="16" fill="white">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="white">
         <path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/>
       </svg>
     </button>
@@ -624,7 +721,7 @@ audio {
     <div class="chat-header">
       <div class="back-arrow" id="backArrow" onclick="voltarPagina()">&lt;</div>
       <div class="profile-header">
-        <img decoding="async" id="profilePhoto" src="../wp-content/uploads/2025/04/1.html" alt="Perfil">
+        <img decoding="async" id="profilePhoto" src="../wp-content/uploads/2025/04/heleno.png" alt="Perfil">
         <div class="profile-info">
           <div class="profile-name" id="profileName">Luciana</div>
           <div class="profile-status" id="status"></div>
@@ -632,7 +729,7 @@ audio {
       </div>
       <!-- Novo botão Chamada VIP no chat -->
       <button onclick="handleChamadaVIP()" class="chamada-vip-chat-button">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
           <path d="M23 7l-7 5 7 5V7z"/>
           <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
         </svg>
@@ -643,14 +740,14 @@ audio {
     <div class="messages" id="messages"></div>
     
     <div class="input-area">
-      <input type="text" id="userInput" placeholder="Digite sua mensagem..." disabled>
+      <input type="text" id="userInput" placeholder="Digite sua mensagem...">
       <button id="micButton" class="mic-button" onclick="handleMicClick()" title="Gravação de voz - Exclusivo para membros">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
           <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
           <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
         </svg>
       </button>
-      <button id="sendButton" disabled>Enviar</button>
+      <button id="sendButton" onclick="sendMessage()">Enviar</button>
     </div>
   </div>
 </div>
@@ -658,7 +755,7 @@ audio {
 <!-- Popup Premium -->
 <div id="popupPremiumImagem" style="display:none; align-items:center; justify-content:center; position:fixed; top:0; left:0; width:100%; height:100vh; background:rgba(0,0,0,0.9); z-index:9999; padding: 0 1rem; box-sizing: border-box;">
   <div style="background:#0f111a; border:2px solid gold; border-radius:1rem; padding:1.5rem 1rem; width:100%; max-width:20rem; color:white; text-align:center; box-shadow:0 0 16px gold; position:relative;">
-    <button onclick="closePopupPremiumImagem()" style="position:absolute; top:0.5rem; right:0.75rem; background:none; border:none; color:white; font-size:1.25rem; cursor:pointer; padding: 0.25rem 0.5rem;">×</button>
+    <button onclick="closePopupPremiumImagem()" style="position:absolute; top:0.5rem; right:0.75rem; background:none; border:none; color:white; font-size:1.5rem; cursor:pointer; padding: 0.25rem 0.5rem;">×</button>
     <div style="font-size:1.125rem; font-weight:600; margin-bottom:1rem;">Acesso Premium VIP</div>
     <div style="background:#1f1f2a; border-radius:0.75rem; padding:0.75rem; margin-bottom:0.75rem; box-shadow:0 0 10px #9300f5;">
       <div style="font-size:0.75rem; text-decoration:line-through; color:#aaa;">R$ 159,90</div>
@@ -674,8 +771,9 @@ audio {
       <li style="margin:0.375rem 0;">💬 Chat Prioritário com Coroas Mais Desejadas</li>
       <li style="margin:0.375rem 0;">🔞 Modo Fantasia (Conteúdo +18 liberado)</li>
       <li style="margin:0.375rem 0;">❤️ Convites para Encontros Reais</li>
+      <li style="margin:0.375rem 0;">📹 Chamadas de Vídeo VIP Exclusivas</li>
     </ul>
-    <button onclick="window.open('https://pay.kirvano.com/cf633cc9-2437-4aec-a68e-eac70640f35e', '_blank')" style="background:#ffc107; color:#111; padding:0.75rem 1rem; border:none; border-radius:0.5rem; font-weight:bold; cursor:pointer; width:100%; font-size:0.875rem;">📲 DESBLOQUEAR PREMIUM</button>
+    <button onclick="window.open('https://pay.kirvano.com/cf633cc9-2437-4aec-a68e-eac70640f35e', '_blank')" style="background:#ffc107; color:#111; padding:0.75rem 1rem; border:none; border-radius:0.5rem; font-weight:bold; cursor:pointer; width:100%; font-size:1rem;">📲 DESBLOQUEAR PREMIUM</button>
     <p style="font-size:0.625rem; color:#999; margin-top:0.75rem;">Ao prosseguir, você concorda com nossos <span style="color:#ffc107;">termos</span> e <span style="color:#ffc107;">política de privacidade</span>.</p>
   </div>
 </div>
@@ -683,32 +781,55 @@ audio {
 <!-- Popup Saque PIX -->
 <div id="popupSaquePIX" style="display:none; align-items:center; justify-content:center; position:fixed; top:0; left:0; width:100%; height:100vh; background:rgba(0,0,0,0.85); z-index:9999; padding: 0 1rem; box-sizing: border-box;">
   <div style="background:#111827; padding:1.25rem 1rem; border-radius:1rem; box-shadow:0 0 18px #9300f5, inset 0 0 12px #9300f5; text-align:center; color:white; width:100%; max-width:21rem; position:relative; font-family: 'Poppins', sans-serif;">
-    <button class="close-saque" onclick="closeSaquePopup()" style="position:absolute; top:0.5rem; right:0.75rem; background:none; border:none; color:white; font-size:1.25rem; cursor:pointer; padding: 0.25rem 0.5rem;">×</button>
+    <button class="close-saque" onclick="closeSaquePopup()" style="position:absolute; top:0.5rem; right:0.75rem; background:none; border:none; color:white; font-size:1.5rem; cursor:pointer; padding: 0.25rem 0.5rem;">×</button>
     <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:1rem; justify-content:center;">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="#9300f5">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="#9300f5">
         <path d="M3 6a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V6zm0 5h16a1 1 0 011 1v2a1 1 0 01-1 1H3a1 1 0 01-1-1v-2a1 1 0 011-1zm0 5h10a1 1 0 011 1v2a1 1 0 01-1 1H3a1 1 0 01-1-1v-2a1 1 0 011-1z"/>
       </svg>
-      <h2 style="font-size:1rem; font-weight:600; margin: 0;">Saque PIX</h2>
+      <h2 style="font-size:1.125rem; font-weight:600; margin: 0;">Saque PIX</h2>
     </div>
 
     <div style="background:#1f2937; padding:1rem; border-radius:0.75rem; margin-bottom:1rem; box-shadow:inset 0 0 10px #9300f5;">
-      <p style="font-size:0.75rem; color:#ccc; margin:0.25rem 0;">Seu saldo</p>
-      <div style="font-size:1.25rem; color:#9300f5; font-weight:bold;" id="saqueSaldo">R$ 0,00</div>
-      <p style="font-size:0.625rem; color:#888; margin-top:0.25rem;">O saque será realizado no valor total do seu saldo</p>
+      <p style="font-size:0.875rem; color:#ccc; margin:0.25rem 0;">Seu saldo</p>
+      <div style="font-size:1.375rem; color:#9300f5; font-weight:bold;" id="saqueSaldo">R$ 0,00</div>
+      <p style="font-size:0.75rem; color:#888; margin-top:0.25rem;">O saque será realizado no valor total do seu saldo</p>
     </div>
 
-    <p style="font-size:0.75rem; margin-bottom:0.5rem;">Selecione seu tipo de chave PIX</p>
+    <p style="font-size:0.875rem; margin-bottom:0.5rem;">Selecione seu tipo de chave PIX</p>
     <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:0.5rem; margin-bottom:0.75rem;">
-      <button onclick="selectKeyType('cpf')" class="pix-key-btn" data-key-type="cpf" style="padding:0.5rem; background:#9300f5; color:white; border:none; border-radius:0.5rem; font-size:0.75rem;">CPF/CNPJ</button>
-      <button onclick="selectKeyType('telefone')" class="pix-key-btn" data-key-type="telefone" style="padding:0.5rem; background:#1f2937; color:white; border:1px solid #333; border-radius:0.5rem; font-size:0.75rem;">Telefone</button>
-      <button onclick="selectKeyType('email')" class="pix-key-btn" data-key-type="email" style="padding:0.5rem; background:#1f2937; color:white; border:1px solid #333; border-radius:0.5rem; font-size:0.75rem;">E-mail</button>
-      <button onclick="selectKeyType('aleatoria')" class="pix-key-btn" data-key-type="aleatoria" style="padding:0.5rem; background:#1f2937; color:white; border:1px solid #333; border-radius:0.5rem; font-size:0.75rem;">Aleatória</button>
+      <button onclick="selectKeyType('cpf')" class="pix-key-btn" data-key-type="cpf" style="padding:0.75rem; background:#9300f5; color:white; border:none; border-radius:0.5rem; font-size:0.875rem;">CPF/CNPJ</button>
+      <button onclick="selectKeyType('telefone')" class="pix-key-btn" data-key-type="telefone" style="padding:0.75rem; background:#1f2937; color:white; border:1px solid #333; border-radius:0.5rem; font-size:0.875rem;">Telefone</button>
+      <button onclick="selectKeyType('email')" class="pix-key-btn" data-key-type="email" style="padding:0.75rem; background:#1f2937; color:white; border:1px solid #333; border-radius:0.5rem; font-size:0.875rem;">E-mail</button>
+      <button onclick="selectKeyType('aleatoria')" class="pix-key-btn" data-key-type="aleatoria" style="padding:0.75rem; background:#1f2937; color:white; border:1px solid #333; border-radius:0.5rem; font-size:0.875rem;">Aleatória</button>
     </div>
 
-    <input id="keyInput" placeholder="Digite sua chave PIX" type="text" style="width:100%; padding:0.5rem; background:#1f2937; border:1px solid #333; border-radius:0.5rem; color:white; margin-bottom:0.75rem; font-size:0.75rem;"/>
-    <button id="btnSacar" onclick="doSaque()" style="background:gray; padding:0.75rem; border:none; border-radius:0.75rem; font-weight:bold; cursor:not-allowed; width:100%; color:white; font-size:0.875rem; opacity:0.6;" disabled>
+    <input id="keyInput" placeholder="Digite sua chave PIX" type="text" style="width:100%; padding:0.75rem; background:#1f2937; border:1px solid #333; border-radius:0.5rem; color:white; margin-bottom:0.75rem; font-size:0.875rem;"/>
+    <button id="btnSacar" onclick="doSaque()" style="background:gray; padding:1rem; border:none; border-radius:0.75rem; font-weight:bold; cursor:not-allowed; width:100%; color:white; font-size:1rem; opacity:0.6;" disabled>
       🔒 SACAR TUDO
     </button>
+  </div>
+</div>
+
+<!-- Popup de Vídeo Chamada -->
+<div id="videoCallPopup" class="video-call-popup">
+  <div class="video-call-content">
+    <button onclick="closeVideoCall()" style="position:absolute; top:0.5rem; right:0.75rem; background:none; border:none; color:white; font-size:1.5rem; cursor:pointer; padding: 0.25rem 0.5rem;">×</button>
+    <img id="videoCallAvatar" class="video-call-avatar calling-animation" src="../wp-content/uploads/2025/04/heleno.png" alt="Perfil">
+    <div class="video-call-status">Chamando...</div>
+    <div class="video-call-name" id="videoCallName">Luciana</div>
+    <div class="video-call-buttons">
+      <button class="video-call-btn accept" onclick="acceptVideoCall()">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+          <path d="M23 7l-7 5 7 5V7z"/>
+          <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+        </svg>
+      </button>
+      <button class="video-call-btn decline" onclick="declineVideoCall()">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
   </div>
 </div>
 
@@ -717,7 +838,8 @@ let step = 0;
 let saldo = 0;
 let userMessagesSent = 0;
 let presenteMostrado = false;
-let audioSent = false; // Controle para evitar loop de áudio
+let audioSent = false;
+let chatEnabled = true;
 
 window.onload = function() {
     const nome = localStorage.getItem('chatPerfilNome');
@@ -727,15 +849,23 @@ window.onload = function() {
     if (nome && foto) {
         document.getElementById('profileName').innerText = nome;
         document.getElementById('profilePhoto').src = foto;
+        document.getElementById('videoCallAvatar').src = foto;
+        document.getElementById('videoCallName').innerText = nome;
     } else {
         document.getElementById('profileName').innerText = 'Luciana';
-        document.getElementById('profilePhoto').src = '../wp-content/uploads/2025/04/1.html';
+        document.getElementById('profilePhoto').src = '../wp-content/uploads/2025/04/heleno.png';
+        document.getElementById('videoCallAvatar').src = '../wp-content/uploads/2025/04/heleno.png';
+        document.getElementById('videoCallName').innerText = 'Luciana';
     }
 
     if (saldoAtual) {
         const saldoFormatado = parseFloat(saldoAtual).toFixed(2).replace('.', ',');
         document.getElementById('saldoValorChat').innerText = saldoFormatado;
     }
+
+    // Habilitar input e botão de envio
+    document.getElementById('userInput').disabled = false;
+    document.getElementById('sendButton').disabled = false;
 
     // Iniciar primeiro áudio após 3 segundos
     setTimeout(() => { 
@@ -748,22 +878,20 @@ window.onload = function() {
 };
 
 function sendFirstAudio() {
-  if (audioSent) return; // Evitar múltiplas execuções
+  if (audioSent) return;
   
   const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
   const isPremium = localStorage.getItem('isPremium') === 'true';
   
-  audioSent = true; // Marcar que o áudio foi enviado
+  audioSent = true;
   
-  // Mostrar status "Gravando áudio..." por 5 segundos
   document.getElementById('status').innerText = 'Gravando áudio...';
   
   if (totalMatches >= 2 && !isPremium) {
     setTimeout(() => {
       document.getElementById('status').innerText = '';
       sendBlockedAudio();
-      document.getElementById('userInput').disabled = true;
-      document.getElementById('sendButton').disabled = true;
+      chatEnabled = false;
       
       setTimeout(() => {
         document.getElementById('popupPremiumImagem').style.display = 'flex';
@@ -773,14 +901,13 @@ function sendFirstAudio() {
     setTimeout(() => {
       document.getElementById('status').innerText = '';
       sendAudio('../assets/audios/audio1.mp4');
-      document.getElementById('userInput').disabled = false;
-      document.getElementById('sendButton').disabled = false;
+      chatEnabled = true;
     }, 5000);
   }
 }
 
 function sendBlockedAudio() {
-  const foto = localStorage.getItem('chatPerfilFoto') || '../wp-content/uploads/2025/04/1.jpg';
+  const foto = localStorage.getItem('chatPerfilFoto') || '../wp-content/uploads/2025/04/heleno.png';
 
   const messages = document.getElementById('messages');
   const wrapper = document.createElement('div');
@@ -788,19 +915,16 @@ function sendBlockedAudio() {
 
   const img = document.createElement('img');
   img.src = foto;
-  img.style.width = '2rem';
-  img.style.height = '2rem';
-  img.style.borderRadius = '50%';
-  img.style.flexShrink = '0\`\`\`javascript
-  img.style.height = '2rem';
+  img.style.width = '2.5rem';
+  img.style.height = '2.5rem';
   img.style.borderRadius = '50%';
   img.style.flexShrink = '0';
 
   const audioContainer = document.createElement('div');
   audioContainer.style.cssText = `
     position: relative;
-    width: 12rem;
-    height: 2.5rem;
+    width: 14rem;
+    height: 3rem;
     background: #333;
     border-radius: 1rem;
     display: flex;
@@ -815,7 +939,7 @@ function sendBlockedAudio() {
   lockIcon.innerHTML = '🔒';
   lockIcon.style.cssText = `
     position: absolute;
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     z-index: 2;
     filter: none;
   `;
@@ -825,9 +949,9 @@ function sendBlockedAudio() {
   premiumText.style.cssText = `
     position: absolute;
     color: #ffc107;
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     font-weight: bold;
-    bottom: -1.25rem;
+    bottom: -1.5rem;
     left: 50%;
     transform: translateX(-50%);
     white-space: nowrap;
@@ -836,8 +960,8 @@ function sendBlockedAudio() {
 
   const fakeAudio = document.createElement('div');
   fakeAudio.style.cssText = `
-    width: 10rem;
-    height: 1.5rem;
+    width: 12rem;
+    height: 2rem;
     background: #555;
     border-radius: 0.75rem;
     position: relative;
@@ -859,8 +983,7 @@ function sendBlockedAudio() {
 
 function sendSecondAudio() {
   sendAudio('../assets/audios/audio2.mp4');
-  document.getElementById('userInput').disabled = false;
-  document.getElementById('sendButton').disabled = false;
+  chatEnabled = true;
 }
 
 function sendThirdAudio() {
@@ -869,7 +992,7 @@ function sendThirdAudio() {
 }
 
 function sendAudio(url) {
-  const foto = localStorage.getItem('chatPerfilFoto') || '../wp-content/uploads/2025/04/1.jpg';
+  const foto = localStorage.getItem('chatPerfilFoto') || '../wp-content/uploads/2025/04/heleno.png';
 
   const messages = document.getElementById('messages');
   const wrapper = document.createElement('div');
@@ -877,8 +1000,8 @@ function sendAudio(url) {
 
   const img = document.createElement('img');
   img.src = foto;
-  img.style.width = '2rem';
-  img.style.height = '2rem';
+  img.style.width = '2.5rem';
+  img.style.height = '2.5rem';
   img.style.borderRadius = '50%';
   img.style.flexShrink = '0';
 
@@ -887,15 +1010,14 @@ function sendAudio(url) {
   audio.controls = true;
   audio.preload = 'metadata';
   audio.style.width = '100%';
-  audio.style.maxWidth = '12rem';
-  audio.style.height = '2rem';
+  audio.style.maxWidth = '14rem';
+  audio.style.height = '2.5rem';
 
-  // Só adiciona a frase emocional após o primeiro áudio
   if (url.includes('audio1.mp4')) {
     audio.addEventListener('ended', function() {
       setTimeout(() => {
         sendEmotionalMessage();
-      }, 100);
+      }, 1000);
     });
   }
 
@@ -908,11 +1030,12 @@ function sendAudio(url) {
 function sendEmotionalMessage() {
   const frases = [
     "Quero ouvir sua voz também…",
-    "Você tá me ouvindo? Me responde…"
+    "Você tá me ouvindo? Me responde…",
+    "Fala comigo, amor…"
   ];
   
   const fraseEscolhida = frases[Math.floor(Math.random() * frases.length)];
-  const foto = localStorage.getItem('chatPerfilFoto') || '../wp-content/uploads/2025/04/1.jpg';
+  const foto = localStorage.getItem('chatPerfilFoto') || '../wp-content/uploads/2025/04/heleno.png';
 
   const messages = document.getElementById('messages');
   const wrapper = document.createElement('div');
@@ -920,19 +1043,19 @@ function sendEmotionalMessage() {
 
   const img = document.createElement('img');
   img.src = foto;
-  img.style.width = '2rem';
-  img.style.height = '2rem';
+  img.style.width = '2.5rem';
+  img.style.height = '2.5rem';
   img.style.borderRadius = '50%';
   img.style.flexShrink = '0';
 
   const messageDiv = document.createElement('div');
   messageDiv.style.cssText = `
     background: #282828;
-    padding: 0.5rem 0.75rem;
+    padding: 0.75rem 1rem;
     border-radius: 0.75rem;
     max-width: 85%;
-    font-size: 0.875rem;
-    line-height: 1.4;
+    font-size: 1rem;
+    line-height: 1.5;
     word-wrap: break-word;
     font-style: italic;
     color: #ffb3d9;
@@ -948,7 +1071,7 @@ function sendEmotionalMessage() {
 
 function showPresentPopup() {
   presenteMostrado = true;
-  const foto = localStorage.getItem('chatPerfilFoto') || '../wp-content/uploads/2025/04/1.jpg';
+  const foto = localStorage.getItem('chatPerfilFoto') || '../wp-content/uploads/2025/04/heleno.png';
 
   const messages = document.getElementById('messages');
   const wrapper = document.createElement('div');
@@ -956,8 +1079,8 @@ function showPresentPopup() {
 
   const img = document.createElement('img');
   img.src = foto;
-  img.style.width = '2rem';
-  img.style.height = '2rem';
+  img.style.width = '2.5rem';
+  img.style.height = '2.5rem';
   img.style.borderRadius = '50%';
   img.style.flexShrink = '0';
 
@@ -970,8 +1093,7 @@ function showPresentPopup() {
   messages.appendChild(wrapper);
   messages.scrollTop = messages.scrollHeight;
 
-  document.getElementById('userInput').disabled = false;
-  document.getElementById('sendButton').disabled = false;
+  chatEnabled = true;
   document.getElementById('backArrow').style.display = 'flex';
 }
 
@@ -989,6 +1111,8 @@ function sendMessage() {
   const input = document.getElementById('userInput');
   const text = input.value.trim();
   
+  if (!chatEnabled || !text) return;
+  
   const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
   const isPremium = localStorage.getItem('isPremium') === 'true';
   
@@ -997,7 +1121,10 @@ function sendMessage() {
     return;
   }
 
-  if (!text || presenteMostrado) return;
+  if (presenteMostrado && !isPremium) {
+    abrirPopupPremium();
+    return;
+  }
 
   if (userMessagesSent >= 3 && !isPremium) {
     document.getElementById('popupPremiumImagem').style.display = 'flex';
@@ -1015,14 +1142,14 @@ function sendMessage() {
   userMessagesSent++;
 
   if (userMessagesSent === 1) {
-    bloquearEnvio();
+    chatEnabled = false;
     document.getElementById('status').innerText = 'Gravando áudio...';
     setTimeout(() => {
       document.getElementById('status').innerText = '';
       sendSecondAudio();
     }, 5000);
   } else if (userMessagesSent === 2) {
-    bloquearEnvio();
+    chatEnabled = false;
     document.getElementById('status').innerText = 'Gravando áudio...';
     setTimeout(() => {
       document.getElementById('status').innerText = '';
@@ -1031,79 +1158,10 @@ function sendMessage() {
   }
 }
 
-function bloquearEnvio() {
-  document.getElementById('userInput').disabled = true;
-  document.getElementById('sendButton').disabled = true;
-}
-
-document.getElementById('sendButton').addEventListener('click', function(e) {
-  e.preventDefault();
-  
-  const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
-  const isPremium = localStorage.getItem('isPremium') === 'true';
-  
-  if (totalMatches >= 2 && !isPremium) {
-    document.getElementById('popupPremiumImagem').style.display = 'flex';
-    return;
-  }
-  
-  if (presenteMostrado) {
-    abrirPopupPremium();
-  } else if (userMessagesSent >= 3 && !isPremium) {
-    document.getElementById('popupPremiumImagem').style.display = 'flex';
-  } else {
-    sendMessage();
-  }
-});
-
-document.getElementById('userInput').addEventListener('focus', function(e) {
-  const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
-  const isPremium = localStorage.getItem('isPremium') === 'true';
-  
-  if (totalMatches >= 2 && !isPremium) {
-    e.target.blur();
-    document.getElementById('popupPremiumImagem').style.display = 'flex';
-    return;
-  }
-  
-  if (presenteMostrado) {
-    abrirPopupPremium();
-  } else if (userMessagesSent >= 3 && !isPremium) {
-    e.preventDefault();
-    document.getElementById('popupPremiumImagem').style.display = 'flex';
-  }
-});
-
 document.getElementById('userInput').addEventListener('keydown', function(e) {
-  const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
-  const isPremium = localStorage.getItem('isPremium') === 'true';
-  
-  if (totalMatches >= 2 && !isPremium) {
+  if (e.key === 'Enter') {
     e.preventDefault();
-    document.getElementById('popupPremiumImagem').style.display = 'flex';
-    return;
-  }
-  
-  if (presenteMostrado) {
-    e.preventDefault();
-    abrirPopupPremium();
-  } else if (userMessagesSent >= 3 && !isPremium) {
-    e.preventDefault();
-    document.getElementById('popupPremiumImagem').style.display = 'flex';
-  } else if (e.key === 'Enter') {
-    e.preventDefault();
-    document.getElementById('sendButton').click();
-  }
-});
-
-document.querySelector('.chat-container').addEventListener('click', function(e) {
-  const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
-  const isPremium = localStorage.getItem('isPremium') === 'true';
-  
-  if (totalMatches >= 2 && !isPremium) {
-    if (!e.target.closest('#popupPremiumImagem') && !e.target.closest('#backArrow')) {
-      document.getElementById('popupPremiumImagem').style.display = 'flex';
-    }
+    sendMessage();
   }
 });
 
@@ -1214,16 +1272,38 @@ function handleChamadaVIP() {
   const isPremium = localStorage.getItem('isPremium') === 'true';
   
   if (isPremium) {
-    // Simular funcionalidade de chamada VIP para usuários premium
-    alert('🎥 Iniciando Chamada VIP... Conectando com ' + (localStorage.getItem('chatPerfilNome') || 'Luciana'));
-    // Aqui você pode implementar a lógica real da chamada de vídeo
+    // Iniciar chamada de vídeo para usuários premium
+    document.getElementById('videoCallPopup').style.display = 'flex';
   } else {
     // Mostrar popup premium para usuários não premium
     document.getElementById('popupPremiumImagem').style.display = 'flex';
   }
 }
+
+function closeVideoCall() {
+  document.getElementById('videoCallPopup').style.display = 'none';
+}
+
+function acceptVideoCall() {
+  // Simular aceitação da chamada
+  const content = document.querySelector('.video-call-content');
+  content.innerHTML = `
+    <button onclick="closeVideoCall()" style="position:absolute; top:0.5rem; right:0.75rem; background:none; border:none; color:white; font-size:1.5rem; cursor:pointer; padding: 0.25rem 0.5rem;">×</button>
+    <img class="video-call-avatar" src="${localStorage.getItem('chatPerfilFoto') || '../wp-content/uploads/2025/04/heleno.png'}" alt="Perfil">
+    <div class="video-call-status" style="color: #22c55e;">Conectado</div>
+    <div class="video-call-name">${localStorage.getItem('chatPerfilNome') || 'Luciana'}</div>
+    <div style="background: #1f2937; padding: 1rem; border-radius: 0.75rem; margin: 1rem 0;">
+      <p style="font-size: 0.875rem; color: #ccc; margin: 0;">🎥 Chamada de vídeo ativa</p>
+      <p style="font-size: 0.75rem; color: #888; margin-top: 0.5rem;">Aproveite sua conversa exclusiva!</p>
+    </div>
+    <button onclick="closeVideoCall()" style="background: #ef4444; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 0.5rem; font-weight: bold; cursor: pointer;">Encerrar Chamada</button>
+  `;
+}
+
+function declineVideoCall() {
+  closeVideoCall();
+}
 </script>
 
 </body>
 </html>
-\`\`\`
