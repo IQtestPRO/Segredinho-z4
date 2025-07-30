@@ -507,6 +507,11 @@ audio {
 .messages::-webkit-scrollbar-thumb:hover {
   background: #777;
 }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 </style>
 
 <!-- Meta Pixel Code -->
@@ -680,18 +685,27 @@ function sendFirstAudio() {
   
   audioSent = true; // Marcar que o áudio foi enviado
   
+  // Mostrar status "Gravando áudio..." por 5 segundos
+  document.getElementById('status').innerText = 'Gravando áudio...';
+  
   if (totalMatches >= 2 && !isPremium) {
-    sendBlockedAudio();
-    document.getElementById('userInput').disabled = true;
-    document.getElementById('sendButton').disabled = true;
-    
     setTimeout(() => {
-      document.getElementById('popupPremiumImagem').style.display = 'flex';
-    }, 2000);
+      document.getElementById('status').innerText = '';
+      sendBlockedAudio();
+      document.getElementById('userInput').disabled = true;
+      document.getElementById('sendButton').disabled = true;
+      
+      setTimeout(() => {
+        document.getElementById('popupPremiumImagem').style.display = 'flex';
+      }, 2000);
+    }, 5000);
   } else {
-    sendAudio('../assets/audios/audio1.mp4');
-    document.getElementById('userInput').disabled = false;
-    document.getElementById('sendButton').disabled = false;
+    setTimeout(() => {
+      document.getElementById('status').innerText = '';
+      sendAudio('../assets/audios/audio1.mp4');
+      document.getElementById('userInput').disabled = false;
+      document.getElementById('sendButton').disabled = false;
+    }, 5000);
   }
 }
 
@@ -849,6 +863,7 @@ function sendEmotionalMessage() {
     word-wrap: break-word;
     font-style: italic;
     color: #ffb3d9;
+    animation: fadeIn 0.5s ease-in;
   `;
   messageDiv.innerText = fraseEscolhida;
 
@@ -928,10 +943,18 @@ function sendMessage() {
 
   if (userMessagesSent === 1) {
     bloquearEnvio();
-    setTimeout(sendSecondAudio, 3000);
+    document.getElementById('status').innerText = 'Gravando áudio...';
+    setTimeout(() => {
+      document.getElementById('status').innerText = '';
+      sendSecondAudio();
+    }, 5000);
   } else if (userMessagesSent === 2) {
     bloquearEnvio();
-    setTimeout(sendThirdAudio, 3000);
+    document.getElementById('status').innerText = 'Gravando áudio...';
+    setTimeout(() => {
+      document.getElementById('status').innerText = '';
+      sendThirdAudio();
+    }, 5000);
   }
 }
 
@@ -973,6 +996,7 @@ document.getElementById('userInput').addEventListener('focus', function(e) {
   if (presenteMostrado) {
     abrirPopupPremium();
   } else if (userMessagesSent >= 3 && !isPremium) {
+    e.preventDefault();
     document.getElementById('popupPremiumImagem').style.display = 'flex';
   }
 });
@@ -1116,4 +1140,3 @@ function doSaque() {
 
 </body>
 </html>
-</merged_code>
