@@ -1,0 +1,282 @@
+{
+  "project": {
+    "name": "sourcecode6",
+    "type": "web-application",
+    "version": "99.90",
+    "description": "Multi-page web application with chat functionality, user registration, and payment system",
+    "structure": {
+      "assets": {
+        "images": {
+          "logos": [
+            "wp-content/uploads/2025/04/logoregistro.png",
+            "wp-content/uploads/2025/04/logoCoroa.png",
+            "wp-content/uploads/2025/04/logochat.png",
+            "wp-content/uploads/2025/04/logoCoroa-4.png",
+            "assets/img/mask_sem_fundo.png"
+          ],
+          "backgrounds": [
+            "fade.gif",
+            "backblue.gif",
+            "wp-content/uploads/2025/05/fundo-scaled-1.png",
+            "wp-content/uploads/2025/04/fundochat.jpg"
+          ],
+          "profile_images": [
+            "wp-content/uploads/2025/04/heleno.png",
+            "wp-content/uploads/2025/04/pablo.png",
+            "wp-content/uploads/2025/04/augusto.png",
+            "wp-content/uploads/2025/04/luciano.png",
+            "wp-content/uploads/2025/04/jailson.png"
+          ],
+          "gallery": [
+            "wp-content/uploads/2025/05/1.jpg",
+            "wp-content/uploads/2025/05/2.jpg",
+            "wp-content/uploads/2025/05/3.jpg",
+            "wp-content/uploads/2025/05/4.jpg",
+            "wp-content/uploads/2025/05/5.jpg",
+            "wp-content/uploads/2025/05/6.jpg",
+            "wp-content/uploads/2025/05/7.jpg",
+            "wp-content/uploads/2025/05/8.jpg",
+            "wp-content/uploads/2025/05/9.jpg",
+            "wp-content/uploads/2025/05/10.jpg",
+            "wp-content/uploads/2025/05/11.jpg",
+            "wp-content/uploads/2025/05/22.jpg",
+            "wp-content/uploads/2025/05/33.jpg",
+            "wp-content/uploads/2025/05/44.jpg",
+            "wp-content/uploads/2025/05/55.png",
+            "wp-content/uploads/2025/05/66.jpg",
+            "wp-content/uploads/2025/05/77.jpg",
+            "wp-content/uploads/2025/05/88.jpg",
+            "wp-content/uploads/2025/05/99.jpg",
+            "wp-content/uploads/2025/05/1010.jpg",
+            "wp-content/uploads/2025/05/11L.jpg",
+            "wp-content/uploads/2025/05/12J.jpg",
+            "wp-content/uploads/2025/05/111L.jpg",
+            "wp-content/uploads/2025/05/122J.jpg",
+            "wp-content/uploads/2025/05/13P.jpg",
+            "wp-content/uploads/2025/05/133P.jpg"
+          ],
+          "icons": [
+            "wp-content/uploads/2025/04/393a7d8e436bccc3aedfd43865b48890-icone-de-cadeado.png",
+            "wp-content/uploads/2025/04/coracao.png",
+            "6cdy5ekm9w.png",
+            "56hgdxs5bc.png"
+          ]
+        },
+        "audio": [
+          "assets/audios/audio1.mp4",
+          "assets/audios/audio2.mp4",
+          "assets/audios/audio3.mp4",
+          "uploads/2025/05/WhatsApp-Anonimo-1.mp3",
+          "uploads/2025/04/Minha-Coroa.mp3",
+          "uploads/2025/04/WhatsApp-Anonimo.mp3"
+        ],
+        "javascript": {
+          "core": [
+            "wp-includes/js/jquery/jquery.min.js",
+            "wp-includes/js/jquery/jquery-migrate.min.js",
+            "wp-includes/js/jquery/ui/core.min.js"
+          ],
+          "elementor": [
+            "wp-content/plugins/elementor/assets/js/webpack.runtime.min.js",
+            "wp-content/plugins/elementor/assets/js/frontend-modules.min.js",
+            "wp-content/plugins/elementor/assets/js/frontend.min.js",
+            "wp-content/plugins/elementor-pro/assets/js/webpack-pro.runtime.min.js",
+            "wp-content/plugins/elementor-pro/assets/js/preloaded-elements-handlers.min.js",
+            "wp-content/plugins/elementor-pro/assets/js/frontend.min.js"
+          ],
+          "theme": ["wp-content/themes/hello-elementor/assets/js/hello-frontend.min.js"],
+          "custom": [
+            "assets/js/meta-pixel-head.js",
+            "assets/js/pixel-base.js",
+            "assets/js/pixel-events.js",
+            "assets/js/pixel-config.js",
+            "assets/js/pixel-injection.js",
+            "assets/js/consent-popup.js"
+          ]
+        }
+      },
+      "pages": {
+        "main": [
+          {
+            "file": "index.html",
+            "title": "Home Page",
+            "description": "Main landing page",
+            "type": "html"
+          },
+          {
+            "file": "inicial.html",
+            "title": "Initial Page",
+            "description": "Initial user interface",
+            "type": "typescriptreact"
+          },
+          {
+            "file": "bem-vindo.html",
+            "title": "Welcome Page",
+            "description": "Welcome screen for new users",
+            "type": "typescriptreact"
+          }
+        ],
+        "user": [
+          {
+            "file": "registro.html",
+            "title": "Registration",
+            "description": "User registration form",
+            "type": "html"
+          },
+          {
+            "file": "editar-perfil.html",
+            "title": "Edit Profile",
+            "description": "User profile editing interface",
+            "type": "html"
+          }
+        ],
+        "chat": [
+          {
+            "file": "chat/index.html",
+            "title": "Chat Interface",
+            "description": "Main chat application",
+            "type": "typescriptreact"
+          },
+          {
+            "file": "chat/index-2.html",
+            "title": "Chat Alternative",
+            "description": "Alternative chat interface",
+            "type": "html"
+          }
+        ],
+        "payment": [
+          {
+            "file": "pagamento-aprovado.html",
+            "title": "Payment Approved",
+            "description": "Payment confirmation page",
+            "type": "html"
+          }
+        ],
+        "testing": [
+          {
+            "file": "test_auto.html",
+            "title": "Auto Test",
+            "description": "Automated testing page",
+            "type": "html"
+          },
+          {
+            "file": "test_match.html",
+            "title": "Match Test",
+            "description": "Match functionality test",
+            "type": "html"
+          },
+          {
+            "file": "test_match_fixed.html",
+            "title": "Fixed Match Test",
+            "description": "Fixed version of match test",
+            "type": "html"
+          },
+          {
+            "file": "test_match_real.html",
+            "title": "Real Match Test",
+            "description": "Real match testing interface",
+            "type": "html"
+          }
+        ]
+      },
+      "configuration": [
+        {
+          "file": "todo.json",
+          "type": "json",
+          "description": "Task management and completion tracking"
+        },
+        {
+          "file": "YOUWARE.md",
+          "type": "markdown",
+          "description": "Project documentation"
+        },
+        {
+          "file": "winprofile.ini",
+          "type": "ini",
+          "description": "Windows profile configuration"
+        }
+      ],
+      "logs": [
+        {
+          "file": "hts-log.txt",
+          "type": "plaintext",
+          "description": "HTTP tracking system logs"
+        },
+        {
+          "file": "readme.txt",
+          "type": "plaintext",
+          "description": "Project readme file"
+        },
+        {
+          "file": "new.txt",
+          "type": "plaintext",
+          "description": "New features or updates log"
+        }
+      ]
+    },
+    "features": {
+      "user_management": {
+        "registration": true,
+        "profile_editing": true,
+        "authentication": true
+      },
+      "chat_system": {
+        "real_time_messaging": true,
+        "multiple_interfaces": true,
+        "audio_support": true
+      },
+      "payment_system": {
+        "pix_integration": true,
+        "premium_features": true,
+        "payment_confirmation": true
+      },
+      "media_support": {
+        "image_gallery": true,
+        "audio_playback": true,
+        "animated_gifs": true
+      },
+      "testing": {
+        "automated_tests": true,
+        "match_functionality": true,
+        "real_time_testing": true
+      }
+    },
+    "technologies": {
+      "frontend": ["HTML5", "CSS3", "JavaScript", "TypeScript React", "jQuery", "Elementor"],
+      "cms": "WordPress",
+      "analytics": ["Meta Pixel", "Facebook Pixel"],
+      "payment": "PIX",
+      "media": ["MP4", "MP3", "PNG", "JPG", "GIF"]
+    },
+    "tasks": {
+      "completed": [
+        {
+          "id": "TASK-1",
+          "content": "Implementar validação do campo de chave PIX",
+          "status": "completed",
+          "priority": "high"
+        },
+        {
+          "id": "TASK-2",
+          "content": "Habilitar o botão de saque quando a chave PIX for válida",
+          "status": "completed",
+          "priority": "high"
+        },
+        {
+          "id": "TASK-3",
+          "content": "Modificar a função doSaque() para abrir o popup premium e redirecionar para página de pagamento",
+          "status": "completed",
+          "priority": "high"
+        }
+      ]
+    },
+    "metadata": {
+      "created": "2025",
+      "last_modified": "2025-05",
+      "file_count": 150,
+      "total_size": "estimated_large",
+      "main_language": "Portuguese",
+      "target_audience": "Brazilian users"
+    }
+  }
+}

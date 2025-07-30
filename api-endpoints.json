@@ -1,0 +1,76 @@
+{
+  "endpoints": {
+    "user": {
+      "registration": {
+        "url": "/registro",
+        "method": "POST",
+        "description": "User registration endpoint",
+        "fields": ["username", "email", "password", "pix_key"]
+      },
+      "profile": {
+        "url": "/editar-perfil",
+        "method": "PUT",
+        "description": "Update user profile",
+        "fields": ["name", "bio", "avatar", "preferences"]
+      },
+      "authentication": {
+        "url": "/login",
+        "method": "POST",
+        "description": "User login",
+        "fields": ["email", "password"]
+      }
+    },
+    "chat": {
+      "messages": {
+        "url": "/chat/messages",
+        "method": "GET",
+        "description": "Retrieve chat messages"
+      },
+      "send": {
+        "url": "/chat/send",
+        "method": "POST",
+        "description": "Send new message",
+        "fields": ["message", "recipient", "type"]
+      },
+      "audio": {
+        "url": "/chat/audio",
+        "method": "POST",
+        "description": "Send audio message",
+        "fields": ["audio_file", "recipient"]
+      }
+    },
+    "payment": {
+      "pix_validation": {
+        "url": "/payment/validate-pix",
+        "method": "POST",
+        "description": "Validate PIX key",
+        "fields": ["pix_key"]
+      },
+      "withdrawal": {
+        "url": "/payment/withdraw",
+        "method": "POST",
+        "description": "Process withdrawal",
+        "fields": ["amount", "pix_key"]
+      },
+      "premium": {
+        "url": "/payment/premium",
+        "method": "POST",
+        "description": "Upgrade to premium",
+        "fields": ["plan", "payment_method"]
+      }
+    },
+    "media": {
+      "upload": {
+        "url": "/media/upload",
+        "method": "POST",
+        "description": "Upload media files",
+        "fields": ["file", "type", "category"]
+      },
+      "gallery": {
+        "url": "/media/gallery",
+        "method": "GET",
+        "description": "Get gallery images"
+      }
+    }
+  }
+}

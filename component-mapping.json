@@ -1,0 +1,58 @@
+{
+  "components": {
+    "pages": {
+      "index.html": {
+        "components": ["header", "hero", "features", "gallery", "footer"],
+        "scripts": ["pixel-tracking", "consent-popup"],
+        "styles": ["elementor-frontend", "theme-styles"]
+      },
+      "inicial.html": {
+        "components": ["welcome-screen", "navigation", "user-status"],
+        "scripts": ["user-management", "navigation-handler"],
+        "styles": ["custom-initial", "responsive-layout"]
+      },
+      "bem-vindo.html": {
+        "components": ["welcome-message", "onboarding-steps", "profile-setup"],
+        "scripts": ["onboarding-flow", "profile-validation"],
+        "styles": ["welcome-styles", "animation-effects"]
+      },
+      "registro.html": {
+        "components": ["registration-form", "validation", "terms"],
+        "scripts": ["form-validation", "pix-validation", "registration-handler"],
+        "styles": ["form-styles", "validation-feedback"]
+      },
+      "editar-perfil.html": {
+        "components": ["profile-form", "avatar-upload", "preferences"],
+        "scripts": ["profile-editor", "image-upload", "settings-manager"],
+        "styles": ["profile-styles", "upload-interface"]
+      },
+      "chat/index.html": {
+        "components": ["chat-interface", "message-list", "input-area", "user-list"],
+        "scripts": ["chat-engine", "real-time-messaging", "audio-handler"],
+        "styles": ["chat-styles", "message-bubbles", "responsive-chat"]
+      },
+      "pagamento-aprovado.html": {
+        "components": ["success-message", "transaction-details", "next-steps"],
+        "scripts": ["payment-confirmation", "redirect-handler"],
+        "styles": ["success-styles", "confirmation-layout"]
+      }
+    },
+    "shared": {
+      "header": {
+        "elements": ["logo", "navigation", "user-menu"],
+        "scripts": ["navigation.js", "user-dropdown.js"],
+        "styles": ["header.css"]
+      },
+      "footer": {
+        "elements": ["links", "copyright", "social-media"],
+        "scripts": ["footer-interactions.js"],
+        "styles": ["footer.css"]
+      },
+      "modal": {
+        "elements": ["overlay", "content", "close-button"],
+        "scripts": ["modal-handler.js"],
+        "styles": ["modal.css"]
+      }
+    }
+  }
+}
