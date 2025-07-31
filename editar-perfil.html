@@ -310,6 +310,50 @@ window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15
     h3.bio-title {
       margin-top: 30px;
     }
+
+.cidade-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.cidade-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 2px solid #6c2894;
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  display: none;
+}
+
+.cidade-option {
+  padding: 12px 15px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s ease;
+}
+
+.cidade-option:hover,
+.cidade-option.selected {
+  background-color: #f0e6ff;
+  color: #6c2894;
+}
+
+.cidade-option:last-child {
+  border-bottom: none;
+}
+
+.no-results {
+  padding: 12px 15px;
+  color: #666;
+  font-style: italic;
+}
   </style>
 
 <!-- Meta Pixel Code -->
@@ -361,7 +405,10 @@ window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15
     <textarea id="mensagem" name="mensagem" rows="5" placeholder="Escreva sua bio aqui..."></textarea>
 
     <h3>Digite aqui a sua Cidade para encontrarmos coroas mais próximas:</h3>
-    <input type="text" class="cidade-input" id="cidade" name="cidade" placeholder="Sua cidade" />
+<div class="cidade-container">
+  <input type="text" class="cidade-input" id="cidade" name="cidade" placeholder="Digite sua cidade" autocomplete="off" />
+  <div class="cidade-dropdown" id="cidadeDropdown"></div>
+</div>
 
     <h3>Selecione seus interesses:</h3>
     <div class="interests">
@@ -381,117 +428,193 @@ window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15
 
   <script>
     let currentPhotoIndex = 0;
+let canSendMessage = false;
 
-    function addPhoto(index) {
-      currentPhotoIndex = index;
-      document.getElementById('photo-input').click();
+// Lista de cidades brasileiras principais
+const cidadesBrasil = [
+  'São Paulo - SP', 'Rio de Janeiro - RJ', 'Brasília - DF', 'Salvador - BA',
+  'Fortaleza - CE', 'Belo Horizonte - MG', 'Manaus - AM', 'Curitiba - PR',
+  'Recife - PE', 'Goiânia - GO', 'Belém - PA', 'Porto Alegre - RS',
+  'Guarulhos - SP', 'Campinas - SP', 'São Luís - MA', 'São Gonçalo - RJ',
+  'Maceió - AL', 'Duque de Caxias - RJ', 'Natal - RN', 'Teresina - PI',
+  'Campo Grande - MS', 'Nova Iguaçu - RJ', 'São Bernardo do Campo - SP',
+  'João Pessoa - PB', 'Santo André - SP', 'Osasco - SP', 'Jaboatão dos Guararapes - PE',
+  'São José dos Campos - SP', 'Ribeirão Preto - SP', 'Uberlândia - MG',
+  'Contagem - MG', 'Sorocaba - SP', 'Aracaju - SE', 'Feira de Santana - BA',
+  'Cuiabá - MT', 'Joinville - SC', 'Aparecida de Goiânia - GO', 'Londrina - PR',
+  'Juiz de Fora - MG', 'Ananindeua - PA', 'Porto Velho - RO', 'Serra - ES',
+  'Niterói - RJ', 'Caxias do Sul - RS', 'Macapá - AP', 'Mauá - SP',
+  'São João de Meriti - RJ', 'Vila Velha - ES', 'Florianópolis - SC',
+  'Santos - SP', 'Carapicuíba - SP', 'Olinda - PE', 'Cariacica - ES',
+  'Vitória - ES', 'Pelotas - RS', 'Canoas - RS', 'Caruaru - PE',
+  'Maringá - PR', 'Várzea Grande - MT', 'Anápolis - GO', 'Petrolina - PE'
+];
+
+// Sistema de cidades
+function setupCidadeSystem() {
+  const cidadeInput = document.getElementById('cidade');
+  const cidadeDropdown = document.getElementById('cidadeDropdown');
+  
+  cidadeInput.addEventListener('input', function() {
+    const query = this.value.toLowerCase().trim();
+    
+    if (query.length === 0) {
+      cidadeDropdown.style.display = 'none';
+      return;
     }
-
-    function previewPhoto() {
-      const input = document.getElementById('photo-input');
-      if (input.files && input.files[0]) {
-        const file = input.files[0];
-        
-        // Validar tipo de arquivo
-        if (!file.type.startsWith('image/')) {
-          alert('Por favor, selecione apenas arquivos de imagem.');
-          return;
-        }
-        
-        // Validar tamanho do arquivo (max 5MB)
-        if (file.size > 5 * 1024 * 1024) {
-          alert('A imagem deve ter no máximo 5MB.');
-          return;
-        }
-        
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          const img = new Image();
-          img.src = e.target.result;
-          img.onload = function () {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            const maxSize = 400;
-            let width = img.width;
-            let height = img.height;
-
-            // Redimensionar mantendo a proporção
-            if (width > height) {
-              if (width > maxSize) {
-                height *= maxSize / width;
-                width = maxSize;
-              }
-            } else {
-              if (height > maxSize) {
-                width *= maxSize / height;
-                height = maxSize;
-              }
-            }
-
-            canvas.width = width;
-            canvas.height = height;
-            ctx.drawImage(img, 0, 0, width, height);
-            const compressedImage = canvas.toDataURL('image/jpeg', 0.8);
-
-            const photoBox = document.querySelectorAll('.photo-box')[currentPhotoIndex];
-            photoBox.innerHTML = `<img decoding="async" src="${compressedImage}" alt="Preview da imagem ${currentPhotoIndex + 1}">`;
-            photoBox.classList.add('has-image');
-            
-            // Adicionar evento de clique para remover a imagem
-            photoBox.onclick = function() {
-              removePhoto(currentPhotoIndex);
-            };
-
-            validarFormulario();
-          };
-          
-          img.onerror = function() {
-            alert('Erro ao carregar a imagem. Tente novamente com outro arquivo.');
-          };
-        };
-        
-        reader.onerror = function() {
-          alert('Erro ao ler o arquivo. Tente novamente.');
-        };
-        
-        reader.readAsDataURL(file);
-      }
+    
+    const filteredCidades = cidadesBrasil.filter(cidade => 
+      cidade.toLowerCase().includes(query)
+    );
+    
+    if (filteredCidades.length > 0) {
+      cidadeDropdown.innerHTML = filteredCidades
+        .slice(0, 8) // Mostrar no máximo 8 resultados
+        .map(cidade => `<div class="cidade-option" onclick="selectCidade('${cidade}')">${cidade}</div>`)
+        .join('');
+      cidadeDropdown.style.display = 'block';
+    } else {
+      cidadeDropdown.innerHTML = '<div class="no-results">Nenhuma cidade encontrada</div>';
+      cidadeDropdown.style.display = 'block';
     }
+    
+    validarFormulario();
+  });
+  
+  cidadeInput.addEventListener('focus', function() {
+    if (this.value.trim().length > 0) {
+      cidadeDropdown.style.display = 'block';
+    }
+  });
+  
+  // Fechar dropdown ao clicar fora
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.cidade-container')) {
+      cidadeDropdown.style.display = 'none';
+    }
+  });
+}
 
-    function removePhoto(index) {
-      const photoBox = document.querySelectorAll('.photo-box')[index];
-      photoBox.innerHTML = `<span>+</span>`;
-      photoBox.classList.remove('has-image');
-      
-      // Restaurar evento de clique original
-      photoBox.onclick = function() {
-        addPhoto(index);
+function selectCidade(cidade) {
+  document.getElementById('cidade').value = cidade;
+  document.getElementById('cidadeDropdown').style.display = 'none';
+  validarFormulario();
+}
+
+function addPhoto(index) {
+  currentPhotoIndex = index;
+  document.getElementById('photo-input').click();
+}
+
+function previewPhoto() {
+  const input = document.getElementById('photo-input');
+  if (input.files && input.files[0]) {
+    const file = input.files[0];
+    
+    // Validar tipo de arquivo
+    if (!file.type.startsWith('image/')) {
+      alert('Por favor, selecione apenas arquivos de imagem.');
+      return;
+    }
+    
+    // Validar tamanho do arquivo (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('A imagem deve ter no máximo 5MB.');
+      return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const img = new Image();
+      img.src = e.target.result;
+      img.onload = function () {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const maxSize = 400;
+        let width = img.width;
+        let height = img.height;
+
+        // Redimensionar mantendo a proporção
+        if (width > height) {
+          if (width > maxSize) {
+            height *= maxSize / width;
+            width = maxSize;
+          }
+        } else {
+          if (height > maxSize) {
+            width *= maxSize / height;
+            height = maxSize;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        ctx.drawImage(img, 0, 0, width, height);
+        const compressedImage = canvas.toDataURL('image/jpeg', 0.8);
+
+        const photoBox = document.querySelectorAll('.photo-box')[currentPhotoIndex];
+        photoBox.innerHTML = `<img decoding="async" src="${compressedImage}" alt="Preview da imagem ${currentPhotoIndex + 1}">`;
+        photoBox.classList.add('has-image');
+        
+        // Adicionar evento de clique para remover a imagem
+        photoBox.onclick = function() {
+          removePhoto(currentPhotoIndex);
+        };
+
+        validarFormulario();
       };
       
-      validarFormulario();
-    }
+      img.onerror = function() {
+        alert('Erro ao carregar a imagem. Tente novamente com outro arquivo.');
+      };
+    };
+    
+    reader.onerror = function() {
+      alert('Erro ao ler o arquivo. Tente novamente.');
+    };
+    
+    reader.readAsDataURL(file);
+  }
+}
 
-    function toggleInterest(element) {
-      element.classList.toggle('selected');
-      validarFormulario();
-    }
+function removePhoto(index) {
+  const photoBox = document.querySelectorAll('.photo-box')[index];
+  photoBox.innerHTML = `<span>+</span>`;
+  photoBox.classList.remove('has-image');
+  
+  // Restaurar evento de clique original
+  photoBox.onclick = function() {
+    addPhoto(index);
+  };
+  
+  validarFormulario();
+}
 
-    function validarFormulario() {
-      const fotos = document.querySelectorAll('.photo-box img').length > 0;
-      const bio = document.getElementById('mensagem').value.trim() !== '';
-      const cidade = document.getElementById('cidade').value.trim() !== '';
-      const interesses = document.querySelectorAll('.interest.selected').length > 0;
+function toggleInterest(element) {
+  element.classList.toggle('selected');
+  validarFormulario();
+}
 
-      const botao = document.getElementById('continueButton');
-      botao.disabled = !(fotos && bio && cidade && interesses);
-    }
+function validarFormulario() {
+  const fotos = document.querySelectorAll('.photo-box img').length > 0;
+  const bio = document.getElementById('mensagem').value.trim() !== '';
+  const cidade = document.getElementById('cidade').value.trim() !== '';
+  const interesses = document.querySelectorAll('.interest.selected').length > 0;
 
-    document.getElementById('mensagem').addEventListener('input', validarFormulario);
-    document.getElementById('cidade').addEventListener('input', validarFormulario);
+  const botao = document.getElementById('continueButton');
+  botao.disabled = !(fotos && bio && cidade && interesses);
+}
 
-    function continuar() {
-      window.location.href = 'inicial.html';
-    }
+function continuar() {
+  window.location.href = 'inicial.html';
+}
+
+// Inicializar sistema de cidades quando a página carregar
+document.addEventListener('DOMContentLoaded', function() {
+  setupCidadeSystem();
+});
+
+document.getElementById('mensagem').addEventListener('input', validarFormulario);
   </script>
 </body>
 
