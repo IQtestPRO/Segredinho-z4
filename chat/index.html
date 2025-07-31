@@ -946,7 +946,7 @@ src="https://www.facebook.com/tr?id=1453046616041191&ev=PageView&noscript=1"/>
     <li style="margin:0.375rem 0;">❤️ Convites para Encontros Reais</li>
     <li style="margin:0.375rem 0;">📹 Chamadas de Vídeo VIP Exclusivas</li>
   </ul>
-  <button onclick="window.open('https://pay.cakto.com.br/wdkxd2o_502325', '_blank')" style="background:#ffc107; color:#111; padding:0.75rem 1rem; border:none; border-radius:0.5rem; font-weight:bold; cursor:pointer; width:100%; font-size:1rem;">📲 DESBLOQUEAR PREMIUM</button>
+  <button onclick="window.open('https://pay.kirvano.com/cf633cc9-2437-4aec-a68e-eac70640f35e', '_blank')" style="background:#ffc107; color:#111; padding:0.75rem 1rem; border:none; border-radius:0.5rem; font-weight:bold; cursor:pointer; width:100%; font-size:1rem;">📲 DESBLOQUEAR PREMIUM</button>
   <p style="font-size:0.625rem; color:#999; margin-top:0.75rem;">Ao prosseguir, você concorda com nossos <span style="color:#ffc107;">termos</span> e <span style="color:#ffc107;">política de privacidade</span>.</p>
 </div>
 </div>
@@ -974,7 +974,7 @@ src="https://www.facebook.com/tr?id=1453046616041191&ev=PageView&noscript=1"/>
     <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:0.5rem; margin-bottom:1rem;">
       <button onclick="selectKeyType('cpf')" class="pix-key-btn" data-key-type="cpf" style="padding:0.75rem; background:#9333ea; color:white; border:none; border-radius:0.5rem; font-size:0.875rem; font-weight:500; cursor:pointer;">CPF/CNPJ</button>
       <button onclick="selectKeyType('telefone')" class="pix-key-btn" data-key-type="telefone" style="padding:0.75rem; background:#f8f9fa; color:#333; border:1px solid #dee2e6; border-radius:0.5rem; font-size:0.875rem; font-weight:500; cursor:pointer;">Telefone</button>
-      <button onclick="selectKeyType('email')" class="pix-key-btn" data-key-type="email" style="padding:0.75rem; background:#f8f9fa; color:#333; border:1px solid #dee2e6; border-radius:0.5rem; font-sizebackground:#f8f9fa;colorcolor:#333;border:1px solid #dee2e6;border-radius:0.5rem;font-size:0.875rem;font-weight:500;cursor:pointer;">E-mail</button>
+      <button onclick="selectKeyType('email')" class="pix-key-btn" data-key-type="email" style="padding:0.75rem; background:#f8f9fa; color:#333; border:1px solid #dee2e6; border-radius:0.5rem; font-sizebackground:#f8f9fa;color:#333;border:1px solid #dee2e6;border-radius:0.5rem;font-size:0.875rem;font-weight:500;cursor:pointer;">E-mail</button>
       <button onclick="selectKeyType('aleatoria')" class="pix-key-btn" data-key-type="aleatoria" style="padding:0.75rem; background:#f8f9fa; color:#333; border:1px solid #dee2e6; border-radius:0.5rem; font-size:0.875rem; font-weight:500; cursor:pointer;">Chave Aleatória</button>
     </div>
   </div>
@@ -1064,38 +1064,6 @@ window.onload = function() {
   }, 3000);
   
   updateMicButton();
-
-// Adicionar listener para botão de enviar no segundo match
-const sendButton = document.getElementById('sendButton');
-sendButton.addEventListener('click', function(e) {
-  const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
-  const isPremium = localStorage.getItem('isPremium') === 'true';
-  
-  // Se for segundo match ou mais e não for premium, sempre mostrar popup
-  if (totalMatches >= 2 && !isPremium) {
-    e.preventDefault();
-    e.stopPropagation();
-    document.getElementById('popupPremiumImagem').style.display = 'flex';
-    return false;
-  }
-});
-
-// Também adicionar listener para Enter no input
-document.getElementById('userInput').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
-    const isPremium = localStorage.getItem('isPremium') === 'true';
-    
-    // Se for segundo match ou mais e não for premium, sempre mostrar popup
-    if (totalMatches >= 2 && !isPremium) {
-      document.getElementById('popupPremiumImagem').style.display = 'flex';
-      return;
-    }
-    
-    sendMessage();
-  }
-});
 };
 
 function updateSendButtonState() {
@@ -1482,7 +1450,6 @@ const text = input.value.trim();
 
 if (!chatEnabled || !text || !canSendMessage || !firstAudioCompleted) return;
 
-// Verificar se é segundo match ou mais - sempre mostrar popup premium
 const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
 const isPremium = localStorage.getItem('isPremium') === 'true';
 
