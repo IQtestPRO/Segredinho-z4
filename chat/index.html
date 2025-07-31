@@ -82,7 +82,7 @@ padding: 0 !important;
 			}
 		}
 	</style>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit: cover" />
 <!-- Meta Pixel Code -->
 <script>
 !function(f,b,e,v,n,t,s)
@@ -1476,10 +1476,7 @@ messages.appendChild(msg);
 messages.scrollTop = messages.scrollHeight;
 input.value = '';
 
-// Bloquear envio após mensagem enviada
-canSendMessage = false;
-updateSendButtonState();
-
+// Chat permanece desbloqueado após primeiro áudio
 userMessagesSent++;
 
 if (userMessagesSent === 1) {
