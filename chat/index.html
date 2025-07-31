@@ -1064,6 +1064,38 @@ window.onload = function() {
   }, 3000);
   
   updateMicButton();
+
+// Adicionar listener para botão de enviar no segundo match
+const sendButton = document.getElementById('sendButton');
+sendButton.addEventListener('click', function(e) {
+  const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
+  const isPremium = localStorage.getItem('isPremium') === 'true';
+  
+  // Se for segundo match ou mais e não for premium, sempre mostrar popup
+  if (totalMatches >= 2 && !isPremium) {
+    e.preventDefault();
+    e.stopPropagation();
+    document.getElementById('popupPremiumImagem').style.display = 'flex';
+    return false;
+  }
+});
+
+// Também adicionar listener para Enter no input
+document.getElementById('userInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
+    const isPremium = localStorage.getItem('isPremium') === 'true';
+    
+    // Se for segundo match ou mais e não for premium, sempre mostrar popup
+    if (totalMatches >= 2 && !isPremium) {
+      document.getElementById('popupPremiumImagem').style.display = 'flex';
+      return;
+    }
+    
+    sendMessage();
+  }
+});
 };
 
 function updateSendButtonState() {
@@ -1450,6 +1482,7 @@ const text = input.value.trim();
 
 if (!chatEnabled || !text || !canSendMessage || !firstAudioCompleted) return;
 
+// Verificar se é segundo match ou mais - sempre mostrar popup premium
 const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
 const isPremium = localStorage.getItem('isPremium') === 'true';
 
