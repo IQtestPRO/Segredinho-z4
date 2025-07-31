@@ -974,7 +974,7 @@ src="https://www.facebook.com/tr?id=1453046616041191&ev=PageView&noscript=1"/>
     <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:0.5rem; margin-bottom:1rem;">
       <button onclick="selectKeyType('cpf')" class="pix-key-btn" data-key-type="cpf" style="padding:0.75rem; background:#9333ea; color:white; border:none; border-radius:0.5rem; font-size:0.875rem; font-weight:500; cursor:pointer;">CPF/CNPJ</button>
       <button onclick="selectKeyType('telefone')" class="pix-key-btn" data-key-type="telefone" style="padding:0.75rem; background:#f8f9fa; color:#333; border:1px solid #dee2e6; border-radius:0.5rem; font-size:0.875rem; font-weight:500; cursor:pointer;">Telefone</button>
-      <button onclick="selectKeyType('email')" class="pix-key-btn" data-key-type="email" style="padding:0.75rem; background:#f8f9fa; color:#333; border:1px solid #dee2e6; border-radius:0.5rem; font-size:0.875rem; font-weight:500; cursor:pointer;">E-mail</button>
+      <button onclick="selectKeyType('email')" class="pix-key-btn" data-key-type="email" style="padding:0.75rem; background:#f8f9fa; color:#333; border:1px solid #dee2e6; border-radius:0.5rem; font-sizebackground:#f8f9fa;color:#333;border:1px solid #dee2e6;border-radius:0.5rem;font-size:0.875rem;font-weight:500;cursor:pointer;">E-mail</button>
       <button onclick="selectKeyType('aleatoria')" class="pix-key-btn" data-key-type="aleatoria" style="padding:0.75rem; background:#f8f9fa; color:#333; border:1px solid #dee2e6; border-radius:0.5rem; font-size:0.875rem; font-weight:500; cursor:pointer;">Chave Aleatória</button>
     </div>
   </div>
@@ -1026,6 +1026,7 @@ let chatEnabled = true;
 let currentAudio = null;
 let audioPlaying = false;
 let canSendMessage = false; // Nova variável para controlar envio de mensagens
+let firstAudioCompleted = false; // Nova variável para controlar desbloqueio após primeiro áudio
 
 // Função para obter imagem de perfil correta
 function getProfileImage() {
@@ -1076,18 +1077,20 @@ function updateSendButtonState() {
     existingMessage.remove();
   }
   
-  if (canSendMessage) {
+  if (canSendMessage && firstAudioCompleted) {
     sendButton.disabled = false;
     sendButton.style.opacity = '1';
     sendButton.style.cursor = 'pointer';
     sendButton.classList.remove('opacity-50', 'cursor-not-allowed');
     userInput.disabled = false;
+    userInput.readOnly = false;
   } else {
     sendButton.disabled = true;
     sendButton.style.opacity = '0.5';
     sendButton.style.cursor = 'not-allowed';
     sendButton.classList.add('opacity-50', 'cursor-not-allowed');
     userInput.disabled = true;
+    userInput.readOnly = true;
     
     // Verificar se é segundo match ou mais para mensagem mais impactante
     const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
@@ -1114,7 +1117,12 @@ function updateSendButtonState() {
         margin-right: auto;
         width: 100%;
       `;
-      blockedMessage.innerHTML = '💬 Envie mensagens ilimitadas após assinar o plano VIP';
+      
+      if (!firstAudioCompleted) {
+        blockedMessage.innerHTML = '🎵 Aguarde o áudio para desbloquear o chat';
+      } else {
+        blockedMessage.innerHTML = '💬 Envie mensagens ilimitadas após assinar o plano VIP';
+      }
       
       inputArea.parentNode.insertBefore(blockedMessage, inputArea);
     } else {
@@ -1133,7 +1141,12 @@ function updateSendButtonState() {
         font-weight: 400;
         opacity: 0.8;
       `;
-      blockedMessage.innerHTML = 'Aguarde para enviar mensagens...';
+      
+      if (!firstAudioCompleted) {
+        blockedMessage.innerHTML = 'Aguarde o áudio para enviar mensagens...';
+      } else {
+        blockedMessage.innerHTML = 'Aguarde para enviar mensagens...';
+      }
       
       inputArea.parentNode.insertBefore(blockedMessage, inputArea);
     }
@@ -1156,6 +1169,11 @@ if (totalMatches >= 2 && !isPremium) {
     sendBlockedAudio();
     chatEnabled = false;
     
+    // Marcar primeiro áudio como concluído mesmo sendo bloqueado
+    firstAudioCompleted = true;
+    canSendMessage = true;
+    updateSendButtonState();
+    
     setTimeout(() => {
       document.getElementById('popupPremiumImagem').style.display = 'flex';
     }, 2000);
@@ -1164,7 +1182,8 @@ if (totalMatches >= 2 && !isPremium) {
   setTimeout(() => {
     document.getElementById('status').innerText = '';
     sendWhatsAppAudio('../assets/audios/audio1.mp4', () => {
-      // Desbloquear envio de mensagem após o primeiro áudio
+      // Desbloquear envio de mensagem após o primeiro áudio ser concluído
+      firstAudioCompleted = true;
       canSendMessage = true;
       updateSendButtonState();
       
@@ -1429,7 +1448,7 @@ function sendMessage() {
 const input = document.getElementById('userInput');
 const text = input.value.trim();
 
-if (!chatEnabled || !text || !canSendMessage) return;
+if (!chatEnabled || !text || !canSendMessage || !firstAudioCompleted) return;
 
 const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
 const isPremium = localStorage.getItem('isPremium') === 'true';
