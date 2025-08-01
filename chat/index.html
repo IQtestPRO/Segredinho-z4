@@ -1177,7 +1177,7 @@ if (totalMatches >= 2 && !isPremium) {
     setTimeout(() => {
       document.getElementById('popupPremiumImagem').style.display = 'flex';
     }, 2000);
-  }, 5000);
+  }, 15000); // Duração do áudio bloqueado (0:15)
 } else {
   setTimeout(() => {
     document.getElementById('status').innerText = '';
@@ -1192,7 +1192,7 @@ if (totalMatches >= 2 && !isPremium) {
       }, 1000);
     });
     chatEnabled = true;
-  }, 5000);
+  }, 11000); // Duração do audio1.mp4 (11 segundos)
 }
 }
 
@@ -1261,7 +1261,7 @@ waveform.innerHTML = generateWaveform(20);
 
 const duration = document.createElement('div');
 duration.className = 'audio-duration';
-duration.textContent = '0:15';
+duration.textContent = '0:15'; // Default, will be updated by loadedmetadata
 
 // Criar elemento de áudio oculto
 const audio = document.createElement('audio');
@@ -1485,14 +1485,14 @@ if (userMessagesSent === 1) {
   setTimeout(() => {
     document.getElementById('status').innerText = '';
     sendSecondAudio();
-  }, 5000);
+  }, 18000); // Duração do audio2.mp4 (18 segundos)
 } else if (userMessagesSent === 2) {
   chatEnabled = false;
   document.getElementById('status').innerText = 'Gravando áudio...';
   setTimeout(() => {
     document.getElementById('status').innerText = '';
     sendThirdAudio();
-  }, 5000);
+  }, 14000); // Duração do audio3.mp4 (14 segundos)
 }
 }
 
