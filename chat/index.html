@@ -1022,11 +1022,7 @@ let saldo = 0;
 let userMessagesSent = 0;
 let presenteMostrado = false;
 let audioSent = false;
-let chatEnabled = true;
-let currentAudio = null;
-let audioPlaying = false;
 let canSendMessage = false; // Nova variável para controlar envio de mensagens
-let firstAudioCompleted = false; // Nova variável para controlar desbloqueio após primeiro áudio
 
 // Função para obter imagem de perfil correta
 function getProfileImage() {
@@ -1071,84 +1067,53 @@ function updateSendButtonState() {
   const userInput = document.getElementById('userInput');
   const inputArea = document.querySelector('.input-area');
   
-  // Remove mensagem anterior se existir
+  // Remove previous blocked message if it exists
   const existingMessage = document.getElementById('blocked-message');
   if (existingMessage) {
     existingMessage.remove();
   }
   
-  if (canSendMessage && firstAudioCompleted) {
+  if (canSendMessage) { // If chat is unlocked
     sendButton.disabled = false;
     sendButton.style.opacity = '1';
     sendButton.style.cursor = 'pointer';
-    sendButton.classList.remove('opacity-50', 'cursor-not-allowed');
     userInput.disabled = false;
     userInput.readOnly = false;
-  } else {
+  } else { // If chat is locked
     sendButton.disabled = true;
     sendButton.style.opacity = '0.5';
     sendButton.style.cursor = 'not-allowed';
-    sendButton.classList.add('opacity-50', 'cursor-not-allowed');
     userInput.disabled = true;
     userInput.readOnly = true;
     
-    // Verificar se é segundo match ou mais para mensagem mais impactante
-    const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
-    const isSecondMatchOrMore = totalMatches >= 2;
-    
-    if (isSecondMatchOrMore) {
-      // Versão mais impactante para segundo match em diante
-      const blockedMessage = document.createElement('div');
-      blockedMessage.id = 'blocked-message';
-      blockedMessage.style.cssText = `
-        background: #fef2f2;
-        color: #dc2626;
-        border: 2px solid #fca5a5;
-        padding: 1rem;
-        margin-bottom: 0.75rem;
-        border-radius: 0.5rem;
-        text-align: center;
-        font-size: 0.875rem;
-        font-weight: 500;
-        box-shadow: 0 4px 12px rgba(252, 165, 165, 0.3);
-        animation: fadeIn 0.5s ease-in;
-        max-width: 20rem;
-        margin-left: auto;
-        margin-right: auto;
-        width: 100%;
-      `;
-      
-      if (!firstAudioCompleted) {
-        blockedMessage.innerHTML = '🎵 Aguarde o áudio para desbloquear o chat';
-      } else {
-        blockedMessage.innerHTML = '💬 Envie mensagens ilimitadas após assinar o plano VIP';
-      }
-      
-      inputArea.parentNode.insertBefore(blockedMessage, inputArea);
-    } else {
-      // Versão mais discreta para primeiro match
-      const blockedMessage = document.createElement('div');
-      blockedMessage.id = 'blocked-message';
-      blockedMessage.style.cssText = `
-        background: #f3f4f6;
-        color: #6b7280;
-        border: 1px solid #d1d5db;
-        padding: 0.5rem 0.75rem;
-        margin-bottom: 0.5rem;
-        border-radius: 0.375rem;
-        text-align: center;
-        font-size: 0.75rem;
-        font-weight: 400;
-        opacity: 0.8;
-      `;
-      
-      if (!firstAudioCompleted) {
-        blockedMessage.innerHTML = 'Aguarde o áudio para enviar mensagens...';
-      } else {
-        blockedMessage.innerHTML = 'Aguarde para enviar mensagens...';
-      }
-      
-      inputArea.parentNode.insertBefore(blockedMessage, inputArea);
+    // Add the blocked message
+    const blockedMessage = document.createElement('div');
+    blockedMessage.id = 'blocked-message';
+    blockedMessage.style.cssText = `
+      background: #f3f4f6;
+      color: #6b7280;
+      border: 1px solid #d1d5db;
+      padding: 0.5rem 0.75rem;
+      margin-bottom: 0.5rem;
+      border-radius: 0.375rem;
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 400;
+      opacity: 0.8;
+    `;
+    blockedMessage.innerHTML = 'Aguarde para enviar mensagens...';
+    inputArea.parentNode.insertBefore(blockedMessage, inputArea);
+  }
+}
+
+function unlockChatArea() {
+  if (!canSendMessage) { // Ensure it only unlocks once
+    canSendMessage = true;
+    updateSendButtonState();
+    // Remove the "Aguarde para enviar mensagens..." message
+    const blockedMessage = document.getElementById('blocked-message');
+    if (blockedMessage) {
+      blockedMessage.remove();
     }
   }
 }
@@ -1159,40 +1124,35 @@ if (audioSent) return;
 const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
 const isPremium = localStorage.getItem('isPremium') === 'true';
 
-audioSent = true;
+audioSent = true; // Mark that the first audio process has started
 
 document.getElementById('status').innerText = 'Gravando áudio...';
+
+// Start the 8-second unlock timer immediately after the audio "starts"
+// This timer runs regardless of whether the audio is blocked or not.
+setTimeout(() => {
+  unlockChatArea();
+}, 8000);
 
 if (totalMatches >= 2 && !isPremium) {
   setTimeout(() => {
     document.getElementById('status').innerText = '';
     sendBlockedAudio();
-    chatEnabled = false;
-    
-    // Marcar primeiro áudio como concluído mesmo sendo bloqueado
-    firstAudioCompleted = true;
-    canSendMessage = true;
-    updateSendButtonState();
-    
+    // The premium popup should still appear for blocked audio scenarios
     setTimeout(() => {
       document.getElementById('popupPremiumImagem').style.display = 'flex';
     }, 2000);
-  }, 15000); // Duração do áudio bloqueado (0:15)
+  }, 15000); // Simulate blocked audio duration
 } else {
   setTimeout(() => {
     document.getElementById('status').innerText = '';
     sendWhatsAppAudio('../assets/audios/audio1.mp4', () => {
-      // Desbloquear envio de mensagem após o primeiro áudio ser concluído
-      firstAudioCompleted = true;
-      canSendMessage = true;
-      updateSendButtonState();
-      
+      // This callback runs when audio1.mp4 *ends*.
       setTimeout(() => {
         sendEmotionalMessage();
       }, 1000);
     });
-    chatEnabled = true;
-  }, 11000); // Duração do audio1.mp4 (11 segundos)
+  }, 11000); // Simulate audio1.mp4 duration before it appears
 }
 }
 
@@ -1354,18 +1314,13 @@ bars.forEach(bar => {
 
 function sendSecondAudio() {
 sendWhatsAppAudio('../assets/audios/audio2.mp4', () => {
-  // Desbloquear envio após segundo áudio
-  canSendMessage = true;
-  updateSendButtonState();
+  // No unlock here, as it's handled by the initial 8-second timer
 });
-chatEnabled = true;
 }
 
 function sendThirdAudio() {
 sendWhatsAppAudio('../assets/audios/audio3.mp4', () => {
-  // Desbloquear envio após terceiro áudio
-  canSendMessage = true;
-  updateSendButtonState();
+  // No unlock here, as it's handled by the initial 8-second timer
 });
 setTimeout(showPresentPopup, 2000);
 }
@@ -1429,9 +1384,6 @@ wrapper.appendChild(img);
 wrapper.appendChild(popup);
 messages.appendChild(wrapper);
 messages.scrollTop = messages.scrollHeight;
-
-chatEnabled = true;
-document.getElementById('backArrow').style = 'display: flex';
 }
 
 function abrirPopupPremium() {
@@ -1448,25 +1400,8 @@ function sendMessage() {
 const input = document.getElementById('userInput');
 const text = input.value.trim();
 
-if (!chatEnabled || !text || !canSendMessage || !firstAudioCompleted) return;
-
-const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
-const isPremium = localStorage.getItem('isPremium') === 'true';
-
-if (totalMatches >= 2 && !isPremium) {
-  document.getElementById('popupPremiumImagem').style.display = 'flex';
-  return;
-}
-
-if (presenteMostrado && !isPremium) {
-  abrirPopupPremium();
-  return;
-}
-
-if (userMessagesSent >= 3 && !isPremium) {
-  document.getElementById('popupPremiumImagem').style.display = 'flex';
-  return;
-}
+// Only allow sending if the chat area is unlocked and there's text
+if (!canSendMessage || !text) return;
 
 const messages = document.getElementById('messages');
 const msg = document.createElement('div');
@@ -1476,23 +1411,21 @@ messages.appendChild(msg);
 messages.scrollTop = messages.scrollHeight;
 input.value = '';
 
-// Chat permanece desbloqueado após primeiro áudio
 userMessagesSent++;
 
+// These subsequent audio triggers should not block user input
 if (userMessagesSent === 1) {
-  chatEnabled = false;
   document.getElementById('status').innerText = 'Gravando áudio...';
   setTimeout(() => {
     document.getElementById('status').innerText = '';
     sendSecondAudio();
-  }, 18000); // Duração do audio2.mp4 (18 segundos)
+  }, 18000);
 } else if (userMessagesSent === 2) {
-  chatEnabled = false;
   document.getElementById('status').innerText = 'Gravando áudio...';
   setTimeout(() => {
     document.getElementById('status').innerText = '';
     sendThirdAudio();
-  }, 14000); // Duração do audio3.mp4 (14 segundos)
+  }, 14000);
 }
 }
 
