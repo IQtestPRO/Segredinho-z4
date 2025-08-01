@@ -1179,74 +1179,20 @@ if (totalMatches >= 2 && !isPremium) {
     }, 2000);
   }, 15000); // Duração do áudio bloqueado (0:15)
 } else {
-  // Liberar chat após 8 segundos do início do áudio
-  setTimeout(() => {
-    firstAudioCompleted = true;
-    canSendMessage = true;
-    updateSendButtonState();
-  }, 8000);
-  
   setTimeout(() => {
     document.getElementById('status').innerText = '';
     sendWhatsAppAudio('../assets/audios/audio1.mp4', () => {
+      // Desbloquear envio de mensagem após o primeiro áudio ser concluído
+      firstAudioCompleted = true;
+      canSendMessage = true;
+      updateSendButtonState();
+      
       setTimeout(() => {
         sendEmotionalMessage();
       }, 1000);
     });
     chatEnabled = true;
   }, 11000); // Duração do audio1.mp4 (11 segundos)
-}
-}
-
-function sendMessage() {
-const input = document.getElementById('userInput');
-const text = input.value.trim();
-
-if (!chatEnabled || !text || !canSendMessage || !firstAudioCompleted) return;
-
-const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
-const isPremium = localStorage.getItem('isPremium') === 'true';
-
-if (totalMatches >= 2 && !isPremium) {
-  document.getElementById('popupPremiumImagem').style.display = 'flex';
-  return;
-}
-
-if (presenteMostrado && !isPremium) {
-  document.getElementById('popupPremiumImagem').style.display = 'flex';
-  return;
-}
-
-if (userMessagesSent >= 3 && !isPremium) {
-  document.getElementById('popupPremiumImagem').style.display = 'flex';
-  return;
-}
-
-const messages = document.getElementById('messages');
-const msg = document.createElement('div');
-msg.className = 'message user';
-msg.innerText = text;
-messages.appendChild(msg);
-messages.scrollTop = messages.scrollHeight;
-input.value = '';
-
-// Chat permanece desbloqueado após primeiro áudio
-userMessagesSent++;
-
-if (userMessagesSent === 1) {
-  chatEnabled = false;
-  document.getElementById('status').innerText = 'Gravando áudio...';
-  setTimeout(() => {
-    document.getElementById('status').innerText = '';
-    sendSecondAudio();
-  }, 18000); // Duração do audio2.mp4 (18 segundos)
-} else if (userMessagesSent === 2) {
-  chatEnabled = false;
-  document.getElementById('status').innerText = 'Gravando áudio...';
-  setTimeout(() => {
-    document.getElementById('status').innerText = '';
-    sendThirdAudio();
-  }, 14000); // Duração do audio3.mp4 (14 segundos)
 }
 }
 
@@ -1488,6 +1434,84 @@ chatEnabled = true;
 document.getElementById('backArrow').style = 'display: flex';
 }
 
+function abrirPopupPremium() {
+document.getElementById('popupPremiumImagem').style.display = 'flex';
+}
+
+function voltarPagina() {
+const saldoAtual = document.getElementById('saldoValorChat').innerText || '0,00';
+localStorage.setItem('saldoInicial', saldoAtual.replace(',', '.'));
+window.location.href = "../inicial.html";
+}
+
+function sendMessage() {
+const input = document.getElementById('userInput');
+const text = input.value.trim();
+
+if (!chatEnabled || !text || !canSendMessage || !firstAudioCompleted) return;
+
+const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
+const isPremium = localStorage.getItem('isPremium') === 'true';
+
+if (totalMatches >= 2 && !isPremium) {
+  document.getElementById('popupPremiumImagem').style.display = 'flex';
+  return;
+}
+
+if (presenteMostrado && !isPremium) {
+  abrirPopupPremium();
+  return;
+}
+
+if (userMessagesSent >= 3 && !isPremium) {
+  document.getElementById('popupPremiumImagem').style.display = 'flex';
+  return;
+}
+
+const messages = document.getElementById('messages');
+const msg = document.createElement('div');
+msg.className = 'message user';
+msg.innerText = text;
+messages.appendChild(msg);
+messages.scrollTop = messages.scrollHeight;
+input.value = '';
+
+// Chat permanece desbloqueado após primeiro áudio
+userMessagesSent++;
+
+if (userMessagesSent === 1) {
+  chatEnabled = false;
+  document.getElementById('status').innerText = 'Gravando áudio...';
+  setTimeout(() => {
+    document.getElementById('status').innerText = '';
+    sendSecondAudio();
+  }, 18000); // Duração do audio2.mp4 (18 segundos)
+} else if (userMessagesSent === 2) {
+  chatEnabled = false;
+  document.getElementById('status').innerText = 'Gravando áudio...';
+  setTimeout(() => {
+    document.getElementById('status').innerText = '';
+    sendThirdAudio();
+  }, 14000); // Duração do audio3.mp4 (14 segundos)
+}
+}
+
+document.getElementById('userInput').addEventListener('keydown', function(e) {
+if (e.key === 'Enter') {
+  e.preventDefault();
+  sendMessage();
+}
+});
+
+function rolarParaChat() {
+const messages = document.getElementById('messages');
+if (messages) {
+  messages.scrollIntoView({ behavior: 'smooth' });
+}
+  // Add this line to show the premium popup when the chat button is clicked
+  document.getElementById('popupPremiumImagem').style.display = 'flex';
+}
+
 function resgatarPresente() {
 let saldoAtual = parseFloat(localStorage.getItem('chatSaldo') || '0');
 saldoAtual += 50;
@@ -1499,480 +1523,129 @@ const botao = document.getElementById('botaoPresente');
 botao.innerText = "Presente Resgatado";
 botao.disabled = true;
 botao.classList.add("resgatado");
-
-// Marcar presente como resgatado - após isso, envio de mensagens será bloqueado
-presenteResgatado = true;
 }
-</script>
-</existing_code>
 
-2. Now, look at the updates to be made:
-<updates>
-Na seção do JavaScript, substitua as variáveis de controle e as funções relacionadas:
-
-1. Substitua as variáveis de controle no início do script:
-
-\`\`\`javascript
-let step = 0;
-let saldo = 0;
-let userMessagesSent = 0;
-let presenteMostrado = false;
-let audioSent = false;
-let chatEnabled = true;
-let currentAudio = null;
-let audioPlaying = false;
-let canSendMessage = false; // Nova variável para controlar envio de mensagens
-let firstAudioCompleted = false; // Nova variável para controlar desbloqueio após primeiro áudio
-\`\`\`
-
-2. Substitua a função `updateSendButtonState()` completa:
-
-\`\`\`javascript
-function updateSendButtonState() {
-  const sendButton = document.getElementById('sendButton');
-  const userInput = document.getElementById('userInput');
-  const inputArea = document.querySelector('.input-area');
-  
-  // Remove mensagem anterior se existir
-  const existingMessage = document.getElementById('blocked-message');
-  if (existingMessage) {
-    existingMessage.remove();
-  }
-  
-  if (canSendMessage && firstAudioCompleted) {
-    sendButton.disabled = false;
-    sendButton.style.opacity = '1';
-    sendButton.style.cursor = 'pointer';
-    sendButton.classList.remove('opacity-50', 'cursor-not-allowed');
-    userInput.disabled = false;
-    userInput.readOnly = false;
-  } else {
-    sendButton.disabled = true;
-    sendButton.style.opacity = '0.5';
-    sendButton.style.cursor = 'not-allowed';
-    sendButton.classList.add('opacity-50', 'cursor-not-allowed');
-    userInput.disabled = true;
-    userInput.readOnly = true;
-    
-    // Verificar se é segundo match ou mais para mensagem mais impactante
-    const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
-    const isSecondMatchOrMore = totalMatches >= 2;
-    
-    if (isSecondMatchOrMore) {
-      // Versão mais impactante para segundo match em diante
-      const blockedMessage = document.createElement('div');
-      blockedMessage.id = 'blocked-message';
-      blockedMessage.style.cssText = `
-        background: #fef2f2;
-        color: #dc2626;
-        border: 2px solid #fca5a5;
-        padding: 1rem;
-        margin-bottom: 0.75rem;
-        border-radius: 0.5rem;
-        text-align: center;
-        font-size: 0.875rem;
-        font-weight: 500;
-        box-shadow: 0 4px 12px rgba(252, 165, 165, 0.3);
-        animation: fadeIn 0.5s ease-in;
-        max-width: 20rem;
-        margin-left: auto;
-        margin-right: auto;
-        width: 100%;
-      `;
-      
-      if (!firstAudioCompleted) {
-        blockedMessage.innerHTML = '🎵 Aguarde o áudio para desbloquear o chat';
-      } else {
-        blockedMessage.innerHTML = '💬 Envie mensagens ilimitadas após assinar o plano VIP';
-      }
-      
-      inputArea.parentNode.insertBefore(blockedMessage, inputArea);
-    } else {
-      // Versão mais discreta para primeiro match
-      const blockedMessage = document.createElement('div');
-      blockedMessage.id = 'blocked-message';
-      blockedMessage.style.cssText = `
-        background: #f3f4f6;
-        color: #6b7280;
-        border: 1px solid #d1d5db;
-        padding: 0.5rem 0.75rem;
-        margin-bottom: 0.5rem;
-        border-radius: 0.375rem;
-        text-align: center;
-        font-size: 0.75rem;
-        font-weight: 400;
-        opacity: 0.8;
-      `;
-      
-      if (!firstAudioCompleted) {
-        blockedMessage.innerHTML = 'Aguarde o áudio para enviar mensagens...';
-      } else {
-        blockedMessage.innerHTML = 'Aguarde para enviar mensagens...';
-      }
-      
-      inputArea.parentNode.insertBefore(blockedMessage, inputArea);
-    }
-  }
+function abrirSaquePopup() {
+atualizarSaqueSaldo();
+document.getElementById('popupSaquePIX').style.display = 'flex';
 }
-\`\`\`
 
-3. Substitua a função `sendFirstAudio()` completa:
+function closeSaquePopup() {
+document.getElementById('popupSaquePIX').style.display = 'none';
+}
 
-\`\`\`javascript
-function sendFirstAudio() {
-if (audioSent) return;
+function atualizarSaqueSaldo() {
+const saldoAtual = parseFloat(localStorage.getItem('chatSaldo') || '0');
+const formatado = saldoAtual.toFixed(2).replace('.', ',');
+const el = document.getElementById('saqueSaldo');
+if (el) el.innerText = "R$ " + formatado;
+}
 
-const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
+function handleMicClick() {
 const isPremium = localStorage.getItem('isPremium') === 'true';
 
-audioSent = true;
-
-document.getElementById('status').innerText = 'Gravando áudio...';
-
-if (totalMatches >= 2 && !isPremium) {
-  setTimeout(() => {
-    document.getElementById('status').innerText = '';
-    sendBlockedAudio();
-    chatEnabled = false;
-    
-    // Marcar primeiro áudio como concluído mesmo sendo bloqueado
-    firstAudioCompleted = true;
-    canSendMessage = true;
-    updateSendButtonState();
-    
-    setTimeout(() => {
-      document.getElementById('popupPremiumImagem').style.display = 'flex';
-    }, 2000);
-  }, 15000); // Duração do áudio bloqueado (0:15)
+if (!isPremium) {
+  document.getElementById('popupPremiumImagem').style.display = 'flex';
 } else {
-  // Liberar chat após 8 segundos do início do áudio
-  setTimeout(() => {
-    firstAudioCompleted = true;
-    canSendMessage = true;
-    updateSendButtonState();
-  }, 8000);
-  
-  setTimeout(() => {
-    document.getElementById('status').innerText = '';
-    sendWhatsAppAudio('../assets/audios/audio1.mp4', () => {
-      setTimeout(() => {
-        sendEmotionalMessage();
-      }, 1000);
-    });
-    chatEnabled = true;
-  }, 11000); // Duração do audio1.mp4 (11 segundos)
+  alert('Funcionalidade de gravação de voz disponível para membros premium!');
 }
 }
-\`\`\`
 
-4. Substitua a função `sendMessage()` completa:
+function updateMicButton() {
+const isPremium = localStorage.getItem('isPremium') === 'true';
+const micButton = document.getElementById('micButton');
 
-\`\`\`javascript
-function sendMessage() {
-const input = document.getElementById('userInput');
-const text = input.value.trim();
+if (isPremium) {
+  micButton.classList.add('premium');
+  micButton.title = 'Gravar mensagem de voz';
+} else {
+  micButton.classList.remove('premium');
+  micButton.title = 'Gravação de voz - Exclusivo para membros';
+}
+}
 
-if (!chatEnabled || !text || !canSendMessage || !firstAudioCompleted) return;
+function closePopupPremiumImagem() {
+document.getElementById('popupPremiumImagem').style.display = 'none';
+}
 
-const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
+let selectedKeyType = null;
+
+function selectKeyType(type) {
+selectedKeyType = type;
+const buttons = document.querySelectorAll('.pix-key-btn');
+buttons.forEach(btn => {
+  if (btn.getAttribute('data-key-type') === type) {
+    btn.style.background = '#9333ea';
+    btn.style.color = 'white';
+  } else {
+    btn.style.background = '#f8f9fa';
+    btn.style.color = '#333';
+  }
+});
+validateSaqueButton();
+}
+
+document.getElementById('keyInput').addEventListener('keyup', validateSaqueButton);
+
+function validateSaqueButton() {
+const key = document.getElementById('keyInput').value.trim();
+const button = document.getElementById('btnSacar');
+if (selectedKeyType && key.length > 3) {
+  button.disabled = false;
+  button.style.cursor = 'pointer';
+  button.style.opacity = '1';
+  button.style.background = '#9333ea';
+  button.innerHTML = 'SACAR VALOR TOTAL';
+} else {
+  button.disabled = true;
+  button.style.cursor = 'not-allowed';
+  button.style.opacity = '0.6';
+  button.style.background = '#6c757d';
+  button.innerHTML = '🔒 SACAR VALOR TOTAL';
+}
+}
+
+function doSaque() {
+closeSaquePopup();
+abrirPopupPremium();
+}
+
+function handleChamadaVIP() {
 const isPremium = localStorage.getItem('isPremium') === 'true';
 
-if (totalMatches >= 2 && !isPremium) {
+if (isPremium) {
+  // Iniciar chamada de vídeo para usuários premium
+  document.getElementById('videoCallPopup').style.display = 'flex';
+} else {
+  // Mostrar popup premium para usuários não premium
   document.getElementById('popupPremiumImagem').style.display = 'flex';
-  return;
-}
-
-if (presenteMostrado && !isPremium) {
-  document.getElementById('popupPremiumImagem').style.display = 'flex';
-  return;
-}
-
-if (userMessagesSent >= 3 && !isPremium) {
-  document.getElementById('popupPremiumImagem').style.display = 'flex';
-  return;
-}
-
-const messages = document.getElementById('messages');
-const msg = document.createElement('div');
-msg.className = 'message user';
-msg.innerText = text;
-messages.appendChild(msg);
-messages.scrollTop = messages.scrollHeight;
-input.value = '';
-
-// Chat permanece desbloqueado após primeiro áudio
-userMessagesSent++;
-
-if (userMessagesSent === 1) {
-  chatEnabled = false;
-  document.getElementById('status').innerText = 'Gravando áudio...';
-  setTimeout(() => {
-    document.getElementById('status').innerText = '';
-    sendSecondAudio();
-  }, 18000); // Duração do audio2.mp4 (18 segundos)
-} else if (userMessagesSent === 2) {
-  chatEnabled = false;
-  document.getElementById('status').innerText = '';
-    sendThirdAudio();
-  }, 14000); // Duração do audio3.mp4 (14 segundos)
 }
 }
-\`\`\`
 
-5. Adicione as funções que estavam faltando após a função sendMessage():
+function closeVideoCall() {
+document.getElementById('videoCallPopup').style.display = 'none';
+}
 
-\`\`\`javascript
-function sendBlockedAudio() {
-const foto = getProfileImage();
-const messages = document.getElementById('messages');
-const wrapper = document.createElement('div');
-wrapper.className = 'message profile';
-
-const img = document.createElement('img');
-img.src = foto;
-img.className = 'message-avatar';
-
-const audioContainer = document.createElement('div');
-audioContainer.className = 'whatsapp-audio-player blocked';
-
-// Usar o mesmo layout para todos os matches - apenas áudio ofuscado
-audioContainer.innerHTML = `
-  <button class="audio-play-button">
-    <svg viewBox="0 0 24 24">
-      <path d="M8 5v14l11-7z"/>
-    </svg>
-  </button>
-  <div class="audio-waveform">
-    ${generateWaveform(20)}
+function acceptVideoCall() {
+// Simular aceitação da chamada
+const content = document.querySelector('.video-call-content');
+content.innerHTML = `
+  <button onclick="closeVideoCall()" style="position:absolute; top:0.5rem; right:0.75rem; background:none; border:none; color:white; font-size:1.5rem; cursor:pointer; padding: 0.25rem 0.5rem;">×</button>
+  <img class="video-call-avatar" src="${getProfileImage()}" alt="Perfil">
+  <div class="video-call-status" style="color: #22c55e;">Conectado</div>
+  <div class="video-call-name">${localStorage.getItem('chatPerfilNome') || 'Luciana'}</div>
+  <div style="background: #1f2937; padding: 1rem; border-radius: 0.75rem; margin: 1rem 0;">
+    <p style="font-size: 0.875rem; color: #ccc; margin: 0;">🎥 Chamada de vídeo ativa</p>
+    <p style="font-size: 0.75rem; color: #888; margin-top: 0.5rem;">Aproveite sua conversa exclusiva!</p>
   </div>
-  <div class="audio-duration">0:15</div>
-  <div class="audio-lock-overlay">🔒</div>
-  <div class="audio-premium-text">Apenas para Assinantes</div>
+  <button onclick="closeVideoCall()" style="background: #ef4444; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 0.5rem; font-weight: bold; cursor: pointer;">Encerrar Chamada</button>
 `;
-
-audioContainer.addEventListener('click', function() {
-  document.getElementById('popupPremiumImagem').style.display = 'flex';
-});
-
-wrapper.appendChild(img);
-wrapper.appendChild(audioContainer);
-messages.appendChild(wrapper);
-messages.scrollTop = messages.scrollHeight;
 }
 
-function sendWhatsAppAudio(url, onEnded = null) {
-const foto = getProfileImage();
-const messages = document.getElementById('messages');
-const wrapper = document.createElement('div');
-wrapper.className = 'message profile';
-
-const img = document.createElement('img');
-img.src = foto;
-img.className = 'message-avatar';
-
-const audioContainer = document.createElement('div');
-audioContainer.className = 'whatsapp-audio-player';
-
-const playButton = document.createElement('button');
-playButton.className = 'audio-play-button';
-playButton.innerHTML = `
-  <svg viewBox="0 0 24 24">
-    <path d="M8 5v14l11-7z"/>
-  </svg>
-`;
-
-const waveform = document.createElement('div');
-waveform.className = 'audio-waveform';
-waveform.innerHTML = generateWaveform(20);
-
-const duration = document.createElement('div');
-duration.className = 'audio-duration';
-duration.textContent = '0:15'; // Default, will be updated by loadedmetadata
-
-// Criar elemento de áudio oculto
-const audio = document.createElement('audio');
-audio.src = url;
-audio.preload = 'metadata';
-
-let isPlaying = false;
-
-playButton.addEventListener('click', function() {
-  if (!isPlaying) {
-    audio.play();
-    isPlaying = true;
-    playButton.classList.add('playing');
-    playButton.innerHTML = `
-      <svg viewBox="0 0 24 24">
-        <path d="M6 4h4v16H6zM14 4h4v16h-4z"/>
-      </svg>
-    `;
-    animateWaveform(waveform);
-  } else {
-    audio.pause();
-    isPlaying = false;
-    playButton.classList.remove('playing');
-    playButton.innerHTML = `
-      <svg viewBox="0 0 24 24">
-        <path d="M8 5v14l11-7z"/>
-      </svg>
-    `;
-    stopWaveformAnimation(waveform);
-  }
-});
-
-audio.addEventListener('ended', function() {
-  isPlaying = false;
-  playButton.classList.remove('playing');
-  playButton.innerHTML = `
-    <svg viewBox="0 0 24 24">
-      <path d="M8 5v14l11-7z"/>
-    </svg>
-  `;
-  stopWaveformAnimation(waveform);
-  
-  if (onEnded) {
-    onEnded();
-  }
-});
-
-audio.addEventListener('loadedmetadata', function() {
-  const minutes = Math.floor(audio.duration / 60);
-  const seconds = Math.floor(audio.duration % 60);
-  duration.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-});
-
-audioContainer.appendChild(playButton);
-audioContainer.appendChild(waveform);
-audioContainer.appendChild(duration);
-
-wrapper.appendChild(img);
-wrapper.appendChild(audioContainer);
-messages.appendChild(wrapper);
-messages.scrollTop = messages.scrollHeight;
-}
-
-function generateWaveform(bars) {
-let waveform = '';
-for (let i = 0; i < bars; i++) {
-  const height = Math.random() * 20 + 5; // Entre 5px e 25px
-  waveform += `<div class="audio-bar" style="height: ${height}px;"></div>`;
-}
-return waveform;
-}
-
-function animateWaveform(waveform) {
-const bars = waveform.querySelectorAll('.audio-bar');
-bars.forEach((bar, index) => {
-  setTimeout(() => {
-    bar.style.background = '#20b858';
-    bar.style.transform = 'scaleY(1.2)';
-  }, index * 50);
-});
-}
-
-function stopWaveformAnimation(waveform) {
-const bars = waveform.querySelectorAll('.audio-bar');
-bars.forEach(bar => {
-  bar.style.background = '#25d366';
-  bar.style.transform = 'scaleY(1)';
-});
-}
-
-function sendSecondAudio() {
-sendWhatsAppAudio('../assets/audios/audio2.mp4', () => {
-  // Desbloquear envio após segundo áudio
-  canSendMessage = true;
-  updateSendButtonState();
-});
-chatEnabled = true;
-}
-
-function sendThirdAudio() {
-sendWhatsAppAudio('../assets/audios/audio3.mp4', () => {
-  // Desbloquear envio após terceiro áudio
-  canSendMessage = true;
-  updateSendButtonState();
-});
-setTimeout(showPresentPopup, 2000);
-}
-
-function sendEmotionalMessage() {
-const frases = [
-  "Quero ouvir sua voz também…",
-  "Você tá me ouvindo? Me responde…",
-  "Fala comigo, amor…"
-];
-
-const fraseEscolhida = frases[Math.floor(Math.random() * frases.length)];
-const foto = getProfileImage();
-
-const messages = document.getElementById('messages');
-const wrapper = document.createElement('div');
-wrapper.className = 'message profile';
-
-const img = document.createElement('img');
-img.src = foto;
-img.className = 'message-avatar';
-
-const messageDiv = document.createElement('div');
-messageDiv.style.cssText = `
-  background: #282828;
-  padding: 0.75rem 1rem;
-  border-radius: 0.75rem;
-  max-width: 85%;
-  font-size: 1rem;
-  line-height: 1.5;
-  word-wrap: break-word;
-  font-style: italic;
-  color: #ffb3d9;
-  animation: fadeIn 0.5s ease-in;
-`;
-messageDiv.innerText = fraseEscolhida;
-
-wrapper.appendChild(img);
-wrapper.appendChild(messageDiv);
-messages.appendChild(wrapper);
-messages.scrollTop = messages.scrollHeight;
-}
-
-function showPresentPopup() {
-presenteMostrado = true;
-const foto = getProfileImage();
-
-const messages = document.getElementById('messages');
-const wrapper = document.createElement('div');
-wrapper.className = 'message profile';
-
-const img = document.createElement('img');
-img.src = foto;
-img.className = 'message-avatar';
-
-const popup = document.createElement('div');
-popup.className = 'present-popup';
-popup.innerHTML = '<p>🎁 Você ganhou R$50 de presente!</p><button id="botaoPresente" onclick="resgatarPresente()">Resgatar Presente</button>';
-
-wrapper.appendChild(img);
-wrapper.appendChild(popup);
-messages.appendChild(wrapper);
-messages.scrollTop = messages.scrollHeight;
-
-chatEnabled = true;
-document.getElementById('backArrow').style = 'display: flex';
-}
-
-function resgatarPresente() {
-let saldoAtual = parseFloat(localStorage.getItem('chatSaldo') || '0');
-saldoAtual += 50;
-localStorage.setItem('chatSaldo', saldoAtual.toFixed(2));
-
-document.getElementById('saldoValorChat').innerText = saldoAtual.toFixed(2).replace('.', ',');
-
-const botao = document.getElementById('botaoPresente');
-botao.innerText = "Presente Resgatado";
-botao.disabled = true;
-botao.classList.add("resgatado");
-
-// Marcar presente como resgatado - após isso, envio de mensagens será bloqueado
-presenteResgatado = true;
+function declineVideoCall() {
+closeVideoCall();
 }
 </script>
+
+</body>
+</html>
