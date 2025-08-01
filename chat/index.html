@@ -1022,6 +1022,7 @@ let saldo = 0;
 let userMessagesSent = 0;
 let presenteMostrado = false;
 let audioSent = false;
+let chatEnabled = true;
 let currentAudio = null;
 let audioPlaying = false;
 let canSendMessage = false; // Nova variável para controlar envio de mensagens
@@ -1076,14 +1077,7 @@ function updateSendButtonState() {
     existingMessage.remove();
   }
   
-  const isPremium = localStorage.getItem('isPremium') === 'true';
-  const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
-  const isSecondMatchOrMore = totalMatches >= 2;
-
-  // Determine if chat should be enabled based on `canSendMessage` and `presenteMostrado`
-  const shouldBeEnabled = canSendMessage && (!presenteMostrado || isPremium);
-
-  if (shouldBeEnabled) {
+  if (canSendMessage && firstAudioCompleted) {
     sendButton.disabled = false;
     sendButton.style.opacity = '1';
     sendButton.style.cursor = 'pointer';
@@ -1098,111 +1092,282 @@ function updateSendButtonState() {
     userInput.disabled = true;
     userInput.readOnly = true;
     
-    // Display appropriate blocked message
-    const blockedMessage = document.createElement('div');
-    blockedMessage.id = 'blocked-message';
-    blockedMessage.style.cssText = `
-      background: #fef2f2;
-      color: #dc2626;
-      border: 2px solid #fca5a5;
-      padding: 1rem;
-      margin-bottom: 0.75rem;
-      border-radius: 0.5rem;
-      text-align: center;
-      font-size: 0.875rem;
-      font-weight: 500;
-      box-shadow: 0 4px 12px rgba(252, 165, 165, 0.3);
-      animation: fadeIn 0.5s ease-in;
-      max-width: 20rem;
-      margin-left: auto;
-      margin-right: auto;
-      width: 100%;
-    `;
+    // Verificar se é segundo match ou mais para mensagem mais impactante
+    const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
+    const isSecondMatchOrMore = totalMatches >= 2;
     
-    let messageText = '';
-    if (!firstAudioCompleted) {
-      messageText = '🎵 Aguarde o áudio para desbloquear o chat';
-    } else if (presenteMostrado && !isPremium) {
-      messageText = '💬 Envie mensagens ilimitadas após assinar o plano VIP';
+    if (isSecondMatchOrMore) {
+      // Versão mais impactante para segundo match em diante
+      const blockedMessage = document.createElement('div');
+      blockedMessage.id = 'blocked-message';
+      blockedMessage.style.cssText = `
+        background: #fef2f2;
+        color: #dc2626;
+        border: 2px solid #fca5a5;
+        padding: 1rem;
+        margin-bottom: 0.75rem;
+        border-radius: 0.5rem;
+        text-align: center;
+        font-size: 0.875rem;
+        font-weight: 500;
+        box-shadow: 0 4px 12px rgba(252, 165, 165, 0.3);
+        animation: fadeIn 0.5s ease-in;
+        max-width: 20rem;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+      `;
+      
+      if (!firstAudioCompleted) {
+        blockedMessage.innerHTML = '🎵 Aguarde o áudio para desbloquear o chat';
+      } else {
+        blockedMessage.innerHTML = '💬 Envie mensagens ilimitadas após assinar o plano VIP';
+      }
+      
+      inputArea.parentNode.insertBefore(blockedMessage, inputArea);
     } else {
-      // Fallback message, should ideally not be reached if logic is perfect
-      messageText = 'Aguarde para enviar mensagens...';
+      // Versão mais discreta para primeiro match
+      const blockedMessage = document.createElement('div');
+      blockedMessage.id = 'blocked-message';
+      blockedMessage.style.cssText = `
+        background: #f3f4f6;
+        color: #6b7280;
+        border: 1px solid #d1d5db;
+        padding: 0.5rem 0.75rem;
+        margin-bottom: 0.5rem;
+        border-radius: 0.375rem;
+        text-align: center;
+        font-size: 0.75rem;
+        font-weight: 400;
+        opacity: 0.8;
+      `;
+      
+      if (!firstAudioCompleted) {
+        blockedMessage.innerHTML = 'Aguarde o áudio para enviar mensagens...';
+      } else {
+        blockedMessage.innerHTML = 'Aguarde para enviar mensagens...';
+      }
+      
+      inputArea.parentNode.insertBefore(blockedMessage, inputArea);
     }
-    
-    blockedMessage.innerHTML = messageText;
-    inputArea.parentNode.insertBefore(blockedMessage, inputArea);
   }
 }
 
 function sendFirstAudio() {
-  if (audioSent) return;
+if (audioSent) return;
 
-  const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
-  const isPremium = localStorage.getItem('isPremium') === 'true';
+const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
+const isPremium = localStorage.getItem('isPremium') === 'true';
 
-  audioSent = true;
+audioSent = true;
 
-  document.getElementById('status').innerText = 'Gravando áudio...';
+document.getElementById('status').innerText = 'Gravando áudio...';
 
-  if (totalMatches >= 2 && !isPremium) {
-    // For second match or more, and not premium:
-    // Send blocked audio, chat remains blocked.
+if (totalMatches >= 2 && !isPremium) {
+  setTimeout(() => {
+    document.getElementById('status').innerText = '';
+    sendBlockedAudio();
+    chatEnabled = false;
+    
+    // Marcar primeiro áudio como concluído mesmo sendo bloqueado
+    firstAudioCompleted = true;
+    canSendMessage = true;
+    updateSendButtonState();
+    
     setTimeout(() => {
-      document.getElementById('status').innerText = '';
-      sendBlockedAudio();
-      firstAudioCompleted = true; // Mark audio as "sent" (even if blocked)
-      canSendMessage = false; // Explicitly keep it blocked
-      updateSendButtonState(); // Update UI to reflect blocked state and premium message
+      document.getElementById('popupPremiumImagem').style.display = 'flex';
+    }, 2000);
+  }, 15000); // Duração do áudio bloqueado (0:15)
+} else {
+  setTimeout(() => {
+    document.getElementById('status').innerText = '';
+    sendWhatsAppAudio('../assets/audios/audio1.mp4', () => {
+      // Desbloquear envio de mensagem após o primeiro áudio ser concluído
+      firstAudioCompleted = true;
+      canSendMessage = true;
+      updateSendButtonState();
       
       setTimeout(() => {
-        document.getElementById('popupPremiumImagem').style.display = 'flex';
-      }, 2000);
-    }, 15000); // Duration of blocked audio (0:15)
-  } else {
-    // For first match, or if premium:
-    // Unlock chat after 8 seconds
-    setTimeout(() => {
-      canSendMessage = true;
-      updateSendButtonState(); // Update button state to enabled
-    }, 8000); // 8 seconds after sendFirstAudio is called
+        sendEmotionalMessage();
+      }, 1000);
+    });
+    chatEnabled = true;
+  }, 11000); // Duração do audio1.mp4 (11 segundos)
+}
+}
 
-    // Send the actual audio after 11 seconds (its duration)
-    setTimeout(() => {
-      document.getElementById('status').innerText = '';
-      sendWhatsAppAudio('../assets/audios/audio1.mp4', () => {
-        firstAudioCompleted = true; // Mark audio as truly completed
-        // canSendMessage is already true from the 8-second timeout, no change needed here
-        updateSendButtonState(); // Re-confirm state
-        
-        setTimeout(() => {
-          sendEmotionalMessage();
-        }, 1000);
-      });
-    }, 11000); // Duration of audio1.mp4 (11 seconds)
+function sendBlockedAudio() {
+const foto = getProfileImage();
+const messages = document.getElementById('messages');
+const wrapper = document.createElement('div');
+wrapper.className = 'message profile';
+
+const img = document.createElement('img');
+img.src = foto;
+img.className = 'message-avatar';
+
+const audioContainer = document.createElement('div');
+audioContainer.className = 'whatsapp-audio-player blocked';
+
+// Usar o mesmo layout para todos os matches - apenas áudio ofuscado
+audioContainer.innerHTML = `
+  <button class="audio-play-button">
+    <svg viewBox="0 0 24 24">
+      <path d="M8 5v14l11-7z"/>
+    </svg>
+  </button>
+  <div class="audio-waveform">
+    ${generateWaveform(20)}
+  </div>
+  <div class="audio-duration">0:15</div>
+  <div class="audio-lock-overlay">🔒</div>
+  <div class="audio-premium-text">Apenas para Assinantes</div>
+`;
+
+audioContainer.addEventListener('click', function() {
+  document.getElementById('popupPremiumImagem').style.display = 'flex';
+});
+
+wrapper.appendChild(img);
+wrapper.appendChild(audioContainer);
+messages.appendChild(wrapper);
+messages.scrollTop = messages.scrollHeight;
+}
+
+function sendWhatsAppAudio(url, onEnded = null) {
+const foto = getProfileImage();
+const messages = document.getElementById('messages');
+const wrapper = document.createElement('div');
+wrapper.className = 'message profile';
+
+const img = document.createElement('img');
+img.src = foto;
+img.className = 'message-avatar';
+
+const audioContainer = document.createElement('div');
+audioContainer.className = 'whatsapp-audio-player';
+
+const playButton = document.createElement('button');
+playButton.className = 'audio-play-button';
+playButton.innerHTML = `
+  <svg viewBox="0 0 24 24">
+    <path d="M8 5v14l11-7z"/>
+  </svg>
+`;
+
+const waveform = document.createElement('div');
+waveform.className = 'audio-waveform';
+waveform.innerHTML = generateWaveform(20);
+
+const duration = document.createElement('div');
+duration.className = 'audio-duration';
+duration.textContent = '0:15'; // Default, will be updated by loadedmetadata
+
+// Criar elemento de áudio oculto
+const audio = document.createElement('audio');
+audio.src = url;
+audio.preload = 'metadata';
+
+let isPlaying = false;
+
+playButton.addEventListener('click', function() {
+  if (!isPlaying) {
+    audio.play();
+    isPlaying = true;
+    playButton.classList.add('playing');
+    playButton.innerHTML = `
+      <svg viewBox="0 0 24 24">
+        <path d="M6 4h4v16H6zM14 4h4v16h-4z"/>
+      </svg>
+    `;
+    animateWaveform(waveform);
+  } else {
+    audio.pause();
+    isPlaying = false;
+    playButton.classList.remove('playing');
+    playButton.innerHTML = `
+      <svg viewBox="0 0 24 24">
+        <path d="M8 5v14l11-7z"/>
+      </svg>
+    `;
+    stopWaveformAnimation(waveform);
   }
+});
+
+audio.addEventListener('ended', function() {
+  isPlaying = false;
+  playButton.classList.remove('playing');
+  playButton.innerHTML = `
+    <svg viewBox="0 0 24 24">
+      <path d="M8 5v14l11-7z"/>
+    </svg>
+  `;
+  stopWaveformAnimation(waveform);
+  
+  if (onEnded) {
+    onEnded();
+  }
+});
+
+audio.addEventListener('loadedmetadata', function() {
+  const minutes = Math.floor(audio.duration / 60);
+  const seconds = Math.floor(audio.duration % 60);
+  duration.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+});
+
+audioContainer.appendChild(playButton);
+audioContainer.appendChild(waveform);
+audioContainer.appendChild(duration);
+
+wrapper.appendChild(img);
+wrapper.appendChild(audioContainer);
+messages.appendChild(wrapper);
+messages.scrollTop = messages.scrollHeight;
+}
+
+function generateWaveform(bars) {
+let waveform = '';
+for (let i = 0; i < bars; i++) {
+  const height = Math.random() * 20 + 5; // Entre 5px e 25px
+  waveform += `<div class="audio-bar" style="height: ${height}px;"></div>`;
+}
+return waveform;
+}
+
+function animateWaveform(waveform) {
+const bars = waveform.querySelectorAll('.audio-bar');
+bars.forEach((bar, index) => {
+  setTimeout(() => {
+    bar.style.background = '#20b858';
+    bar.style.transform = 'scaleY(1.2)';
+  }, index * 50);
+});
+}
+
+function stopWaveformAnimation(waveform) {
+const bars = waveform.querySelectorAll('.audio-bar');
+bars.forEach(bar => {
+  bar.style.background = '#25d366';
+  bar.style.transform = 'scaleY(1)';
+});
 }
 
 function sendSecondAudio() {
-  sendWhatsAppAudio('../assets/audios/audio2.mp4', () => {
-    // Re-enable sending after second audio, unless gift is already shown
-    const isPremium = localStorage.getItem('isPremium') === 'true';
-    if (!presenteMostrado || isPremium) { // Only re-enable if gift not shown OR is premium
-      canSendMessage = true;
-      updateSendButtonState();
-    }
-  });
+sendWhatsAppAudio('../assets/audios/audio2.mp4', () => {
+  // Desbloquear envio após segundo áudio
+  canSendMessage = true;
+  updateSendButtonState();
+});
+chatEnabled = true;
 }
 
 function sendThirdAudio() {
-  sendWhatsAppAudio('../assets/audios/audio3.mp4', () => {
-    // Re-enable sending after third audio, unless gift is already shown
-    const isPremium = localStorage.getItem('isPremium') === 'true';
-    if (!presenteMostrado || isPremium) { // Only re-enable if gift not shown OR is premium
-      canSendMessage = true;
-      updateSendButtonState();
-    }
-  });
-  setTimeout(showPresentPopup, 2000); // This will then re-block if not premium
+sendWhatsAppAudio('../assets/audios/audio3.mp4', () => {
+  // Desbloquear envio após terceiro áudio
+  canSendMessage = true;
+  updateSendButtonState();
+});
+setTimeout(showPresentPopup, 2000);
 }
 
 function sendEmotionalMessage() {
@@ -1245,34 +1410,28 @@ messages.scrollTop = messages.scrollHeight;
 }
 
 function showPresentPopup() {
-  presenteMostrado = true;
-  // Re-block chat if not premium after gift is shown
-  const isPremium = localStorage.getItem('isPremium') === 'true';
-  if (!isPremium) {
-    canSendMessage = false; // Re-block chat
-    updateSendButtonState(); // Update UI
-  }
+presenteMostrado = true;
+const foto = getProfileImage();
 
-  const foto = getProfileImage();
+const messages = document.getElementById('messages');
+const wrapper = document.createElement('div');
+wrapper.className = 'message profile';
 
-  const messages = document.getElementById('messages');
-  const wrapper = document.createElement('div');
-  wrapper.className = 'message profile';
+const img = document.createElement('img');
+img.src = foto;
+img.className = 'message-avatar';
 
-  const img = document.createElement('img');
-  img.src = foto;
-  img.className = 'message-avatar';
+const popup = document.createElement('div');
+popup.className = 'present-popup';
+popup.innerHTML = '<p>🎁 Você ganhou R$50 de presente!</p><button id="botaoPresente" onclick="resgatarPresente()">Resgatar Presente</button>';
 
-  const popup = document.createElement('div');
-  popup.className = 'present-popup';
-  popup.innerHTML = '<p>🎁 Você ganhou R$50 de presente!</p><button id="botaoPresente" onclick="resgatarPresente()">Resgatar Presente</button>';
+wrapper.appendChild(img);
+wrapper.appendChild(popup);
+messages.appendChild(wrapper);
+messages.scrollTop = messages.scrollHeight;
 
-  wrapper.appendChild(img);
-  wrapper.appendChild(popup);
-  messages.appendChild(wrapper);
-  messages.scrollTop = messages.scrollHeight;
-
-  document.getElementById('backArrow').style = 'display: flex';
+chatEnabled = true;
+document.getElementById('backArrow').style = 'display: flex';
 }
 
 function abrirPopupPremium() {
@@ -1286,50 +1445,55 @@ window.location.href = "../inicial.html";
 }
 
 function sendMessage() {
-  const input = document.getElementById('userInput');
-  const text = input.value.trim();
+const input = document.getElementById('userInput');
+const text = input.value.trim();
 
-  // Primary check for sending messages
-  if (!text || !canSendMessage) return; // Simplified check
+if (!chatEnabled || !text || !canSendMessage || !firstAudioCompleted) return;
 
-  const isPremium = localStorage.getItem('isPremium') === 'true';
+const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
+const isPremium = localStorage.getItem('isPremium') === 'true';
 
-  // Block if gift is shown AND not premium
-  if (presenteMostrado && !isPremium) {
-    abrirPopupPremium();
-    return;
-  }
+if (totalMatches >= 2 && !isPremium) {
+  document.getElementById('popupPremiumImagem').style.display = 'flex';
+  return;
+}
 
-  const messages = document.getElementById('messages');
-  const msg = document.createElement('div');
-  msg.className = 'message user';
-  msg.innerText = text;
-  messages.appendChild(msg);
-  messages.scrollTop = messages.scrollHeight;
-  input.value = '';
+if (presenteMostrado && !isPremium) {
+  abrirPopupPremium();
+  return;
+}
 
-  userMessagesSent++;
+if (userMessagesSent >= 3 && !isPremium) {
+  document.getElementById('popupPremiumImagem').style.display = 'flex';
+  return;
+}
 
-  // Logic for triggering subsequent audios
-  if (userMessagesSent === 1) {
-    document.getElementById('status').innerText = 'Gravando áudio...';
-    // Temporarily disable sending while "recording"
-    canSendMessage = false;
-    updateSendButtonState();
-    setTimeout(() => {
-      document.getElementById('status').innerText = '';
-      sendSecondAudio();
-    }, 18000);
-  } else if (userMessagesSent === 2) {
-    document.getElementById('status').innerText = 'Gravando áudio...';
-    // Temporarily disable sending while "recording"
-    canSendMessage = false;
-    updateSendButtonState();
-    setTimeout(() => {
-      document.getElementById('status').innerText = '';
-      sendThirdAudio();
-    }, 14000);
-  }
+const messages = document.getElementById('messages');
+const msg = document.createElement('div');
+msg.className = 'message user';
+msg.innerText = text;
+messages.appendChild(msg);
+messages.scrollTop = messages.scrollHeight;
+input.value = '';
+
+// Chat permanece desbloqueado após primeiro áudio
+userMessagesSent++;
+
+if (userMessagesSent === 1) {
+  chatEnabled = false;
+  document.getElementById('status').innerText = 'Gravando áudio...';
+  setTimeout(() => {
+    document.getElementById('status').innerText = '';
+    sendSecondAudio();
+  }, 18000); // Duração do audio2.mp4 (18 segundos)
+} else if (userMessagesSent === 2) {
+  chatEnabled = false;
+  document.getElementById('status').innerText = 'Gravando áudio...';
+  setTimeout(() => {
+    document.getElementById('status').innerText = '';
+    sendThirdAudio();
+  }, 14000); // Duração do audio3.mp4 (14 segundos)
+}
 }
 
 document.getElementById('userInput').addEventListener('keydown', function(e) {
