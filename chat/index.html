@@ -1017,12 +1017,12 @@ src="https://www.facebook.com/tr?id=1453046616041191&ev=PageView&noscript=1"/>
 </div>
 
 <script>
-let step = 0;
-let saldo = 0;
-let userMessagesSent = 0;
+let canSendMessage = false; // Controls if input is enabled
+let messagesAllowedInCurrentPhase = 0; // How many messages user can send in current phase
+let messagesSentInCurrentPhase = 0; // How many messages user has sent in current phase
+let totalUserMessagesSent = 0; // Total messages sent by user across all phases
 let presenteMostrado = false;
-let audioSent = false;
-let canSendMessage = false; // Nova variável para controlar envio de mensagens
+let audioSent = false; // Flag for first audio sequence initiation
 
 // Função para obter imagem de perfil correta
 function getProfileImage() {
@@ -1049,8 +1049,15 @@ window.onload = function() {
       document.getElementById('saldoValorChat').innerText = saldoFormatado;
   }
 
-  // Inicializar com envio bloqueado
-  updateSendButtonState();
+  // Initial state: chat is locked
+  canSendMessage = false;
+  messagesAllowedInCurrentPhase = 0;
+  messagesSentInCurrentPhase = 0;
+  totalUserMessagesSent = 0; // Initialize total messages sent
+  presenteMostrado = false; // Ensure this is false on load
+  audioSent = false; // Ensure this is false on load
+
+  updateSendButtonState(); // Apply initial locked state
 
   // Iniciar primeiro áudio após 3 segundos
   setTimeout(() => { 
@@ -1073,25 +1080,20 @@ function updateSendButtonState() {
     existingMessage.remove();
   }
   
-  if (canSendMessage) { // If chat is unlocked
-    sendButton.disabled = false;
-    sendButton.style.opacity = '1';
-    sendButton.style.cursor = 'pointer';
-    userInput.disabled = false;
-    userInput.readOnly = false;
-  } else { // If chat is locked
+  const isPremium = localStorage.getItem('isPremium') === 'true';
+
+  if (presenteMostrado && !isPremium) {
+    // Scenario 1: Chat is permanently blocked due to present popup and non-premium user
     sendButton.disabled = true;
     sendButton.style.opacity = '0.5';
     sendButton.style.cursor = 'not-allowed';
     userInput.disabled = true;
     userInput.readOnly = true;
-    
-    // Add the blocked message
     const blockedMessage = document.createElement('div');
     blockedMessage.id = 'blocked-message';
     blockedMessage.style.cssText = `
       background: #f3f4f6;
-      color: #6b7280;
+      color: #ef4444; /* Red color for "blocked" */
       border: 1px solid #d1d5db;
       padding: 0.5rem 0.75rem;
       margin-bottom: 0.5rem;
@@ -1101,59 +1103,89 @@ function updateSendButtonState() {
       font-weight: 400;
       opacity: 0.8;
     `;
-    blockedMessage.innerHTML = 'Aguarde para enviar mensagens...';
+    blockedMessage.innerHTML = 'Você precisa ser Premium para enviar mais mensagens!';
     inputArea.parentNode.insertBefore(blockedMessage, inputArea);
+    return; // Exit early
   }
-}
 
-function unlockChatArea() {
-  if (!canSendMessage) { // Ensure it only unlocks once
-    canSendMessage = true;
-    updateSendButtonState();
-    // Remove the "Aguarde para enviar mensagens..." message
-    const blockedMessage = document.getElementById('blocked-message');
-    if (blockedMessage) {
-      blockedMessage.remove();
+  if (canSendMessage && messagesSentInCurrentPhase < messagesAllowedInCurrentPhase) {
+    // Scenario 2: Chat is currently unlocked and user can send messages
+    sendButton.disabled = false;
+    sendButton.style.opacity = '1';
+    sendButton.style.cursor = 'pointer';
+    userInput.disabled = false;
+    userInput.readOnly = false;
+  } else {
+    // Scenario 3: Chat is temporarily locked (waiting for next audio/phase)
+    sendButton.disabled = true;
+    sendButton.style.opacity = '0.5';
+    sendButton.style.cursor = 'not-allowed';
+    userInput.disabled = true;
+    userInput.readOnly = true;
+    
+    // Only show "Aguarde para enviar mensagens..." if not already blocked by premium
+    // This condition ensures it doesn't override the premium block message
+    if (!presenteMostrado || isPremium) { 
+      const blockedMessage = document.createElement('div');
+      blockedMessage.id = 'blocked-message';
+      blockedMessage.style.cssText = `
+        background: #f3f4f6;
+        color: #6b7280;
+        border: 1px solid #d1d5db;
+        padding: 0.5rem 0.75rem;
+        margin-bottom: 0.5rem;
+        border-radius: 0.375rem;
+        text-align: center;
+        font-size: 0.75rem;
+        font-weight: 400;
+        opacity: 0.8;
+      `;
+      blockedMessage.innerHTML = 'Aguarde para enviar mensagens...';
+      inputArea.parentNode.insertBefore(blockedMessage, inputArea);
     }
   }
 }
 
-function sendFirstAudio() {
-if (audioSent) return;
-
-const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
-const isPremium = localStorage.getItem('isPremium') === 'true';
-
-audioSent = true; // Mark that the first audio process has started
-
-document.getElementById('status').innerText = 'Gravando áudio...';
-
-// Start the 8-second unlock timer immediately after the audio "starts"
-// This timer runs regardless of whether the audio is blocked or not.
-setTimeout(() => {
-  unlockChatArea();
-}, 8000);
-
-if (totalMatches >= 2 && !isPremium) {
-  setTimeout(() => {
-    document.getElementById('status').innerText = '';
-    sendBlockedAudio();
-    // The premium popup should still appear for blocked audio scenarios
-    setTimeout(() => {
-      document.getElementById('popupPremiumImagem').style.display = 'flex';
-    }, 2000);
-  }, 15000); // Simulate blocked audio duration
-} else {
-  setTimeout(() => {
-    document.getElementById('status').innerText = '';
-    sendWhatsAppAudio('../assets/audios/audio1.mp4', () => {
-      // This callback runs when audio1.mp4 *ends*.
-      setTimeout(() => {
-        sendEmotionalMessage();
-      }, 1000);
-    });
-  }, 11000); // Simulate audio1.mp4 duration before it appears
+function unlockChatArea(numMessages) {
+  canSendMessage = true;
+  messagesAllowedInCurrentPhase = numMessages;
+  messagesSentInCurrentPhase = 0; // Reset counter for the new phase
+  updateSendButtonState();
 }
+
+function sendFirstAudio() {
+  if (audioSent) return;
+  audioSent = true; // Mark that the first audio process has started
+
+  const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
+  const isPremium = localStorage.getItem('isPremium') === 'true';
+
+  document.getElementById('status').innerText = 'Gravando áudio...';
+
+  if (totalMatches >= 2 && !isPremium) {
+    // Scenario for blocked audio for non-premium users on second match
+    setTimeout(() => {
+      document.getElementById('status').innerText = '';
+      sendBlockedAudio();
+      setTimeout(() => {
+        document.getElementById('popupPremiumImagem').style.display = 'flex';
+        // After showing premium popup, lock chat permanently until premium
+        presenteMostrado = true; // Treat as if present popup was shown
+        canSendMessage = false; // Ensure chat is locked
+        updateSendButtonState();
+      }, 2000);
+    }, 15000); // Simulate blocked audio duration
+  } else {
+    // Regular flow: audio1.mp4 plays
+    setTimeout(() => { // This is when audio1.mp4 actually starts playing (after 11s initial delay)
+      document.getElementById('status').innerText = '';
+      sendWhatsAppAudio('../assets/audios/audio1.mp4', () => { // Callback when audio1.mp4 ends
+        setTimeout(() => { sendEmotionalMessage(); }, 1000);
+      });
+      // Unlock chat for 1 message after 8 seconds of audio1.mp4 starting
+      setTimeout(() => { unlockChatArea(1); }, 8000); 
+    }, 11000); // Delay before audio1.mp4 starts playing
+  }
 }
 
 function sendBlockedAudio() {
@@ -1313,16 +1345,20 @@ bars.forEach(bar => {
 }
 
 function sendSecondAudio() {
-sendWhatsAppAudio('../assets/audios/audio2.mp4', () => {
-  // No unlock here, as it's handled by the initial 8-second timer
-});
+  sendWhatsAppAudio('../assets/audios/audio2.mp4', () => {
+    // This callback runs when audio2.mp4 ends.
+  });
+  // Unlock chat for 1 message after 8 seconds of audio2.mp4 starting
+  setTimeout(() => { unlockChatArea(1); }, 8000);
 }
 
 function sendThirdAudio() {
-sendWhatsAppAudio('../assets/audios/audio3.mp4', () => {
-  // No unlock here, as it's handled by the initial 8-second timer
-});
-setTimeout(showPresentPopup, 2000);
+  sendWhatsAppAudio('../assets/audios/audio3.mp4', () => {
+    // This callback runs when audio3.mp4 ends.
+    setTimeout(showPresentPopup, 2000); // Show popup 2s after audio3.mp4 ends
+  });
+  // Unlock chat for unlimited messages after 8 seconds of audio3.mp4 starting
+  setTimeout(() => { unlockChatArea(Infinity); }, 8000);
 }
 
 function sendEmotionalMessage() {
@@ -1365,25 +1401,29 @@ messages.scrollTop = messages.scrollHeight;
 }
 
 function showPresentPopup() {
-presenteMostrado = true;
-const foto = getProfileImage();
+  presenteMostrado = true; // Set flag
+  const foto = getProfileImage();
 
-const messages = document.getElementById('messages');
-const wrapper = document.createElement('div');
-wrapper.className = 'message profile';
+  const messages = document.getElementById('messages');
+  const wrapper = document.createElement('div');
+  wrapper.className = 'message profile';
 
-const img = document.createElement('img');
-img.src = foto;
-img.className = 'message-avatar';
+  const img = document.createElement('img');
+  img.src = foto;
+  img.className = 'message-avatar';
 
-const popup = document.createElement('div');
-popup.className = 'present-popup';
-popup.innerHTML = '<p>🎁 Você ganhou R$50 de presente!</p><button id="botaoPresente" onclick="resgatarPresente()">Resgatar Presente</button>';
+  const popup = document.createElement('div');
+  popup.className = 'present-popup';
+  popup.innerHTML = '<p>🎁 Você ganhou R$50 de presente!</p><button id="botaoPresente" onclick="resgatarPresente()">Resgatar Presente</button>';
 
-wrapper.appendChild(img);
-wrapper.appendChild(popup);
-messages.appendChild(wrapper);
-messages.scrollTop = messages.scrollHeight;
+  wrapper.appendChild(img);
+  wrapper.appendChild(popup);
+  messages.appendChild(wrapper);
+  messages.scrollTop = messages.scrollHeight;
+
+  // Immediately lock chat after present popup appears, requiring premium
+  canSendMessage = false;
+  updateSendButtonState();
 }
 
 function abrirPopupPremium() {
@@ -1399,18 +1439,24 @@ window.location.href = "../inicial.html";
 function sendMessage() {
   const input = document.getElementById('userInput');
   const text = input.value.trim();
-
-  // Only allow sending if the chat area is unlocked and there's text
-  if (!canSendMessage || !text) return;
-
   const isPremium = localStorage.getItem('isPremium') === 'true';
 
-  // NEW RULE: If presenteMostrado is true AND user is NOT premium, show premium popup
+  // 1. Check for premium block due to present popup
   if (presenteMostrado && !isPremium) {
     abrirPopupPremium();
     return; // Stop message sending
   }
 
+  // 2. Check if chat is currently allowed to send messages
+  if (!canSendMessage || messagesSentInCurrentPhase >= messagesAllowedInCurrentPhase) {
+    // If chat is locked or message limit reached for current phase, do not send
+    return;
+  }
+
+  // 3. Check if message is empty
+  if (!text) return;
+
+  // Send message (append to DOM)
   const messages = document.getElementById('messages');
   const msg = document.createElement('div');
   msg.className = 'message user';
@@ -1419,21 +1465,29 @@ function sendMessage() {
   messages.scrollTop = messages.scrollHeight;
   input.value = '';
 
-  userMessagesSent++;
+  // Update message counters
+  messagesSentInCurrentPhase++;
+  totalUserMessagesSent++;
 
-  // These subsequent audio triggers should not block user input
-  if (userMessagesSent === 1) {
+  // 4. Re-lock chat if message limit for current phase is reached (and it's not Infinity)
+  if (messagesAllowedInCurrentPhase !== Infinity && messagesSentInCurrentPhase >= messagesAllowedInCurrentPhase) {
+    canSendMessage = false;
+    updateSendButtonState(); // Re-lock the chat
+  }
+
+  // 5. Trigger next audio sequence based on total messages sent
+  if (totalUserMessagesSent === 1) { // After first user message
     document.getElementById('status').innerText = 'Gravando áudio...';
     setTimeout(() => {
       document.getElementById('status').innerText = '';
       sendSecondAudio();
-    }, 18000);
-  } else if (userMessagesSent === 2) {
+    }, 18000); // Delay before second audio sequence starts
+  } else if (totalUserMessagesSent === 2) { // After second user message
     document.getElementById('status').innerText = 'Gravando áudio...';
     setTimeout(() => {
       document.getElementById('status').innerText = '';
       sendThirdAudio();
-    }, 14000);
+    }, 14000); // Delay before third audio sequence starts
   }
 }
 
