@@ -1397,36 +1397,44 @@ window.location.href = "../inicial.html";
 }
 
 function sendMessage() {
-const input = document.getElementById('userInput');
-const text = input.value.trim();
+  const input = document.getElementById('userInput');
+  const text = input.value.trim();
 
-// Only allow sending if the chat area is unlocked and there's text
-if (!canSendMessage || !text) return;
+  // Only allow sending if the chat area is unlocked and there's text
+  if (!canSendMessage || !text) return;
 
-const messages = document.getElementById('messages');
-const msg = document.createElement('div');
-msg.className = 'message user';
-msg.innerText = text;
-messages.appendChild(msg);
-messages.scrollTop = messages.scrollHeight;
-input.value = '';
+  const isPremium = localStorage.getItem('isPremium') === 'true';
 
-userMessagesSent++;
+  // NEW RULE: If presenteMostrado is true AND user is NOT premium, show premium popup
+  if (presenteMostrado && !isPremium) {
+    abrirPopupPremium();
+    return; // Stop message sending
+  }
 
-// These subsequent audio triggers should not block user input
-if (userMessagesSent === 1) {
-  document.getElementById('status').innerText = 'Gravando áudio...';
-  setTimeout(() => {
-    document.getElementById('status').innerText = '';
-    sendSecondAudio();
-  }, 18000);
-} else if (userMessagesSent === 2) {
-  document.getElementById('status').innerText = 'Gravando áudio...';
-  setTimeout(() => {
-    document.getElementById('status').innerText = '';
-    sendThirdAudio();
-  }, 14000);
-}
+  const messages = document.getElementById('messages');
+  const msg = document.createElement('div');
+  msg.className = 'message user';
+  msg.innerText = text;
+  messages.appendChild(msg);
+  messages.scrollTop = messages.scrollHeight;
+  input.value = '';
+
+  userMessagesSent++;
+
+  // These subsequent audio triggers should not block user input
+  if (userMessagesSent === 1) {
+    document.getElementById('status').innerText = 'Gravando áudio...';
+    setTimeout(() => {
+      document.getElementById('status').innerText = '';
+      sendSecondAudio();
+    }, 18000);
+  } else if (userMessagesSent === 2) {
+    document.getElementById('status').innerText = 'Gravando áudio...';
+    setTimeout(() => {
+      document.getElementById('status').innerText = '';
+      sendThirdAudio();
+    }, 14000);
+  }
 }
 
 document.getElementById('userInput').addEventListener('keydown', function(e) {
