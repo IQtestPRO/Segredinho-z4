@@ -1354,10 +1354,9 @@ function sendSecondAudio() {
 
 function sendThirdAudio() {
   sendWhatsAppAudio('../assets/audios/audio3.mp4', () => {
-    // This callback runs when audio3.mp4 ends. No action needed here for popup.
+    // This callback runs when audio3.mp4 ends. Show popup 1 second after audio ends.
+    setTimeout(showPresentPopup, 1000);
   });
-  // Show popup 2s after the audio message is SENT (function call)
-  setTimeout(showPresentPopup, 2000);
   // Unlock chat for unlimited messages after 8 seconds of audio3.mp4 starting
   setTimeout(() => { unlockChatArea(Infinity); }, 8000);
 }
