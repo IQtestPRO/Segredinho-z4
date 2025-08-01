@@ -1351,7 +1351,7 @@ document.head.appendChild(a);
 <div class="btn btnLike" onclick="recompensa(); mostrarProximoPerfil()"></div>
 </div>
 <div class="profile-content">
-<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+<div style="display: flex; align-items: center; justify: space-between; margin-bottom: 10px;">
 <h3>Bio</h3><button onclick="abrirPresentes()" style="background:#ff69b4; color:white; border:none; padding:8px 16px; border-radius:20px; font-size:14px; cursor:pointer;">🎁
                           Enviar Presente</button>
 </div>
@@ -1393,7 +1393,7 @@ document.head.appendChild(a);
 <div class="btn btnLike" onclick="recompensa(); mostrarProximoPerfil()"></div>
 </div>
 <div class="profile-content">
-<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+<div style="display: flex; align-items: center; justify: space-between; margin-bottom: 10px;">
 <h3>Bio</h3><button onclick="abrirPresentes()" style="background:#ff69b4; color:white; border:none; padding:8px 16px; border-radius:20px; font-size:14px; cursor:pointer;">🎁
                           Enviar Presente</button>
 </div>
@@ -1435,7 +1435,7 @@ document.head.appendChild(a);
 <div class="btn btnLike" onclick="recompensa(); mostrarProximoPerfil()"></div>
 </div>
 <div class="profile-content">
-<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+<div style="display: flex; align-items: center; justify: space-between; margin-bottom: 10px;">
 <h3>Bio</h3><button onclick="abrirPresentes()" style="background:#ff69b4; color:white; border:none; padding:8px 16px; border-radius:20px; font-size:14px; cursor:pointer;">🎁
                           Enviar Presente</button>
 </div>
@@ -1477,7 +1477,7 @@ document.head.appendChild(a);
 <div class="btn btnLike" onclick="recompensa(); mostrarProximoPerfil()"></div>
 </div>
 <div class="profile-content">
-<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+<div style="display: flex; align-items: center; justify: space-between; margin-bottom: 10px;">
 <h3>Bio</h3><button onclick="abrirPresentes()" style="background:#ff69b4; color:white; border:none; padding:8px 16px; border-radius:20px; font-size:14px; cursor:pointer;">🎁
                           Enviar Presente</button>
 </div>
@@ -1520,7 +1520,7 @@ document.head.appendChild(a);
 <div class="btn btnLike" onclick="recompensa(); mostrarProximoPerfil()"></div>
 </div>
 <div class="profile-content">
-<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+<div style="display: flex; align-items: center; justify: space-between; margin-bottom: 10px;">
 <h3>Bio</h3><button onclick="abrirPresentes()" style="background:#ff69b4; color:white; border:none; padding:8px 16px; border-radius:20px; font-size:14px; cursor:pointer;">🎁
                           Enviar Presente</button>
 </div>
@@ -1929,67 +1929,6 @@ document.head.appendChild(a);
                 }
 
                 function nextProfile() {
-                  const p = document.querySelectorAll('.profile');
-                  if (currentIndex < p.length - 1) {
-                    p[currentIndex].classList.remove('active');
-                    currentIndex++;
-                    p[currentIndex].classList.add('active');
-                  }
-                }
-
-                function ocultarPerfisCurtidos() {
-                  const perfisCurtidos = JSON.parse(localStorage.getItem('perfisCurtidos') || '[]');
-                  const perfis = document.querySelectorAll('.profile');
-                  
-                  perfisCurtidos.forEach(perfilId => {
-                    if (perfis[perfilId]) {
-                      perfis[perfilId].style.display = 'none';
-                    }
-                  });
-                  
-                  // Se o perfil atual foi curtido, pular para o próximo disponível
-                  const perfilAtual = document.querySelector('.profile.active');
-                  if (perfilAtual && perfilAtual.style.display === 'none') {
-                    pularParaProximoDisponivel();
-                  }
-                }
-
-                function pularParaProximoDisponivel() {
-                  const perfis = document.querySelectorAll('.profile');
-                  let encontrouDisponivel = false;
-                  
-                  // Remove active do atual
-                  document.querySelector('.profile.active')?.classList.remove('active');
-                  
-                  // Procura próximo perfil disponível
-                  for (let i = currentIndex + 1; i < perfis.length; i++) {
-                    if (perfis[i].style.display !== 'none') {
-                      currentIndex = i;
-                      perfis[i].classList.add('active');
-                      encontrouDisponivel = true;
-                      break;
-                    }
-                  }
-                  
-                  // Se não encontrou, procura do início
-                  if (!encontrouDisponivel) {
-                    for (let i = 0; i < currentIndex; i++) {
-                      if (perfis[i].style.display !== 'none') {
-                        currentIndex = i;
-                        perfis[i].classList.add('active');
-                        encontrouDisponivel = true;
-                        break;
-                      }
-                    }
-                  }
-                  
-                  // Se não há mais perfis disponíveis, mostrar popup de limite
-                  if (!encontrouDisponivel) {
-                    openPopupLimite();
-                  }
-                }
-
-                function nextProfile() {
                   const perfis = document.querySelectorAll('.profile');
                   let proximoIndice = currentIndex;
                   let encontrouProximo = false;
@@ -2077,7 +2016,8 @@ document.head.appendChild(a);
                 }
 
                 function abrirChat() {
-                  window.location.href = 'chat/index.html';
+                  // This function is now modified to open the premium popup
+                  openPopupPremiumImagem();
                 }
 
                 function abrirPresentes() {
@@ -2217,11 +2157,4 @@ document.head.appendChild(a);
                 });
               </script>
 </body>
-</html>
-</div>
-</div>
-</div>
-</div>
-</body>
-<!-- Mirrored from appminhacoroa.site/inicial.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 08 Jul 2025 02:32:41 GMT -->
 </html>
