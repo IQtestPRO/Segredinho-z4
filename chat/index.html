@@ -1182,8 +1182,8 @@ function sendFirstAudio() {
       sendWhatsAppAudio('../assets/audios/audio1.mp4', () => { // Callback when audio1.mp4 ends
         setTimeout(() => { sendEmotionalMessage(); }, 1000);
       });
-      // Unlock chat for 1 message after 8 seconds of audio1.mp4 starting
-      setTimeout(() => { unlockChatArea(1); }, 8000); 
+      // Unlock chat immediately when audio appears
+      unlockChatArea(1);
     }, 11000); // Delay before audio1.mp4 starts playing
   }
 }
@@ -1348,8 +1348,8 @@ function sendSecondAudio() {
   sendWhatsAppAudio('../assets/audios/audio2.mp4', () => {
     // This callback runs when audio2.mp4 ends.
   });
-  // Unlock chat for 1 message after 8 seconds of audio2.mp4 starting
-  setTimeout(() => { unlockChatArea(1); }, 8000);
+  // Unlock chat immediately when audio appears
+  unlockChatArea(1);
 }
 
 function sendThirdAudio() {
@@ -1358,8 +1358,8 @@ function sendThirdAudio() {
   });
   // Show popup 3 seconds after the audio starts playing
   setTimeout(showPresentPopup, 3000);
-  // Unlock chat for unlimited messages after 8 seconds of audio3.mp4 starting
-  setTimeout(() => { unlockChatArea(Infinity); }, 8000);
+  // Unlock chat immediately when audio appears
+  unlockChatArea(Infinity);
 }
 
 function sendEmotionalMessage() {
