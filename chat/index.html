@@ -1182,17 +1182,22 @@ if (totalMatches >= 2 && !isPremium) {
   setTimeout(() => {
     document.getElementById('status').innerText = '';
     sendWhatsAppAudio('../assets/audios/audio1.mp4', () => {
-      // Desbloquear envio de mensagem após o primeiro áudio ser concluído
-      firstAudioCompleted = true;
-      canSendMessage = true;
-      updateSendButtonState();
-      
+      // Este callback é para quando o áudio termina.
+      // A funcionalidade de desbloqueio foi movida para um setTimeout separado.
       setTimeout(() => {
         sendEmotionalMessage();
       }, 1000);
     });
     chatEnabled = true;
-  }, 5000);
+
+    // NOVO: Desbloquear chat 4 segundos após o áudio começar a tocar
+    setTimeout(() => {
+      firstAudioCompleted = true;
+      canSendMessage = true;
+      updateSendButtonState();
+    }, 4000); // 4 segundos após o áudio começar (que é 5 segundos após o delay inicial)
+
+  }, 5000); // Delay inicial antes do áudio começar
 }
 }
 
