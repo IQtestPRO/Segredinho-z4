@@ -1665,8 +1665,10 @@ document.head.appendChild(a);
 <button onclick="closePopupPremiumImagem()" style="position:absolute; top:10px; right:12px; background:none; border:none; color:white; font-size:24px; cursor:pointer;">×</button>
 <div style="font-size:18px; font-weight:600; margin-bottom:15px;">Acesso Premium VIP</div>
 <div style="background:#1f1f2a; border-radius:12px; padding:10px 5px; margin-bottom:10px;">
-<div style="font-size:22px; font-weight:bold; color:#ffc107;">R$ 99,90 <span style="font-size:13px; font-weight:400;">à vista</span></div>
-<div style="font-size:14px; color:#ccc;">Pagamento único</div>
+<div style="font-size:13px; text-decoration:line-through; color:#aaa;">R$ 97,90</div>
+<div style="font-size:22px; font-weight:bold; color:#ffc107;">R$ 37,90 <span style="font-size:13px; font-weight:400;">à vista</span></div>
+<div style="font-size:14px; color:#ccc;">ou 8x de R$ 5,51</div>
+<div style="font-size:11px; color:#777;">sem juros no cartão</div>
 </div>
 <ul style="text-align:left; font-size:13px; padding:0 10px; margin:15px 0; list-style:none;">
 <li style="margin:6px 0;">💋 Acesso a perfis ocultos só para membros VIP</li>
@@ -1887,8 +1889,43 @@ document.head.appendChild(a);
                 }
 
                 function irParaChat() {
-                  // Instead of redirecting, open the premium popup
-                  openPopupPremiumImagem();
+                  const perfilAtivo = document.querySelector('.profile.active') || document.querySelector('.profile');
+                  if (!perfilAtivo) {
+                    window.location.href = 'chat/index.html';
+                    return;
+                  }
+
+                  const nomeIdade = perfilAtivo.querySelector('h2')?.innerText || 'Perfil';
+                  const imgSrc = perfilAtivo.querySelector('.carousel-image')?.src || 'https://minhacoroaplus.site/wp-content/uploads/2025/04/logoCoroa.png';
+
+                  localStorage.setItem('chatPerfilNome', nomeIdade);
+                  localStorage.setItem('chatPerfilFoto', imgSrc);
+                  
+                  // Transferir saldo atual para o chat
+                  const saldoAtual = document.getElementById('saldoValor').innerText || '0,00';
+                  localStorage.setItem('chatSaldo', saldoAtual.replace(',', '.'));
+                  
+                  // Incrementar contador de matches CORRETAMENTE
+                  let matches = parseInt(localStorage.getItem('totalMatches') || '0');
+                  matches++;
+                  localStorage.setItem('totalMatches', matches.toString());
+                  
+                  // Definir se é segundo match ou mais
+                  if (matches >= 2) {
+                    localStorage.setItem('isSecondMatch', 'true');
+                  } else {
+                    localStorage.setItem('isSecondMatch', 'false');
+                  }
+
+                  // Salvar perfil como curtido para não aparecer mais
+                  let perfisCurtidos = JSON.parse(localStorage.getItem('perfisCurtidos') || '[]');
+                  const perfilId = currentIndex; // usar o índice atual como ID do perfil
+                  if (!perfisCurtidos.includes(perfilId)) {
+                    perfisCurtidos.push(perfilId);
+                    localStorage.setItem('perfisCurtidos', JSON.stringify(perfisCurtidos));
+                  }
+
+                  window.location.href = 'chat/index.html';
                 }
 
                 function nextProfile() {
@@ -2040,8 +2077,7 @@ document.head.appendChild(a);
                 }
 
                 function abrirChat() {
-                  // Open the premium popup instead of redirecting to chat/index.html
-                  openPopupPremiumImagem();
+                  window.location.href = 'chat/index.html';
                 }
 
                 function abrirPresentes() {
