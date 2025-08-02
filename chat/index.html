@@ -921,7 +921,7 @@ src="https://www.facebook.com/tr?id=1453046616041191&ev=PageView&noscript=1"/>
 <div class="messages" id="messages"></div>
 
 <div class="input-area">
-  <input type="text" id="userInput" placeholder="Digite sua mensagem...">
+  <input type="text" id="userInput" placeholder="Digite sua mensagem..." onclick="handleUserInputClick()">
   <button id="micButton" class="mic-button" onclick="handleMicClick()" title="Gravação de voz - Exclusivo para membros">
     <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
       <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
@@ -982,7 +982,7 @@ src="https://www.facebook.com/tr?id=1453046616041191&ev=PageView&noscript=1"/>
   <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:0.5rem; margin-bottom:1rem;">
     <button onclick="selectKeyType('cpf')" class="pix-key-btn" data-key-type="cpf" style="padding:0.75rem; background:#9333ea; color:white; border:none; border-radius:0.5rem; font-size:0.875rem; font-weight:500; cursor:pointer;">CPF/CNPJ</button>
     <button onclick="selectKeyType('telefone')" class="pix-key-btn" data-key-type="telefone" style="padding:0.75rem; background:#f8f9fa; color:#333; border:1px solid #dee2e6; border-radius:0.5rem; font-size:0.875rem; font-weight:500; cursor:pointer;">Telefone</button>
-    <button onclick="selectKeyType('email')" class="pix-key-btn" data-key-type="email" style="padding:0.75rem; background:#f8f9fa; color:#333; border:1px solid #dee2e6; border-radius:0.5rem; font-sizebackground:#f8f9fa;color:#333;border:1px solid #dee2e6;border-radius:0.5rem;font-size:0.875rem;font-weight:500;cursor:pointer;">E-mail</button>
+    <button onclick="selectKeyType('email')" class="pix-key-btn" data-key-type="email" style="padding:0.75rem; background:#f8f9fa; color:#333; border:1px solid #dee2e6; border-radius:0.5rem; font-size:0.875rem; font-weight:500; cursor:pointer;">E-mail</button>
     <button onclick="selectKeyType('aleatoria')" class="pix-key-btn" data-key-type="aleatoria" style="padding:0.75rem; background:#f8f9fa; color:#333; border:1px solid #dee2e6; border-radius:0.5rem; font-size:0.875rem; font-weight:500; cursor:pointer;">Chave Aleatória</button>
   </div>
 </div>
@@ -1414,80 +1414,74 @@ const foto = getProfileImage(); // This is the profile avatar, not the new image
 
 const messages = document.getElementById('messages');
 const wrapper = document.createElement('div');
-wrapper.className = 'message profile';
+wrapper.className = 'message profile'; // This class aligns to the left and uses flex
 
 const profileAvatar = document.createElement('img'); // Profile avatar for the message
 profileAvatar.src = foto;
 profileAvatar.className = 'message-avatar';
 
-// Create the message "Olha como estou agora"
-const messageTextDiv = document.createElement('div');
-messageTextDiv.className = 'message'; // Use existing message style
-// Removed custom styles to make it inherit default message styles (white text, same font)
-messageTextDiv.innerText = "Olha como estou agora";
-
 // Create the blurred image container
 const blurredImageContainer = document.createElement('div');
-blurredImageContainer.className = 'whatsapp-audio-player blocked'; // Reusing blocked audio player styles for blur and overlay
+blurredImageContainer.className = 'message'; // Reusing 'message' class for basic styling
 blurredImageContainer.style.cssText = `
-  background: #333;
+  background: #333; /* Dark background for the image container */
   color: #999;
-  filter: blur(2px);
-  opacity: 0.7;
   cursor: pointer;
   position: relative;
   margin-top: 1rem;
-  max-width: 85%;
+  max-width: 85%; /* Keep it aligned with other messages */
   width: 85%;
-  padding: 0; /* Remove padding from audio player */
-  border-radius: 1.25rem;
+  padding: 0; /* Remove padding from message class */
+  border-radius: 0.75rem; /* Match message border-radius */
   overflow: hidden; /* Ensure blur applies to image */
-  display: flex; /* To center content */
-  justify-content: center;
-  align-items: center;
   min-height: 150px; /* Give it a minimum height */
+  display: flex; /* Use flex to position content inside */
+  flex-direction: column; /* Stack text and image */
+  align-items: flex-start; /* Align content to the left within the container */
+  justify-content: flex-start;
 `;
 blurredImageContainer.onclick = abrirPopupPremium; // Open premium popup on click
 
+// Create the text overlay for the image
+const overlayTextDiv = document.createElement('div');
+overlayTextDiv.innerText = "Olha como estou agora!";
+overlayTextDiv.style.cssText = `
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 1rem; /* Match existing message font size */
+  font-weight: 600; /* Make it stand out a bit */
+  text-align: center;
+  z-index: 3; /* Ensure it's above the image */
+  text-shadow: 0 0 5px rgba(0,0,0,0.8); /* Add some shadow for readability */
+  white-space: nowrap; /* Keep text on one line */
+  padding: 0.5rem 1rem; /* Add some padding around the text */
+  background: rgba(0,0,0,0.4); /* Semi-transparent background for readability */
+  border-radius: 0.5rem;
+`;
+
 const blurredImage = document.createElement('img');
-  blurredImage.src = 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-Ep9oE7RPaQDoVYYtLj2cTZvrQpwHGJ.png'; // Path to the new blurred image [^v0_domain_knowledge]
-  blurredImage.alt = 'Imagem borrada';
-  blurredImage.style.cssText = `
-    width: 100%;
-    height: auto;
-    display: block;
-    filter: blur(2px); /* Apply blur directly to image */
-    object-fit: cover;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  `;
+blurredImage.src = 'image.png'; // Path to the new blurred image [^v0_domain_knowledge]
+blurredImage.alt = 'Imagem borrada';
+blurredImage.style.cssText = `
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: blur(2px); /* Apply blur directly to image */
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+`;
 
-  // Update blurredImageContainer style to remove centering and ensure left alignment
-  blurredImageContainer.style.cssText = `
-    background: #333;
-    color: #999;
-    filter: blur(2px);
-    opacity: 0.7;
-    cursor: pointer;
-    position: relative;
-    margin-top: 1rem;
-    max-width: 85%;
-    width: 85%;
-    padding: 0; /* Remove padding from audio player */
-    border-radius: 1.25rem;
-    overflow: hidden; /* Ensure blur applies to image */
-    /* Removed display: flex, justify-content, align-items to allow left alignment */
-    min-height: 150px; /* Give it a minimum height */
-  `;
-
-  blurredImageContainer.appendChild(blurredImage);
-  // Removed appending lockOverlay and premiumText
+blurredImageContainer.appendChild(blurredImage);
+blurredImageContainer.appendChild(overlayTextDiv); // Add the new text overlay
 
 wrapper.appendChild(profileAvatar);
-wrapper.appendChild(messageTextDiv); // Add the message text
 wrapper.appendChild(blurredImageContainer); // Add the blurred image container
 messages.appendChild(wrapper);
 messages.scrollTop = messages.scrollHeight;
@@ -1568,6 +1562,14 @@ e.preventDefault();
 sendMessage();
 }
 });
+
+function handleUserInputClick() {
+  const isPremium = localStorage.getItem('isPremium') === 'true';
+  if (!isPremium) {
+    abrirPopupPremium();
+  }
+  // If premium, allow normal input behavior (typing)
+}
 
 function rolarParaChat() {
 const messages = document.getElementById('messages');
