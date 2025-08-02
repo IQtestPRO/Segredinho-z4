@@ -181,12 +181,20 @@ flex-shrink: 0;
 }
 
 .back-arrow { 
-display: none; 
+display: flex; /* Changed from none to flex */
+align-items: center;
+justify-content: center;
 color: white; 
 font-size: 1.5rem;
 cursor: pointer; 
 font-weight: bold; 
 padding: 0.5rem;
+border-radius: 50%;
+transition: background 0.2s ease;
+}
+
+.back-arrow:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .profile-header { 
@@ -1085,9 +1093,9 @@ function updateSendButtonState() {
   if (presenteMostrado && !isPremium) {
     // Scenario 1: Chat is permanently blocked due to present popup and non-premium user
     // The button should be ENABLED to be clickable, but its action will be to open the popup.
-    sendButton.disabled = false; // <--- CHANGE THIS LINE
-    sendButton.style.opacity = '1'; // <--- ENSURE THIS IS SET
-    sendButton.style.cursor = 'pointer'; // <--- ENSURE THIS IS SET
+    sendButton.disabled = false;
+    sendButton.style.opacity = '1';
+    sendButton.style.cursor = 'pointer';
     userInput.disabled = true;
     userInput.readOnly = true;
     const blockedMessage = document.createElement('div');
