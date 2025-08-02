@@ -1423,18 +1423,7 @@ function showPresentPopup() {
   // Create the message "Olha como estou agora"
   const messageTextDiv = document.createElement('div');
   messageTextDiv.className = 'message'; // Use existing message style
-  messageTextDiv.style.cssText = `
-    background: #282828;
-    padding: 0.75rem 1rem;
-    border-radius: 0.75rem;
-    max-width: 85%;
-    font-size: 1rem;
-    line-height: 1.5;
-    word-wrap: break-word;
-    font-style: italic;
-    color: #ffb3d9;
-    animation: fadeIn 0.5s ease-in;
-  `;
+  // Removed custom styles to make it inherit default message styles (white text, same font)
   messageTextDiv.innerText = "Olha como estou agora";
 
   // Create the blurred image container
@@ -1461,7 +1450,7 @@ function showPresentPopup() {
   blurredImageContainer.onclick = abrirPopupPremium; // Open premium popup on click
 
   const blurredImage = document.createElement('img');
-  blurredImage.src = '../56hgdxs5bc.png'; // Path to the blurred image
+  blurredImage.src = 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/77_blurred_face_1000_body_300.jpg-ooe2iWYcrgjcMVMEfxjYmLM6Ua9mcV.jpeg'; // Path to the new blurred image [^v0_domain_knowledge]
   blurredImage.alt = 'Imagem borrada';
   blurredImage.style.cssText = `
     width: 100%;
