@@ -109,107 +109,204 @@ window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15
 <div class="elementor-element elementor-element-e2b10cb elementor-widget elementor-widget-html" data-element_type="widget" data-id="e2b10cb" data-widget_type="html.default">
 <div class="elementor-widget-container">
 <!DOCTYPE html>
-
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Pagamento Aprovado - Segredinho VIP</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
-    body {
-      background-color: #000;
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      color: white;
-      text-align: center;
-    }
+  body {
+    background-color: #f8f9fa;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #333;
+  }
+  .container {
+    background: #ffffff;
+    padding: 50px 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+    border: 1px solid #e9ecef;
+  }
+  .success-icon {
+    background-color: #28a745;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 30px auto;
+  }
+  .success-icon svg {
+    fill: white;
+    width: 40px;
+    height: 40px;
+  }
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #28a745;
+    line-height: 1.3;
+  }
+  .intro-text {
+    font-size: 16px;
+    color: #495057;
+    margin-bottom: 30px;
+    line-height: 1.6;
+  }
+  .form-container {
+    margin-bottom: 30px;
+  }
+  .email-input {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    font-size: 16px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+  }
+  .email-input:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+  .confirm-button {
+    width: 100%;
+    padding: 15px;
+    background-color: #007bff;
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .confirm-button:hover {
+    background-color: #0056b3;
+  }
+  .secondary-messages {
+    text-align: left;
+    margin-top: 30px;
+  }
+  .message-item {
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 15px;
+    line-height: 1.5;
+    padding-left: 20px;
+    position: relative;
+  }
+  .message-item:before {
+    content: "•";
+    color: #007bff;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+  }
+  .important {
+    color: #dc3545;
+    font-weight: 500;
+  }
+  @media (max-width: 600px) {
     .container {
-      background: linear-gradient(to bottom, #1a1a2e, #16213e, #0f3460);
-      padding: 40px 30px;
-      border-radius: 20px;
-      box-shadow: 0 0 30px rgba(0, 191, 255, 0.6);
-      max-width: 400px;
-      width: 90%;
-      border: 2px solid #00bfff;
-    }
-    .icon-circle {
-      background-color: #00bfff;
-      border-radius: 50%;
-      width: 80px;
-      height: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 25px auto;
-      box-shadow: 0 0 15px rgba(0, 191, 255, 0.8);
-    }
-    .icon-circle svg {
-      fill: white;
-      width: 40px;
-      height: 40px;
+      padding: 30px 20px;
+      margin: 10px;
     }
     h1 {
-      font-size: 28px;
-      font-weight: bold;
-      margin-bottom: 15px;
-      color: #00bfff;
+      font-size: 24px;
     }
-    p {
-      font-size: 16px;
-      color: #e0e0e0;
-      margin-bottom: 25px;
-      line-height: 1.6;
-    }
-    .button {
-      display: block;
-      width: 100%;
-      padding: 15px;
-      background: linear-gradient(to right, #00bfff, #0080ff);
-      color: white;
-      font-weight: bold;
-      font-size: 18px;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: background 0.3s ease, transform 0.2s ease;
-      box-shadow: 0 5px 15px rgba(0, 191, 255, 0.4);
-    }
-    .button:hover {
-      background: linear-gradient(to right, #0080ff, #00bfff);
-      transform: translateY(-2px);
-    }
-    .footer-text {
-      font-size: 12px;
-      color: #a0a0a0;
-      margin-top: 20px;
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
 <div class="container">
-<div class="icon-circle">
-<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-<path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path>
-</svg>
+  <div class="success-icon">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+    </svg>
+  </div>
+  
+  <h1>✅ Pagamento Aprovado com Sucesso!</h1>
+  
+  <p class="intro-text">
+    Olá! Recebemos a confirmação da sua assinatura Premium VIP.<br>
+    Para ativar seu acesso de forma segura e com prioridade, confirme seu e-mail abaixo.
+  </p>
+  
+  <div class="form-container">
+    <form id="emailConfirmForm">
+      <input 
+        type="email" 
+        class="email-input" 
+        placeholder="Digite seu e-mail principal" 
+        required
+        id="emailInput"
+      />
+      <button type="submit" class="confirm-button">Confirmar E-mail</button>
+    </form>
+  </div>
+  
+  <div class="secondary-messages">
+    <div class="message-item">
+      A liberação completa do seu acesso VIP pode levar até <strong>24 horas úteis</strong>, conforme nosso sistema de segurança.
+    </div>
+    <div class="message-item">
+      Você será notificado por e-mail assim que o acesso estiver 100% liberado.
+    </div>
+    <div class="message-item important">
+      Evite abrir solicitações ou pedidos de estorno nesse período, pois isso pode interromper sua ativação automática.
+    </div>
+    <div class="message-item">
+      Fique atento à sua caixa de entrada e também ao spam.
+    </div>
+  </div>
 </div>
-<h1>✅ Pagamento Confirmado com Sucesso!</h1>
-<p>Olá! Sua assinatura Premium VIP foi confirmada com sucesso e está passando pelos últimos passos de validação interna. Por padrão de segurança e controle de acesso, a liberação total do conteúdo pode levar até 24 horas úteis. Esse é um processo automático que garante uma experiência segura, estável e totalmente personalizada para você. 📌 Durante esse período, não é necessário abrir chamados ou solicitar reembolsos, pois isso pode interromper a ativação automática e gerar atrasos no acesso. Você será notificado assim que tudo estiver pronto. Agradecemos pela confiança e garantimos: a espera vai valer a pena. Atenciosamente, Equipe Segredinho VIP.</p>
-</div>
+
+<script>
+document.getElementById('emailConfirmForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  const email = document.getElementById('emailInput').value;
+  
+  if (email) {
+    // Simulate form submission
+    const button = document.querySelector('.confirm-button');
+    button.textContent = 'Confirmando...';
+    button.disabled = true;
+    
+    setTimeout(function() {
+      button.textContent = 'E-mail Confirmado!';
+      button.style.backgroundColor = '#28a745';
+      
+      // Optional: redirect after confirmation
+      setTimeout(function() {
+        // window.location.href = 'obrigado.html'; // Uncomment for actual redirect
+      }, 2000);
+    }, 1500);
+  }
+});
+</script>
 </body>
-<!-- Mirrored from appminhacoroa.site/pagamento-aprovado.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 08 Jul 2025 02:32:38 GMT -->
 </html>
 </div>
 </div>
 </div>
 </div>
 <script type="speculationrules">
-{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"\/*"},{"not":{"href_matches":["\/wp-*.php","\/wp-admin\/*","\/wp-content\/uploads\/*","\/wp-content\/*","\/wp-content\/plugins\/*","\/wp-content\/themes\/hello-elementor\/*","\/*\\?(.+)"]}},{"not":{"href_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
+{"prefetch":[{"source":"document","where":[{"and":[{"href_matches":"\/*"},{"not":{"href_matches":["\/wp-*.php","\/wp-admin\/*","\/wp-content\/uploads\/*","\/wp-content\/*","\/wp-content\/plugins\/*","\/wp-content\/themes\/hello-elementor\/*","\/*\\?(.+)"]}},{"not":{"href_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
 </script>
 <script>
 				const lazyloadRunObserver = () => {
