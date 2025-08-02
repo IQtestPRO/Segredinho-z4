@@ -1448,8 +1448,7 @@ function sendMessage() {
 
   // 2. Check if chat is currently allowed to send messages
   if (!canSendMessage || messagesSentInCurrentPhase >= messagesAllowedInCurrentPhase) {
-    // If chat is locked or message limit reached for current phase, open premium popup
-    abrirPopupPremium(); // <--- ADDED THIS LINE
+    // If chat is locked or message limit reached for current phase, do not send
     return;
   }
 
