@@ -1410,22 +1410,113 @@ messages.scrollTop = messages.scrollHeight;
 
 function showPresentPopup() {
   presenteMostrado = true; // Set flag
-  const foto = getProfileImage();
+  const foto = getProfileImage(); // This is the profile avatar, not the new image
 
   const messages = document.getElementById('messages');
   const wrapper = document.createElement('div');
   wrapper.className = 'message profile';
 
-  const img = document.createElement('img');
-  img.src = foto;
-  img.className = 'message-avatar';
+  const profileAvatar = document.createElement('img'); // Profile avatar for the message
+  profileAvatar.src = foto;
+  profileAvatar.className = 'message-avatar';
 
-  const popup = document.createElement('div');
-  popup.className = 'present-popup';
-  popup.innerHTML = '<p>🎁 Você ganhou R$50 de presente!</p><button id="botaoPresente" onclick="resgatarPresente()">Resgatar Presente</button>';
+  // Create the message "Olha como estou agora"
+  const messageTextDiv = document.createElement('div');
+  messageTextDiv.className = 'message'; // Use existing message style
+  messageTextDiv.style.cssText = `
+    background: #282828;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    max-width: 85%;
+    font-size: 1rem;
+    line-height: 1.5;
+    word-wrap: break-word;
+    font-style: italic;
+    color: #ffb3d9;
+    animation: fadeIn 0.5s ease-in;
+  `;
+  messageTextDiv.innerText = "Olha como estou agora";
 
-  wrapper.appendChild(img);
-  wrapper.appendChild(popup);
+  // Create the blurred image container
+  const blurredImageContainer = document.createElement('div');
+  blurredImageContainer.className = 'whatsapp-audio-player blocked'; // Reusing blocked audio player styles for blur and overlay
+  blurredImageContainer.style.cssText = `
+    background: #333;
+    color: #999;
+    filter: blur(2px);
+    opacity: 0.7;
+    cursor: pointer;
+    position: relative;
+    margin-top: 1rem;
+    max-width: 85%;
+    width: 85%;
+    padding: 0; /* Remove padding from audio player */
+    border-radius: 1.25rem;
+    overflow: hidden; /* Ensure blur applies to image */
+    display: flex; /* To center content */
+    justify-content: center;
+    align-items: center;
+    min-height: 150px; /* Give it a minimum height */
+  `;
+  blurredImageContainer.onclick = abrirPopupPremium; // Open premium popup on click
+
+  const blurredImage = document.createElement('img');
+  blurredImage.src = '../56hgdxs5bc.png'; // Path to the blurred image
+  blurredImage.alt = 'Imagem borrada';
+  blurredImage.style.cssText = `
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: blur(2px); /* Apply blur directly to image */
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  `;
+
+  const lockOverlay = document.createElement('div');
+  lockOverlay.className = 'audio-lock-overlay'; // Reusing existing lock icon style
+  lockOverlay.innerText = '🔒';
+  lockOverlay.style.cssText = `
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2.5rem; /* Make it larger */
+    z-index: 2;
+    filter: none;
+    color: white; /* Ensure lock is visible */
+    text-shadow: 0 0 5px rgba(0,0,0,0.8);
+  `;
+
+  const premiumText = document.createElement('div');
+  premiumText.className = 'audio-premium-text'; // Reusing existing premium text style
+  premiumText.innerText = 'Apenas para Assinantes';
+  premiumText.style.cssText = `
+    position: absolute;
+    bottom: 1rem; /* Adjust position */
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.85rem; /* Adjust font size */
+    color: #ffc107;
+    font-weight: bold;
+    white-space: nowrap;
+    filter: none;
+    z-index: 2;
+    background: rgba(0,0,0,0.5); /* Add background for readability */
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+  `;
+
+  blurredImageContainer.appendChild(blurredImage);
+  blurredImageContainer.appendChild(lockOverlay);
+  blurredImageContainer.appendChild(premiumText);
+
+  wrapper.appendChild(profileAvatar);
+  wrapper.appendChild(messageTextDiv); // Add the message text
+  wrapper.appendChild(blurredImageContainer); // Add the blurred image container
   messages.appendChild(wrapper);
   messages.scrollTop = messages.scrollHeight;
 
