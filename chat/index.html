@@ -921,7 +921,7 @@ src="https://www.facebook.com/tr?id=1453046616041191&ev=PageView&noscript=1"/>
 <div class="messages" id="messages"></div>
 
 <div class="input-area">
-  <input type="text" id="userInput" placeholder="Digite sua mensagem...">
+  <input type="text" id="userInput" placeholder="Digite sua mensagem..." onclick="handleUserInputClick()">
   <button id="micButton" class="mic-button" onclick="handleMicClick()" title="Gravação de voz - Exclusivo para membros">
     <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
       <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
@@ -1420,75 +1420,87 @@ const profileAvatar = document.createElement('img'); // Profile avatar for the m
 profileAvatar.src = foto;
 profileAvatar.className = 'message-avatar';
 
-// Create the message "Olha como estou agora"
-const messageTextDiv = document.createElement('div');
-messageTextDiv.className = 'message'; // Use existing message style
-// Removed custom styles to make it inherit default message styles (white text, same font)
-messageTextDiv.innerText = "Olha como estou agora";
+    // Create a container for the text message and the blurred image
+    const contentDiv = document.createElement('div');
+    contentDiv.style.cssText = `
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start; /* Align content to the left */
+        gap: 0.5rem; /* Space between text and image */
+        max-width: 85%; /* Match message max-width */
+    `;
 
-// Create the blurred image container
-const blurredImageContainer = document.createElement('div');
-blurredImageContainer.className = 'whatsapp-audio-player blocked'; // Reusing blocked audio player styles for blur and overlay
-blurredImageContainer.style.cssText = `
-  background: #333;
-  color: #999;
-  filter: blur(2px);
-  opacity: 0.7;
-  cursor: pointer;
-  position: relative;
-  margin-top: 1rem;
-  max-width: 85%;
-  width: 85%;
-  padding: 0; /* Remove padding from audio player */
-  border-radius: 1.25rem;
-  overflow: hidden; /* Ensure blur applies to image */
-  display: flex; /* To center content */
-  justify-content: center;
-  align-items: center;
-  min-height: 150px; /* Give it a minimum height */
-`;
-blurredImageContainer.onclick = abrirPopupPremium; // Open premium popup on click
+    // Append text message and blurred image to the contentDiv
+    const messageTextDiv = document.createElement('div');
+    messageTextDiv.className = 'message'; // Use existing message style
+    // Removed custom styles to make it inherit default message styles (white text, same font)
+    messageTextDiv.innerText = "Olha como estou agora";
+    contentDiv.appendChild(messageTextDiv);
 
-const blurredImage = document.createElement('img');
-  blurredImage.src = 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-Ep9oE7RPaQDoVYYtLj2cTZvrQpwHGJ.png'; // Path to the new blurred image [^v0_domain_knowledge]
-  blurredImage.alt = 'Imagem borrada';
-  blurredImage.style.cssText = `
-    width: 100%;
-    height: auto;
-    display: block;
-    filter: blur(2px); /* Apply blur directly to image */
-    object-fit: cover;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  `;
+    const blurredImageContainer = document.createElement('div');
+    blurredImageContainer.className = 'whatsapp-audio-player blocked'; // Reusing blocked audio player styles for blur and overlay
+    blurredImageContainer.style.cssText = `
+      background: #333;
+      color: #999;
+      filter: blur(2px);
+      opacity: 0.7;
+      cursor: pointer;
+      position: relative;
+      margin-top: 1rem;
+      max-width: 85%;
+      width: 85%;
+      padding: 0; /* Remove padding from audio player */
+      border-radius: 1.25rem;
+      overflow: hidden; /* Ensure blur applies to image */
+      display: flex; /* To center content */
+      justify-content: center;
+      align-items: center;
+      min-height: 150px; /* Give it a minimum height */
+    `;
+    blurredImageContainer.onclick = abrirPopupPremium; // Open premium popup on click
 
-  // Update blurredImageContainer style to remove centering and ensure left alignment
-  blurredImageContainer.style.cssText = `
-    background: #333;
-    color: #999;
-    filter: blur(2px);
-    opacity: 0.7;
-    cursor: pointer;
-    position: relative;
-    margin-top: 1rem;
-    max-width: 85%;
-    width: 85%;
-    padding: 0; /* Remove padding from audio player */
-    border-radius: 1.25rem;
-    overflow: hidden; /* Ensure blur applies to image */
-    /* Removed display: flex, justify-content, align-items to allow left alignment */
-    min-height: 150px; /* Give it a minimum height */
-  `;
+    const blurredImage = document.createElement('img');
+      blurredImage.src = 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-Ep9oE7RPaQDoVYYtLj2cTZvrQpwHGJ.png'; // Path to the new blurred image [^v0_domain_knowledge]
+      blurredImage.alt = 'Imagem borrada';
+      blurredImage.style.cssText = `
+        width: 100%;
+        height: auto;
+        display: block;
+        filter: blur(2px); /* Apply blur directly to image */
+        object-fit: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      `;
 
-  blurredImageContainer.appendChild(blurredImage);
-  // Removed appending lockOverlay and premiumText
+      // Update blurredImageContainer style to remove centering and ensure left alignment
+      blurredImageContainer.style.cssText = `
+        background: #333;
+        color: #999;
+        filter: blur(2px);
+        opacity: 0.7;
+        cursor: pointer;
+        position: relative;
+        margin-top: 1rem;
+        max-width: 85%;
+        width: 85%;
+        padding: 0; /* Remove padding from audio player */
+        border-radius: 1.25rem;
+        overflow: hidden; /* Ensure blur applies to image */
+        /* Removed display: flex, justify-content, align-items to allow left alignment */
+        min-height: 150px; /* Give it a minimum height */
+      `;
 
-wrapper.appendChild(profileAvatar);
-wrapper.appendChild(messageTextDiv); // Add the message text
-wrapper.appendChild(blurredImageContainer); // Add the blurred image container
+      blurredImageContainer.appendChild(blurredImage);
+      // Removed appending lockOverlay and premiumText
+    contentDiv.appendChild(blurredImageContainer);
+
+    // Append avatar and contentDiv to the main wrapper
+    wrapper.appendChild(profileAvatar);
+    wrapper.appendChild(contentDiv); // This will place contentDiv next to the avatar
+
 messages.appendChild(wrapper);
 messages.scrollTop = messages.scrollHeight;
 
@@ -1711,6 +1723,15 @@ content.innerHTML = `
 function declineVideoCall() {
 closeVideoCall();
 }
+
+    function handleUserInputClick() {
+        // Only open popup if the present has been shown (meaning third audio was sent)
+        // and the user is NOT premium (because premium users can send messages freely)
+        const isPremium = localStorage.getItem('isPremium') === 'true';
+        if (presenteMostrado && !isPremium) {
+            abrirPopupPremium();
+        }
+    }
 </script>
 
 </body>
