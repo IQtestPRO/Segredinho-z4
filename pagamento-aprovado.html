@@ -117,7 +117,7 @@ window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
   body {
-    background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     font-family: 'Inter', sans-serif;
     margin: 0;
     padding: 20px;
@@ -125,36 +125,47 @@ window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    color: #fff;
+    color: #333;
   }
   .container {
-    background-color: #0f0f0f;
-    padding: 30px;
-    max-width: 800px;
-    margin: auto;
-    border-radius: 12px;
-    color: #fff;
+    background: #ffffff;
+    padding: 50px 40px;
+    border-radius: 16px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
     text-align: center;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-    border: 1px solid #333;
+    border: 1px solid #e9ecef;
   }
-  .logo {
-    width: 140px;
-    margin-bottom: 20px;
-    filter: brightness(1.2);
+  .success-icon {
+    background-color: #28a745;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 30px auto;
+    box-shadow: 0 5px 20px rgba(40, 167, 69, 0.3);
+  }
+  .success-icon svg {
+    fill: white;
+    width: 40px;
+    height: 40px;
   }
   .main-title {
     font-size: 32px;
     font-weight: 700;
-    margin-bottom: 10px;
-    color: #00ff88;
-    text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+    margin-bottom: 20px;
+    color: #28a745;
+    line-height: 1.3;
   }
-  .subtitle {
-    font-size: 16px;
-    margin-bottom: 25px;
-    color: #ccc;
-    line-height: 1.5;
+  .intro-text {
+    font-size: 18px;
+    color: #495057;
+    margin-bottom: 35px;
+    line-height: 1.6;
+    font-weight: 400;
   }
   .form-container {
     margin-bottom: 40px;
@@ -162,104 +173,197 @@ window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15
   .email-input {
     width: 100%;
     max-width: 400px;
-    padding: 15px;
-    border: 2px solid #333;
-    border-radius: 8px;
-    background-color: #1a1a1a;
-    color: #fff;
+    padding: 16px;
+    border: 2px solid #dee2e6;
+    border-radius: 10px;
     font-size: 16px;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     box-sizing: border-box;
-    transition: border-color 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    font-family: 'Inter', sans-serif;
   }
   .email-input:focus {
     outline: none;
-    border-color: #d300ff;
-    box-shadow: 0 0 10px rgba(211, 0, 255, 0.3);
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
   }
   .email-input::placeholder {
-    color: #888;
+    color: #6c757d;
   }
   .confirm-button {
     width: 100%;
     max-width: 400px;
-    padding: 15px;
-    background: linear-gradient(135deg, #d300ff 0%, #ff0080 100%);
+    padding: 16px 24px;
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
     color: white;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 18px;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    text-transform: uppercase;
+    font-family: 'Inter', sans-serif;
+    box-shadow: 0 5px 20px rgba(0, 123, 255, 0.3);
   }
   .confirm-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(211, 0, 255, 0.4);
+    box-shadow: 0 8px 25px rgba(0, 123, 255, 0.4);
   }
-  .benefits-title {
-    color: #d300ff;
-    font-size: 24px;
+  .confirm-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+  }
+  .secondary-messages {
+    text-align: left;
+    margin-top: 40px;
+    background: #f8f9fa;
+    padding: 30px;
+    border-radius: 12px;
+    border-left: 4px solid #007bff;
+  }
+  .message-item {
+    font-size: 15px;
+    color: #495057;
+    margin-bottom: 18px;
+    line-height: 1.6;
+    padding-left: 25px;
+    position: relative;
+  }
+  .message-item:last-child {
+    margin-bottom: 0;
+  }
+  .message-item:before {
+    content: "•";
+    color: #007bff;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+    font-size: 18px;
+  }
+  .important {
+    color: #dc3545;
     font-weight: 600;
-    margin-bottom: 10px;
-    text-shadow: 0 0 15px rgba(211, 0, 255, 0.3);
+  }
+  .highlight {
+    background: linear-gradient(120deg, #ffeaa7 0%, #fab1a0 100%);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  .benefits-trigger {
+    margin-top: 30px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: transform 0.3s ease;
+    font-family: 'Inter', sans-serif;
+  }
+  .benefits-trigger:hover {
+    transform: translateY(-2px);
+  }
+  
+  /* Modal Styles */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.3s ease;
+  }
+  .modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 40px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    animation: slideIn 0.3s ease;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  }
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+  }
+  .close:hover {
+    color: #000;
+  }
+  .modal h3 {
+    color: #6c5ce7;
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-align: center;
   }
   .benefits-list {
-    text-align: left;
-    line-height: 1.8;
-    margin-bottom: 30px;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+    list-style: none;
+    padding: 0;
   }
   .benefits-list li {
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f3f4;
     font-size: 16px;
-    margin-bottom: 8px;
-    color: #e0e0e0;
-    list-style: none;
-    padding-left: 0;
+    color: #495057;
   }
-  .early-access-button {
-    background-color: #00c853;
-    color: #fff;
-    padding: 14px 28px;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 18px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    text-transform: uppercase;
-    box-shadow: 0 5px 20px rgba(0, 200, 83, 0.3);
+  .benefits-list li:last-child {
+    border-bottom: none;
   }
-  .early-access-button:hover {
-    background-color: #00a043;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 200, 83, 0.4);
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
+  @keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  
   @media (max-width: 600px) {
     .container {
-      padding: 20px;
+      padding: 30px 20px;
       margin: 10px;
     }
     .main-title {
-      font-size: 24px;
+      font-size: 26px;
     }
-    .benefits-list {
-      text-align: center;
+    .intro-text {
+      font-size: 16px;
+    }
+    .modal-content {
+      margin: 10% auto;
+      padding: 30px 20px;
     }
   }
 </style>
 </head>
 <body>
 <div class="container">
-  <img src="/placeholder.svg?height=140&width=140&text=Segredinho+VIP" alt="Logo Segredinho VIP" class="logo"/>
+  <div class="success-icon">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+    </svg>
+  </div>
   
-  <h2 class="main-title">✅ Pagamento Aprovado com Sucesso!</h2>
+  <h1 class="main-title">✅ Pagamento Aprovado com Sucesso!</h1>
   
-  <p class="subtitle">
-    Sua ativação VIP está em processamento. Para garantir prioridade, confirme seu e-mail abaixo.
+  <p class="intro-text">
+    Olá! Recebemos a confirmação da sua assinatura Premium VIP.<br>
+    Para ativar seu acesso de forma segura e com prioridade, confirme seu e-mail abaixo.
   </p>
   
   <div class="form-container">
@@ -268,68 +372,96 @@ window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15
         type="email" 
         class="email-input" 
         name="email"
-        placeholder="voce@email.com" 
+        placeholder="Digite seu e-mail principal" 
         required
         id="emailInput"
       />
-      <button type="submit" class="confirm-button">Confirmar Acesso VIP</button>
+      <button type="submit" class="confirm-button" id="confirmBtn">Confirmar E-mail</button>
     </form>
   </div>
   
-  <h3 class="benefits-title">💎 Benefícios Exclusivos do Clube VIP</h3>
-  
-  <ul class="benefits-list">
-    <li>💋 Acesso a Perfis Ocultos só para VIPs</li>
-    <li>⚡ PIX Turbo: Recompensas por curtir as Coroas</li>
-    <li>🔥 Curtidas Ilimitadas + SuperLike VIP</li>
-    <li>🎁 Presentes em Dinheiro e Mimos Secretos</li>
-    <li>💬 Chat Prioritário com Coroas mais desejadas</li>
-    <li>🔞 Modo Fantasia (+18 liberado)</li>
-    <li>❤️ Convites para Encontros Reais</li>
-  </ul>
-  
-  <button class="early-access-button" onclick="liberarAcesso()">
-    🔓 Liberar Acesso Antecipado
+  <button class="benefits-trigger" onclick="openModal()">
+    💎 Ver Benefícios Exclusivos VIP
   </button>
+  
+  <div class="secondary-messages">
+    <div class="message-item">
+      A liberação completa do seu acesso VIP pode levar até <span class="highlight">24 horas úteis</span>, conforme nosso sistema de segurança.
+    </div>
+    <div class="message-item">
+      Você será notificado por e-mail assim que o acesso estiver 100% liberado.
+    </div>
+    <div class="message-item important">
+      Evite abrir solicitações ou pedidos de estorno nesse período, pois isso pode interromper sua ativação automática.
+    </div>
+    <div class="message-item">
+      Fique atento à sua caixa de entrada e também ao spam.
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="benefitsModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h3>💎 Benefícios Exclusivos do Clube VIP</h3>
+    <ul class="benefits-list">
+      <li>💋 Acesso a Perfis Ocultos só para VIPs</li>
+      <li>⚡ PIX Turbo: Recompensas por curtir as Coroas</li>
+      <li>🔥 Curtidas Ilimitadas + SuperLike VIP</li>
+      <li>🎁 Presentes em Dinheiro e Mimos Secretos</li>
+      <li>💬 Chat Prioritário com Coroas mais desejadas</li>
+      <li>🔞 Modo Fantasia (+18 liberado)</li>
+      <li>❤️ Convites para Encontros Reais</li>
+    </ul>
+  </div>
 </div>
 
 <script>
+// Form submission handler
 document.getElementById('emailForm').addEventListener('submit', function(e) {
   e.preventDefault();
   
   const email = document.getElementById('emailInput').value;
+  const button = document.getElementById('confirmBtn');
   
   if (email) {
-    const button = document.querySelector('.confirm-button');
     button.textContent = 'Confirmando...';
     button.disabled = true;
     
     setTimeout(function() {
       button.textContent = '✅ E-mail Confirmado!';
-      button.style.background = 'linear-gradient(135deg, #00c853 0%, #4caf50 100%)';
+      button.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
       
       // Show success message
       const successMsg = document.createElement('div');
-      successMsg.innerHTML = '<p style="color: #00ff88; margin-top: 15px; font-weight: 600;">✅ Confirmação realizada! Aguarde a liberação do seu acesso VIP.</p>';
+      successMsg.innerHTML = '<p style="color: #28a745; margin-top: 20px; font-weight: 600; font-size: 16px;">✅ Confirmação realizada com sucesso! Aguarde a liberação do seu acesso VIP.</p>';
       document.querySelector('.form-container').appendChild(successMsg);
+      
+      // Simulate redirect after 3 seconds
+      setTimeout(function() {
+        // window.location.href = 'obrigado.html'; // Uncomment for actual redirect
+        console.log('Redirecionamento simulado');
+      }, 3000);
     }, 1500);
   }
 });
 
-function liberarAcesso() {
-  const button = document.querySelector('.early-access-button');
-  button.textContent = '🔄 Processando...';
-  button.disabled = true;
-  
-  setTimeout(function() {
-    button.textContent = '✅ Acesso Liberado!';
-    button.style.backgroundColor = '#4caf50';
-    
-    // Show access message
-    const accessMsg = document.createElement('div');
-    accessMsg.innerHTML = '<p style="color: #00ff88; margin-top: 15px; font-weight: 600; font-size: 18px;">🎉 Parabéns! Seu acesso VIP foi liberado com sucesso!</p>';
-    document.body.appendChild(accessMsg);
-  }, 2000);
+// Modal functions
+function openModal() {
+  document.getElementById('benefitsModal').style.display = 'block';
+}
+
+function closeModal() {
+  document.getElementById('benefitsModal').style.display = 'none';
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+  const modal = document.getElementById('benefitsModal');
+  if (event.target == modal) {
+    modal.style.display = 'none';
+  }
 }
 </script>
 </body>
@@ -384,7 +516,7 @@ var ElementorProFrontendConfig = {"ajaxurl":"https:\/\/minhacoroaplus.site\/wp-a
 <script id="elementor-pro-frontend-js" src="wp-content/plugins/elementor-pro/assets/js/frontend.min.html"></script>
 <script id="jquery-ui-core-js" src="wp-includes/js/jquery/ui/core.min.js"></script>
 <script id="elementor-frontend-js-before">
-var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false,"isScriptDebug":false},"i18n":{"shareOnFacebook":"Compartilhar no Facebook","shareOnTwitter":"Compartilhar no Twitter","pinIt":"Fixar","download":"Baixar","downloadImage":"Baixar imagem","fullscreen":"Tela cheia","zoom":"Zoom","share":"Compartilhar","playVideo":"Reproduzir v\u00eddeo","previous":"Anterior","next":"Pr\u00f3ximo","close":"Fechar","a11yCarouselPrevSlideMessage":"Slide anterior","a11yCarouselNextSlideMessage":"Pr\u00f3ximo slide","a11yCarouselFirstSlideMessage":"Este \u00e9 o primeiro slide","a11yCarouselLastSlideMessage":"Este \u00e9 o \u00faltimo slide","a11yCarouselPaginationBulletMessage":"Ir para o slide"},"is_rtl":false,"breakpoints":{"xs":0,"sm":480,"md":768,"lg":1025,"xl":1440,"xxl":1600},"responsive":{"breakpoints":{"mobile":{"label":"Dispositivos m\u00f3veis no modo retrato","value":767,"default_value":767,"direction":"max","is_enabled":true},"mobile_extra":{"label":"Dispositivos m\u00f3veis no modo paisagem","value":880,"default_value":880,"direction":"max","is_enabled":false},"tablet":{"label":"Tablet no modo retrato","value":1024,"default_value":1024,"direction":"max","is_enabled":true},"tablet_extra":{"label":"Tablet no modo paisagem","value":1200,"default_value":1200,"direction":"max","is_enabled":false},"laptop":{"label":"Notebook","value":1366,"default_value":1366,"direction":"max","is_enabled":false},"widescreen":{"label":"Tela ampla (widescreen)","value":2400,"default_value":2400,"direction":"min","is_enabled":false}},"hasCustomBreakpoints":false},"version":"3.28.3","is_static":false,"experimentalFeatures":{"additional_custom_breakpoints":true,"container":true,"e_local_google_fonts":true,"theme_builder_v2":true,"hello-theme-header-footer":true,"nested-elements":true,"editor_v2":true,"home_screen":true,"page-transitions":true,"notes":true,"loop":true,"form-submissions":true,"e_scroll_snap":true},"urls":{"assets":"https:\/\/minhacoroaplus.site\/wp-content\/plugins\/elementor\/assets\/","ajaxurl":"https:\/\/minhacoroaplus.site\/wp-admin\/admin-ajax.php","uploadUrl":"https:\/\/minhacoroaplus.site\/wp-content\/uploads"},"nonces":{"floatingButtonsClickTracking":"d07faaf81c"},"swiperClass":"swiper","settings":{"page":[],"editorPreferences":[]},"kit":{"active_breakpoints":["viewport_mobile","viewport_tablet"],"global_image_lightbox":"yes","lightbox_enable_counter":"yes","lightbox_enable_fullscreen":"yes","lightbox_enable_zoom":"yes","lightbox_enable_share":"yes","lightbox_title_src":"title","lightbox_description_src":"description","hello_header_logo_type":"title","hello_footer_logo_type":"logo"},"post":{"id":584,"title":"Minha%20Coroa%20%E2%80%93%20Pagamento%20Aprovado%20%E2%80%93%20minhacoroaplus.site","excerpt":"","featuredImage":false}};
+var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false,"isScriptDebug":false},"i18n":{"shareOnFacebook":"Compartilhar no Facebook","shareOnTwitter":"Compartilhar no Twitter","pinIt":"Fixar","download":"Baixar","downloadImage":"Baixar imagem","fullscreen":"Tela cheia","zoom":"Zoom","share":"Compartilhar","playVideo":"Reproduzir v\u00iddeo","previous":"Anterior","next":"Pr\u00f3ximo","close":"Fechar","a11yCarouselPrevSlideMessage":"Slide anterior","a11yCarouselNextSlideMessage":"Pr\u00f3ximo slide","a11yCarouselFirstSlideMessage":"Este \u00e9 o primeiro slide","a11yCarouselLastSlideMessage":"Este \u00e9 o \u00faltimo slide","a11yCarouselPaginationBulletMessage":"Ir para o slide"},"is_rtl":false,"breakpoints":{"xs":0,"sm":480,"md":768,"lg":1025,"xl":1440,"xxl":1600},"responsive":{"breakpoints":{"mobile":{"label":"Dispositivos m\u00f3veis no modo retrato","value":767,"default_value":767,"direction":"max","is_enabled":true},"mobile_extra":{"label":"Dispositivos m\u00f3veis no modo paisagem","value":880,"default_value":880,"direction":"max","is_enabled":false},"tablet":{"label":"Tablet no modo retrato","value":1024,"default_value":1024,"direction":"max","is_enabled":true},"tablet_extra":{"label":"Tablet no modo paisagem","value":1200,"default_value":1200,"direction":"max","is_enabled":false},"laptop":{"label":"Notebook","value":1366,"default_value":1366,"direction":"max","is_enabled":false},"widescreen":{"label":"Tela ampla (widescreen)","value":2400,"default_value":2400,"direction":"min","is_enabled":false}},"hasCustomBreakpoints":false},"version":"3.28.3","is_static":false,"experimentalFeatures":{"additional_custom_breakpoints":true,"container":true,"e_local_google_fonts":true,"theme_builder_v2":true,"hello-theme-header-footer":true,"nested-elements":true,"editor_v2":true,"home_screen":true,"page-transitions":true,"notes":true,"loop":true,"form-submissions":true,"e_scroll_snap":true},"urls":{"assets":"https:\/\/minhacoroaplus.site\/wp-content\/plugins\/elementor\/assets\/","ajaxurl":"https:\/\/minhacoroaplus.site\/wp-admin\/admin-ajax.php","uploadUrl":"https:\/\/minhacoroaplus.site\/wp-content\/uploads"},"nonces":{"floatingButtonsClickTracking":"d07faaf81c"},"swiperClass":"swiper","settings":{"page":[],"editorPreferences":[]},"kit":{"active_breakpoints":["viewport_mobile","viewport_tablet"],"global_image_lightbox":"yes","lightbox_enable_counter":"yes","lightbox_enable_fullscreen":"yes","lightbox_enable_zoom":"yes","lightbox_enable_share":"yes","lightbox_title_src":"title","lightbox_description_src":"description","hello_header_logo_type":"title","hello_footer_logo_type":"logo"},"post":{"id":584,"title":"Minha%20Coroa%20%E2%80%93%20Pagamento%20Aprovado%20%E2%80%93%20minhacoroaplus.site","excerpt":"","featuredImage":false}};
 </script>
 <script id="elementor-frontend-js" src="wp-content/plugins/elementor/assets/js/frontend.min.js"></script>
 <script id="pro-preloaded-elements-handlers-js" src="wp-content/plugins/elementor-pro/assets/js/preloaded-elements-handlers.min.html"></script>
