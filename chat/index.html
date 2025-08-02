@@ -1179,9 +1179,7 @@ function sendFirstAudio() {
     // Regular flow: audio1.mp4 plays
     setTimeout(() => { // This is when audio1.mp4 actually starts playing (after 11s initial delay)
       document.getElementById('status').innerText = '';
-      sendWhatsAppAudio('../assets/audios/audio1.mp4', () => { // Callback when audio1.mp4 ends
-        setTimeout(() => { sendEmotionalMessage(); }, 1000);
-      });
+      sendWhatsAppAudio('../assets/audios/audio1.mp4'); // Removed the onEnded callback
       // Unlock chat immediately when audio appears
       unlockChatArea(1);
     }, 11000); // Delay before audio1.mp4 starts playing
