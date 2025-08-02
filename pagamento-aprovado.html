@@ -282,43 +282,63 @@
   }
   
   .important-info {
-    background: linear-gradient(135deg, #fff3cd, #ffeaa7);
-    border: 2px solid #ffc107;
-    border-radius: 15px;
-    padding: 25px;
-    margin: 30px 0;
+    background: linear-gradient(135deg, #fff8e1, #fffbe6); /* Mais claro e convidativo */
+    border: 2px solid #ffcc00; /* Borda mais vibrante */
+    border-radius: 18px; /* Bordas mais arredondadas */
+    padding: 30px;
+    margin: 35px 0;
     text-align: left;
+    box-shadow: 0 8px 25px rgba(255, 204, 0, 0.2); /* Sombra mais amigável */
   }
   
   .important-info h4 {
-    color: #856404;
-    font-size: 20px;
-    margin-bottom: 15px;
-    font-weight: 600;
+    color: #e69a00; /* Cor mais quente */
+    font-size: 22px; /* Um pouco maior */
+    margin-bottom: 20px;
+    font-weight: 700; /* Mais forte */
+    text-align: center; /* Centralizado */
   }
   
   .info-item {
-    color: #856404;
-    margin-bottom: 12px;
-    font-size: 15px;
-    line-height: 1.5;
-    padding-left: 20px;
+    color: #a07a00; /* Cor do texto mais escura para contraste */
+    margin-bottom: 15px;
+    font-size: 16px; /* Um pouco maior */
+    line-height: 1.6;
+    padding-left: 30px; /* Mais espaço para o ícone */
     position: relative;
   }
   
   .info-item::before {
-    content: "⚠️";
+    content: "⚠️"; /* Ícone de aviso */
     position: absolute;
     left: 0;
-    top: 0;
+    top: 2px;
+    font-size: 20px;
   }
   
   .highlight {
-    background: linear-gradient(120deg, #d300ff, #b941ff);
+    background: linear-gradient(120deg, #ffcc00, #ff9900); /* Gradiente mais forte */
     color: white;
-    padding: 2px 8px;
-    border-radius: 6px;
-    font-weight: 600;
+    padding: 4px 10px; /* Mais padding */
+    border-radius: 8px; /* Mais arredondado */
+    font-weight: 700; /* Mais negrito */
+    box-shadow: 0 2px 8px rgba(255, 153, 0, 0.4); /* Sombra para destaque */
+    display: inline-block; /* Para aplicar padding e shadow corretamente */
+  }
+
+  .important-warning {
+    color: #dc3545; /* Vermelho para aviso crítico */
+    font-weight: 700;
+  }
+
+  .highlight-danger {
+    background: linear-gradient(120deg, #dc3545, #c82333); /* Gradiente vermelho */
+    color: white;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.4);
+    display: inline-block;
   }
   
   .footer-text {
@@ -411,18 +431,15 @@
       </div>
       
       <div class="important-info">
-        <h4>⏰ Informações Importantes da Ativação</h4>
+        <h4>🚨 Atenção: Informações Cruciais para Sua Ativação VIP</h4>
         <div class="info-item">
-          A liberação completa do seu acesso VIP pode levar até <span class="highlight">24 horas úteis</span>, conforme nosso sistema de segurança.
+          A liberação completa do seu acesso VIP pode levar até <span class="highlight">24 HORAS ÚTEIS</span>. Este é um processo de segurança para garantir sua experiência exclusiva.
         </div>
         <div class="info-item">
-          Você será notificado por e-mail assim que o acesso estiver 100% liberado.
+          Você será notificado por e-mail assim que o acesso estiver 100% liberado. Fique de olho na sua caixa de entrada e no spam!
         </div>
         <div class="info-item">
-          Evite abrir solicitações ou pedidos de estorno nesse período, pois isso pode interromper sua ativação automática.
-        </div>
-        <div class="info-item">
-          Fique atento à sua caixa de entrada e também ao spam.
+          <span class="important-warning">IMPORTANTE:</span> Evite abrir solicitações ou pedidos de estorno nesse período, pois isso pode <span class="highlight-danger">interromper e atrasar</span> sua ativação automática.
         </div>
       </div>
       
