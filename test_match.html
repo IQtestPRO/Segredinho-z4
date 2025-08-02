@@ -1,1 +1,180 @@
-There is no existing code. Please write it as a new file with the updates applied.
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Sistema de Match</title>
+    <style>
+        body {
+            background: #000;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .test-button {
+            background: #ae00ff;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 16px;
+        }
+        .popup-match {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+        .result {
+            background: #333;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+        }
+    </style>
+
+<!-- Meta Pixel Code -->
+<script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src='https://connect.facebook.net/en_US/fbevents.js';
+  s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script');
+
+  fbq('init', '1453046616041191');
+  fbq('track', 'PageView');
+</script>
+<noscript>
+  <img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=1453046616041191&ev=PageView&noscript=1"/>
+</noscript>
+<!-- End Meta Pixel Code -->
+
+</head>
+<body>
+    <h1>🧪 Teste do Sistema de Match</h1>
+    
+    <div class="result">
+        <h3>Status do Sistema:</h3>
+        <div id="status">Carregando...</div>
+    </div>
+
+    <button class="test-button" onclick="testarNavegacaoRenata()">
+        📍 Navegar até Renata
+    </button>
+    
+    <button class="test-button" onclick="testarMatch()">
+        💜 Testar Match
+    </button>
+    
+    <button class="test-button" onclick="resetarContador()">
+        🔄 Resetar Contador
+    </button>
+
+    <div class="result">
+        <h3>Logs do Teste:</h3>
+        <div id="logs"></div>
+    </div>
+
+    <!-- Popup Match -->
+    <div class="popup-match" id="popup-match">
+        <div id="match-content"></div>
+    </div>
+
+    <script>
+        let currentIndex = 0;
+        let curtidas = 0;
+        
+        function log(message) {
+            const logs = document.getElementById('logs');
+            logs.innerHTML += `<div>${new Date().toLocaleTimeString()}: ${message}</div>`;
+        }
+        
+        function updateStatus() {
+            document.getElementById('status').innerHTML = `
+                Perfil Atual: ${currentIndex}<br>
+                Curtidas: ${curtidas}<br>
+                Próximo Match: ${4 - (curtidas % 4)} curtidas
+            `;
+        }
+        
+        function testarNavegacaoRenata() {
+            // Renata é o perfil 6 (índice 6)
+            currentIndex = 6;
+            log('✅ Navegado para o perfil da Renata (índice 6)');
+            updateStatus();
+        }
+        
+        function testarMatch() {
+            curtidas++;
+            log(`👍 Curtida ${curtidas} enviada`);
+            
+            if (curtidas % 4 === 0) {
+                log('🎯 Condição de match atingida! Exibindo popup...');
+                exibirPopupMatchTeste();
+            } else {
+                log(`⏳ Ainda faltam ${4 - (curtidas % 4)} curtidas para o próximo match`);
+            }
+            updateStatus();
+        }
+        
+        function resetarContador() {
+            curtidas = 0;
+            currentIndex = 0;
+            log('🔄 Contador resetado');
+            updateStatus();
+        }
+        
+        function exibirPopupMatchTeste() {
+            const popup = document.getElementById('popup-match');
+            
+            // Simular dados da Renata
+            const nomeIdade = 'Renata';
+            const bio = 'A maturidade me ensinou a jogar com classe. Vem viver esse jogo de sedução.';
+            const imgSrc = 'https://public.youware.com/users-website-assets/prod/a36a1ecd-e0c4-41cb-9a00-c2cbcf8e36f5/61b8c70c4388408a8ffc1e1706376efe.jpg';
+            
+            const tags = '🎬 Filmes clássicos 🍷 Tardes de vinho 🎧 Voz baixa';
+            
+            const conteudoPopup = `
+                <div style="background:#121212;border:2px solid #ae00ff;padding:30px 25px;border-radius:24px;color:white;width:340px;max-width:90%;box-shadow:0 0 25px #ae00ff;text-align:center;font-family:'Poppins',sans-serif;">
+                    <h2 style="font-size:24px;font-weight:600;margin-bottom:10px;color:#ae00ff;">💜 Match!</h2>
+                    <p style="font-size:14px;color:#ccc;margin-bottom:20px;">Vocês se conectaram! Agora é sua chance de iniciar uma conversa inesquecível.</p>
+                    <div style="display:flex;justify-content:center;margin-bottom:20px;">
+                        <img src="${imgSrc}" style="width:90px;height:90px;border-radius:50%;border:3px solid #ae00ff;box-shadow:0 0 15px #ae00ff;" alt="Renata"/>
+                    </div>
+                    <div style="background:#1f1f1f;padding:15px;border-radius:14px;margin-bottom:20px;text-align:left;border:1px solid #333;">
+                        <h3 style="margin:0 0 6px 0;font-size:16px;">${nomeIdade}</h3>
+                        <p style="font-size:13px;margin:0 0 10px;color:#bbb;">${bio}</p>
+                        <div style="display:flex;gap:6px;flex-wrap:wrap;font-size:12px;">${tags}</div>
+                    </div>
+                    <button onclick="fecharPopupMatchTeste()" style="background:#ae00ff;color:white;font-weight:bold;padding:12px 20px;border:none;border-radius:25px;font-size:14px;cursor:pointer;width:100%;box-shadow:0 0 12px #ae00ff;">💬 Conversar agora</button>
+                </div>
+            `;
+            
+            document.getElementById('match-content').innerHTML = conteudoPopup;
+            popup.style.display = 'flex';
+            log('✅ Popup de match exibido com foto da Renata!');
+        }
+        
+        function fecharPopupMatchTeste() {
+            document.getElementById('popup-match').style.display = 'none';
+            log('❌ Popup de match fechado');
+        }
+        
+        // Inicializar
+        updateStatus();
+        log('🚀 Sistema de teste inicializado');
+    </script>
+</body>
+</html>

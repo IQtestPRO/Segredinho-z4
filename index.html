@@ -1,1 +1,103 @@
-There is no existing code. Please write it as a new file with the updates applied.
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Mulheres Maduras</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet" />
+
+  <!-- Meta Pixel Code (sem auto track) -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src='https://connect.facebook.net/en_US/fbevents.js';
+    s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script');
+
+    fbq('init', '1453046616041191');
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1453046616041191&ev=PageView&noscript=1"/>
+  </noscript>
+  <!-- End Meta Pixel Code -->
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body, html {
+      height: 100%; font-family: 'Poppins', sans-serif; background: #000;
+      display: flex; justify-content: center; align-items: center;
+    }
+    .age-verification {
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 40px 30px;
+      border-radius: 25px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      max-width: 400px;
+      width: 90%;
+      transform: translateX(20px);
+    }
+    .age-verification img {
+      width: 100px; margin-bottom: 20px;
+    }
+    .age-verification h2 {
+      font-size: 24px; color: #6c2894; margin-bottom: 10px;
+    }
+    .age-verification .site-name {
+      font-family: 'Dancing Script', cursive;
+      font-size: 45px; font-weight: bold; color: #6c2894;
+      background: linear-gradient(45deg, #8319C1, #b941ff, #8319C1);
+      -webkit-background-clip: text; background-clip: text;
+      margin-bottom: 20px; text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+      letter-spacing: 1px; margin-top: -10px;
+    }
+    .age-verification p {
+      font-size: 16px; color: #333; margin-bottom: 30px;
+    }
+    .btn {
+      display: block; width: 100%; padding: 12px;
+      margin-bottom: 15px;
+      background: linear-gradient(45deg, #8319C1, #b941ff, #8319C1);
+      color: white; border: none; border-radius: 20px;
+      font-size: 16px; font-weight: bold; cursor: pointer;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+    .btn:hover {
+      transform: scale(1.05);
+      background: linear-gradient(45deg, #6c2894, #a33edc, #6c2894);
+    }
+    .btn.secondary { background: #ccc; color: #333; }
+    .btn.secondary:hover { background: #bbb; }
+  </style>
+</head>
+<body>
+  <div class="age-verification">
+    <img decoding="async" src="wp-content/uploads/2025/04/logoCoroa.png" alt="Logo Segredinho VIP" />
+    <div class="site-name">Segredinho VIP</div>
+    <h2>Você tem 18 anos ou mais?</h2>
+    <p>Este site é voltado para adultos. Por favor, confirme sua idade para continuar.</p>
+    <button class="btn" onclick="acessarSite()">Sim, tenho</button>
+    <button class="btn secondary" onclick="bloquearAcesso()">Não tenho</button>
+  </div>
+
+  <script>
+    function acessarSite() {
+      // Disparando PageView no clique, com Test Code
+      fbq('set', 'agent', 'tmgoogletagmanager', { "agent": "tmgoogletagmanager", "test_event_code": "TEST33171" });
+      fbq('track', 'PageView');
+      window.location.href = 'bem-vindo.html';
+    }
+
+    function bloquearAcesso() {
+      alert("Você precisa ter mais de 18 anos para acessar este site.");
+      window.location.href = 'https://www.google.com/';
+    }
+  </script>
+</body>
+</html>

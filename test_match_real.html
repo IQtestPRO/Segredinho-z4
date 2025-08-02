@@ -1,1 +1,207 @@
-There is no existing code. Please write it as a new file with the updates applied.
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Match - Página Real</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #000;
+            color: white;
+        }
+        
+        .test-container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .test-button {
+            background: #ae00ff;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+            box-shadow: 0 0 12px #ae00ff;
+        }
+        
+        .test-button:hover {
+            background: #9900dd;
+        }
+        
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 10px;
+            background: #1f1f1f;
+            border: 1px solid #333;
+        }
+        
+        .success {
+            border-color: #00ff00;
+            color: #00ff00;
+        }
+        
+        .error {
+            border-color: #ff0000;
+            color: #ff0000;
+        }
+        
+        .iframe-container {
+            width: 100%;
+            height: 600px;
+            border: 2px solid #ae00ff;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 8px;
+        }
+    </style>
+
+<!-- Meta Pixel Code -->
+<script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src='https://connect.facebook.net/en_US/fbevents.js';
+  s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script');
+
+  fbq('init', '1453046616041191');
+  fbq('track', 'PageView');
+</script>
+<noscript>
+  <img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=1453046616041191&ev=PageView&noscript=1"/>
+</noscript>
+<!-- End Meta Pixel Code -->
+
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Teste Real - Sistema de Match</h1>
+        <p>Testando o popup de match na página inicial real do Segredinho VIP.</p>
+        
+        <div id="status" class="status">
+            Carregando página inicial...
+        </div>
+        
+        <button class="test-button" onclick="simularCurtidas()">❤️ Simular 4 Curtidas (Ativar Match)</button>
+        <button class="test-button" onclick="recarregarPagina()">🔄 Recarregar Página</button>
+        
+        <div class="iframe-container">
+            <iframe id="paginaInicial" src="appminhacoroa.site/inicial.html"></iframe>
+        </div>
+        
+        <h3>📋 Status do Teste:</h3>
+        <ul style="text-align: left; max-width: 400px; margin: 0 auto;">
+            <li>✅ Página inicial carregada</li>
+            <li id="match-status">⏳ Aguardando teste de match...</li>
+            <li id="image-status">⏳ Aguardando verificação de imagem...</li>
+        </ul>
+    </div>
+    
+    <script>
+        function updateStatus(message, isSuccess = true) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = 'status ' + (isSuccess ? 'success' : 'error');
+        }
+        
+        function updateMatchStatus(message, isSuccess = true) {
+            const status = document.getElementById('match-status');
+            status.textContent = (isSuccess ? '✅ ' : '❌ ') + message;
+        }
+        
+        function updateImageStatus(message, isSuccess = true) {
+            const status = document.getElementById('image-status');
+            status.textContent = (isSuccess ? '✅ ' : '❌ ') + message;
+        }
+        
+        function simularCurtidas() {
+            updateStatus('🚀 Simulando curtidas...');
+            
+            const iframe = document.getElementById('paginaInicial');
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            
+            try {
+                // Simular 4 cliques no botão de curtir
+                for (let i = 0; i < 4; i++) {
+                    setTimeout(() => {
+                        const botaoCurtir = iframeDoc.querySelector('.like-btn');
+                        if (botaoCurtir) {
+                            botaoCurtir.click();
+                            updateStatus(`❤️ Curtida ${i + 1}/4 enviada`);
+                            
+                            if (i === 3) {
+                                // Após a 4ª curtida, verificar se o popup apareceu
+                                setTimeout(() => {
+                                    verificarMatch();
+                                }, 1000);
+                            }
+                        }
+                    }, i * 500);
+                }
+            } catch (error) {
+                updateStatus('❌ Erro ao simular curtidas: ' + error.message, false);
+            }
+        }
+        
+        function verificarMatch() {
+            const iframe = document.getElementById('paginaInicial');
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            
+            try {
+                const popup = iframeDoc.querySelector('.popup-match');
+                if (popup && popup.style.display === 'flex') {
+                    updateMatchStatus('Popup de match apareceu!', true);
+                    
+                    // Verificar se a imagem está carregada
+                    const img = popup.querySelector('img');
+                    if (img && img.src && img.src !== '' && !img.src.includes('inicial.html')) {
+                        updateImageStatus('Imagem carregada corretamente: ' + img.src.split('/').pop(), true);
+                        updateStatus('🎉 TESTE PASSOU! Match funcionando com imagem.', true);
+                    } else {
+                        updateImageStatus('Imagem não carregou ou tem problema na URL', false);
+                        updateStatus('⚠️ Match apareceu mas sem imagem correta.', false);
+                    }
+                } else {
+                    updateMatchStatus('Popup de match não apareceu', false);
+                    updateStatus('❌ TESTE FALHOU! Match não foi ativado.', false);
+                }
+            } catch (error) {
+                updateStatus('❌ Erro ao verificar match: ' + error.message, false);
+            }
+        }
+        
+        function recarregarPagina() {
+            updateStatus('🔄 Recarregando página...');
+            const iframe = document.getElementById('paginaInicial');
+            iframe.src = iframe.src;
+            
+            setTimeout(() => {
+                updateStatus('✅ Página recarregada');
+                updateMatchStatus('Aguardando teste de match...');
+                updateImageStatus('Aguardando verificação de imagem...');
+            }, 2000);
+        }
+        
+        // Verificar quando o iframe carregar
+        document.getElementById('paginaInicial').onload = function() {
+            updateStatus('✅ Página inicial carregada com sucesso');
+        };
+    </script>
+</body>
+</html>
