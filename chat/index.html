@@ -1084,9 +1084,10 @@ function updateSendButtonState() {
 
   if (presenteMostrado && !isPremium) {
     // Scenario 1: Chat is permanently blocked due to present popup and non-premium user
-    sendButton.disabled = true;
-    sendButton.style.opacity = '0.5';
-    sendButton.style.cursor = 'not-allowed';
+    // The button should be ENABLED to be clickable, but its action will be to open the popup.
+    sendButton.disabled = false; // <--- CHANGE THIS LINE
+    sendButton.style.opacity = '1'; // <--- ENSURE THIS IS SET
+    sendButton.style.cursor = 'pointer'; // <--- ENSURE THIS IS SET
     userInput.disabled = true;
     userInput.readOnly = true;
     const blockedMessage = document.createElement('div');
