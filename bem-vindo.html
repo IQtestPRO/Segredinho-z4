@@ -283,6 +283,58 @@ footer {
   text-align: center;
   margin: 30px 0 10px 0;
 }
+.floating-button-container {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(25, 25, 25, 0.9);
+  padding: 20px;
+  border-radius: 15px;
+  display: none;
+  z-index: 1000;
+  animation: slideInUp 0.5s ease-out;
+  text-align: center;
+  border: 1px solid #b941ff;
+  box-shadow: 0 4px 20px rgba(185, 65, 255, 0.4);
+  width: 90%;
+  max-width: 400px;
+}
+.floating-button-container.show {
+  display: block;
+}
+.close-floating-button {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  background-color: #ffffff;
+  color: #1f1f1f;
+  border: 2px solid #b941ff;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 22px;
+  line-height: 28px;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.close-floating-button:hover {
+    background-color: #f0f0f0;
+}
+@keyframes slideInUp {
+  from {
+    transform: translate(-50%, 100px);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
 </style>
 <div class="container">
 <div class="header">
@@ -400,7 +452,7 @@ footer {
 </div>
 </div>
 <script type="speculationrules">
-{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"\/*"},{"not":{"href_matches":["\/wp-*.php","\/wp-admin\/*","\/wp-content\/uploads\/*","\/wp-content\/*","\/wp-content\/plugins\/*","\/wp-content\/themes\/hello-elementor\/*","\/*\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
+{"prefetch":[{"source":"document","where":[{"and":[{"href_matches":"\/*"},{"not":{"href_matches":["\/wp-*.php","\/wp-admin\/*","\/wp-content\/uploads\/*","\/wp-content\/*","\/wp-content\/plugins\/*","\/wp-content\/themes\/hello-elementor\/*","\/*\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
 </script>
 <script>
 				const lazyloadRunObserver = () => {
@@ -458,6 +510,34 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
       window.location.href = 'registro.html';
     }, 300);
   }
+</script>
+
+<div id="floating-button-container" class="floating-button-container">
+  <button id="close-floating-button" class="close-floating-button" aria-label="Fechar">×</button>
+  <a class="button" href="#" onclick="firePixelThenRedirect()">🔓 Revelar Segredinho VIP</a>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const floatingButtonContainer = document.getElementById('floating-button-container');
+    const closeButton = document.getElementById('close-floating-button');
+    let isShown = false;
+
+    function showFloatingButton() {
+      if (window.scrollY > 400 && !isShown) {
+        floatingButtonContainer.classList.add('show');
+        isShown = true; 
+      }
+    }
+
+    window.addEventListener('scroll', showFloatingButton);
+
+    closeButton.addEventListener('click', function() {
+      floatingButtonContainer.style.display = 'none';
+      // Remove scroll listener to prevent it from reappearing
+      window.removeEventListener('scroll', showFloatingButton);
+    });
+  });
 </script>
 </body>
 <!-- Mirrored from appminhacoroa.site/bem-vindo.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 08 Jul 2025 02:32:36 GMT -->
