@@ -278,6 +278,20 @@ align-self: flex-end;
 background: #ae00ff; 
 }
 
+/* New style for system messages */
+.message.system {
+    background: #3a3a3a;
+    color: #e0e0e0;
+    text-align: center;
+    max-width: 90%;
+    align-self: center;
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
 .message-avatar {
 width: 2.5rem;
 height: 2.5rem;
@@ -1044,6 +1058,7 @@ let totalUserMessagesSent = 0; // Total messages sent by user across all phases
 let presenteMostrado = false;
 let audioSent = false; // Flag for first audio sequence initiation
 let hasClaimedGift = localStorage.getItem('hasClaimedGift') === 'true'; // New global flag
+let hasDisplayedMatchMessage = localStorage.getItem('hasDisplayedMatchMessage') === 'true'; // New flag for match message
 
 // Função para obter imagem de perfil correta
 function getProfileImage() {
@@ -1090,6 +1105,9 @@ if (hasClaimedGift) {
 }
 
 updateSendButtonState(); // Apply initial locked state
+
+// Display match status message if applicable
+displayMatchStatusMessage(); // Call the new function here
 
 // Iniciar primeiro áudio após 3 segundos
 setTimeout(() => {
@@ -1762,6 +1780,20 @@ function claimGift() {
         claimButton.innerText = "Presente Resgatado!";
         claimButton.style.background = '#6c757d'; // Grey out
         claimButton.style.cursor = 'default';
+    }
+}
+
+function displayMatchStatusMessage() {
+    const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
+    if (totalMatches >= 2 && totalMatches <= 6 && !hasDisplayedMatchMessage) {
+        const messagesContainer = document.getElementById('messages');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message system';
+        messageDiv.innerHTML = `Você tem <span style="font-weight:bold; color:#ae00ff;">${totalMatches}</span> curtidas! Continue interagindo para mais surpresas.`;
+        messagesContainer.appendChild(messageDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        localStorage.setItem('hasDisplayedMatchMessage', 'true');
+        hasDisplayedMatchMessage = true; // Update global flag
     }
 }
 </script>
