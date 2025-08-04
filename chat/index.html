@@ -1024,8 +1024,8 @@ src="https://www.facebook.com/tr?id=1453046616041191&ev=PageView&noscript=1"/>
 </div>
 </div>
 
-<!-- Popup de Presente -->
-<div id="giftPopup" style="display:none; align-items:center; justify-content:center; position:fixed; top:0; left:0; width:100%; height:100vh; background:rgba(0,0,0,0.9); z-index:9999; padding: 0 1rem; box-sizing: border-box;">
+<!-- Popup de Presente (REMOVED - now inline) -->
+<!-- <div id="giftPopup" style="display:none; align-items:center; justify-content:center; position:fixed; top:0; left:0; width:100%; height:100vh; background:rgba(0,0,0,0.9); z-index:9999; padding: 0 1rem; box-sizing: border-box;">
     <div style="background:#0f111a; border:2px solid #00ff99; border-radius:1rem; padding:1.5rem 1rem; width:100%; max-width:20rem; color:white; text-align:center; box-shadow:0 0 16px #00ff99; position:relative;">
         <button onclick="closeGiftPopup()" style="position:absolute; top:0.5rem; right:0.75rem; background:none; border:none; color:white; font-size:1.5rem; cursor:pointer; padding: 0.25rem 0.5rem;">×</button>
         <div style="font-size:1.125rem; font-weight:600; margin-bottom:1rem; color:#00ff99;">🎁 Você ganhou um presente!</div>
@@ -1033,7 +1033,7 @@ src="https://www.facebook.com/tr?id=1453046616041191&ev=PageView&noscript=1"/>
         <button id="redeemGiftButton" onclick="redeemGift()" style="background:#00d26a; color:white; padding:0.75rem 1rem; border:none; border-radius:0.5rem; font-weight:bold; cursor:pointer; width:100%; font-size:1rem;">Resgatar Presente</button>
         <p style="font-size:0.625rem; color:#999; margin-top:0.75rem;">O valor será adicionado ao seu saldo.</p>
     </div>
-</div>
+</div> -->
 
 <script>
 let canSendMessage = false; // Controls if input is enabled
@@ -1375,7 +1375,7 @@ sendWhatsAppAudio('../assets/audios/audio3.mp4', () => {
   // This callback runs when audio3.mp4 ends. No action needed here for popup.
 });
 // Show popup 3 seconds after the audio starts playing
-setTimeout(() => { showPresentPopup(); setTimeout(showGiftPopup, 1000); }, 3000);
+setTimeout(() => { showPresentPopup(); }, 3000); // Removed showGiftPopup call
 // Removed unlockChatArea(Infinity) from here. It will be called after gift redemption.
 }
 
@@ -1515,6 +1515,82 @@ profileAvatar.className = 'message-avatar';
 messages.appendChild(wrapper);
 messages.scrollTop = messages.scrollHeight;
 
+// Add the inline gift message immediately after the blurred image
+const giftWrapper = document.createElement('div');
+giftWrapper.className = 'message profile'; // Style like a message from the profile
+
+const giftAvatar = document.createElement('img');
+giftAvatar.src = foto; // Use the same profile photo
+giftAvatar.className = 'message-avatar';
+
+const giftContent = document.createElement('div');
+giftContent.style.cssText = `
+    background: #282828;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    max-width: 85%;
+    font-size: 1rem;
+    line-height: 1.5;
+    word-wrap: break-word;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+`;
+
+const giftText = document.createElement('p');
+giftText.style.cssText = `
+    margin: 0;
+    color: white;
+    font-weight: 600;
+`;
+giftText.innerHTML = '🎁 Você ganhou um presente!';
+
+const giftValue = document.createElement('p');
+giftValue.style.cssText = `
+    margin: 0;
+    color: #ffc107;
+    font-weight: bold;
+    font-size: 1.125rem;
+`;
+giftValue.innerText = 'R$50,00!';
+
+const redeemButton = document.createElement('button');
+redeemButton.id = 'redeemGiftButtonInline';
+redeemButton.onclick = redeemGiftInline;
+redeemButton.style.cssText = `
+    background: #00d26a;
+    color: white;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    font-size: 0.9rem;
+    transition: background 0.3s ease;
+`;
+redeemButton.innerText = 'Resgatar Presente';
+
+// Check if gift was already redeemed from localStorage
+const giftRedeemed = localStorage.getItem('giftRedeemed') === 'true';
+if (giftRedeemed) {
+    redeemButton.innerText = 'Presente Resgatado!';
+    redeemButton.disabled = true;
+    redeemButton.style.background = 'grey';
+    redeemButton.style.cursor = 'default';
+}
+
+
+giftContent.appendChild(giftText);
+giftContent.appendChild(giftValue);
+giftContent.appendChild(redeemButton);
+
+giftWrapper.appendChild(giftAvatar);
+giftWrapper.appendChild(giftContent);
+messages.appendChild(giftWrapper);
+messages.scrollTop = messages.scrollHeight;
+
 // Removed canSendMessage = false; and updateSendButtonState(); from here.
 // This logic will now be in redeemGift() after the gift is handled.
 }
@@ -1527,29 +1603,22 @@ function closePopupPremiumImagem() {
 document.getElementById('popupPremiumImagem').style.display = 'none';
 }
 
-// New functions for gift popup
-function showGiftPopup() {
-    document.getElementById('giftPopup').style.display = 'flex';
-}
-
-function closeGiftPopup() {
-    document.getElementById('giftPopup').style.display = 'none';
-}
-
-function redeemGift() {
+// New function for inline gift redemption
+function redeemGiftInline() {
     let saldoAtual = parseFloat(localStorage.getItem('chatSaldo') || '0');
     saldoAtual += 50; // Add R$50
     localStorage.setItem('chatSaldo', saldoAtual.toFixed(2));
+    localStorage.setItem('giftRedeemed', 'true'); // Mark gift as redeemed
 
     document.getElementById('saldoValorChat').innerText = saldoAtual.toFixed(2).replace('.', ',');
 
-    const redeemButton = document.getElementById('redeemGiftButton');
-    redeemButton.innerText = "Presente Resgatado!";
-    redeeemButton.disabled = true;
-    redeemButton.style.background = 'grey';
-    redeemButton.style.cursor = 'default';
-
-    closeGiftPopup();
+    const redeemButton = document.getElementById('redeemGiftButtonInline');
+    if (redeemButton) {
+        redeemButton.innerText = "Presente Resgatado!";
+        redeemButton.disabled = true;
+        redeemButton.style.background = 'grey';
+        redeemButton.style.cursor = 'default';
+    }
 
     // Now, lock the chat as per original flow after the "present" (blurred image + gift)
     canSendMessage = false;
@@ -1634,18 +1703,19 @@ messages.scrollIntoView({ behavior: 'smooth' });
 document.getElementById('popupPremiumImagem').style.display = 'flex';
 }
 
-function resgatarPresente() {
-let saldoAtual = parseFloat(localStorage.getItem('chatSaldo') || '0');
-saldoAtual += 50;
-localStorage.setItem('chatSaldo', saldoAtual.toFixed(2));
+// Removed the original resgatarPresente function as it's replaced by redeemGiftInline
+// function resgatarPresente() {
+// let saldoAtual = parseFloat(localStorage.getItem('chatSaldo') || '0');
+// saldoAtual += 50;
+// localStorage.setItem('chatSaldo', saldoAtual.toFixed(2));
 
-document.getElementById('saldoValorChat').innerText = saldoAtual.toFixed(2).replace('.', ',');
+// document.getElementById('saldoValorChat').innerText = saldoAtual.toFixed(2).replace('.', ',');
 
-const botao = document.getElementById('botaoPresente');
-botao.innerText = "Presente Resgatado";
-botao.disabled = true;
-botao.classList.add("resgatado");
-}
+// const botao = document.getElementById('botaoPresente');
+// botao.innerText = "Presente Resgatado";
+// botao.disabled = true;
+// botao.classList.add("resgatado");
+// }
 
 function abrirSaquePopup() {
 atualizarSaqueSaldo();
