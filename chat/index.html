@@ -1507,9 +1507,6 @@ messages.scrollTop = messages.scrollHeight;
 // Immediately lock chat after present popup appears, requiring premium
 canSendMessage = false;
 updateSendButtonState();
-
-// Marcar que o chat foi completado para liberar próximo PIX
-localStorage.setItem('chatCompletoParaProximoPix', 'true');
 }
 
 function abrirPopupPremium() {
@@ -1604,9 +1601,6 @@ const botao = document.getElementById('botaoPresente');
 botao.innerText = "Presente Resgatado";
 botao.disabled = true;
 botao.classList.add("resgatado");
-
-// Marcar que o chat foi completado após resgatar o presente
-localStorage.setItem('chatCompletoParaProximoPix', 'true');
 }
 
 function abrirSaquePopup() {
