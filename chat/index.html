@@ -1024,6 +1024,17 @@ src="https://www.facebook.com/tr?id=1453046616041191&ev=PageView&noscript=1"/>
 </div>
 </div>
 
+<!-- Popup de Presente -->
+<div id="giftPopup" style="display:none; align-items:center; justify-content:center; position:fixed; top:0; left:0; width:100%; height:100vh; background:rgba(0,0,0,0.9); z-index:9999; padding: 0 1rem; box-sizing: border-box;">
+    <div style="background:#0f111a; border:2px solid #00ff99; border-radius:1rem; padding:1.5rem 1rem; width:100%; max-width:20rem; color:white; text-align:center; box-shadow:0 0 16px #00ff99; position:relative;">
+        <button onclick="closeGiftPopup()" style="position:absolute; top:0.5rem; right:0.75rem; background:none; border:none; color:white; font-size:1.5rem; cursor:pointer; padding: 0.25rem 0.5rem;">×</button>
+        <div style="font-size:1.125rem; font-weight:600; margin-bottom:1rem; color:#00ff99;">🎁 Você ganhou um presente!</div>
+        <p style="font-size:1rem; margin-bottom:1.5rem;">A Luciana te enviou <span style="font-weight:bold; color:#ffc107;">R$50,00</span>!</p>
+        <button id="redeemGiftButton" onclick="redeemGift()" style="background:#00d26a; color:white; padding:0.75rem 1rem; border:none; border-radius:0.5rem; font-weight:bold; cursor:pointer; width:100%; font-size:1rem;">Resgatar Presente</button>
+        <p style="font-size:0.625rem; color:#999; margin-top:0.75rem;">O valor será adicionado ao seu saldo.</p>
+    </div>
+</div>
+
 <script>
 let canSendMessage = false; // Controls if input is enabled
 let messagesAllowedInCurrentPhase = 0; // How many messages user can send in current phase
@@ -1364,9 +1375,8 @@ sendWhatsAppAudio('../assets/audios/audio3.mp4', () => {
   // This callback runs when audio3.mp4 ends. No action needed here for popup.
 });
 // Show popup 3 seconds after the audio starts playing
-setTimeout(showPresentPopup, 3000);
-// Unlock chat immediately when audio appears
-unlockChatArea(Infinity);
+setTimeout(() => { showPresentPopup(); setTimeout(showGiftPopup, 1000); }, 3000);
+// Removed unlockChatArea(Infinity) from here. It will be called after gift redemption.
 }
 
 function sendEmotionalMessage() {
@@ -1457,7 +1467,8 @@ profileAvatar.className = 'message-avatar';
       align-items: center;
       min-height: 150px; /* Give it a minimum height */
     `;
-    blurredImageContainer.onclick = abrirPopupPremium; // Open premium popup on click
+    // Removed blurredImageContainer.onclick = abrirPopupPremium;
+    // The premium popup should only appear if the user tries to send a message while locked and not premium.
 
     const blurredImage = document.createElement('img');
       blurredImage.src = 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-Ep9oE7RPaQDoVYYtLj2cTZvrQpwHGJ.png'; // Path to the new blurred image [^v0_domain_knowledge]
@@ -1504,14 +1515,47 @@ profileAvatar.className = 'message-avatar';
 messages.appendChild(wrapper);
 messages.scrollTop = messages.scrollHeight;
 
-// Immediately lock chat after present popup appears, requiring premium
-canSendMessage = false;
-updateSendButtonState();
+// Removed canSendMessage = false; and updateSendButtonState(); from here.
+// This logic will now be in redeemGift() after the gift is handled.
 }
 
 function abrirPopupPremium() {
 document.getElementById('popupPremiumImagem').style.display = 'flex';
 }
+
+function closePopupPremiumImagem() {
+document.getElementById('popupPremiumImagem').style.display = 'none';
+}
+
+// New functions for gift popup
+function showGiftPopup() {
+    document.getElementById('giftPopup').style.display = 'flex';
+}
+
+function closeGiftPopup() {
+    document.getElementById('giftPopup').style.display = 'none';
+}
+
+function redeemGift() {
+    let saldoAtual = parseFloat(localStorage.getItem('chatSaldo') || '0');
+    saldoAtual += 50; // Add R$50
+    localStorage.setItem('chatSaldo', saldoAtual.toFixed(2));
+
+    document.getElementById('saldoValorChat').innerText = saldoAtual.toFixed(2).replace('.', ',');
+
+    const redeemButton = document.getElementById('redeemGiftButton');
+    redeemButton.innerText = "Presente Resgatado!";
+    redeeemButton.disabled = true;
+    redeemButton.style.background = 'grey';
+    redeemButton.style.cursor = 'default';
+
+    closeGiftPopup();
+
+    // Now, lock the chat as per original flow after the "present" (blurred image + gift)
+    canSendMessage = false;
+    updateSendButtonState();
+}
+
 
 function voltarPagina() {
 const saldoAtual = document.getElementById('saldoValorChat').innerText || '0,00';
@@ -1642,9 +1686,6 @@ micButton.title = 'Gravação de voz - Exclusivo para membros';
 }
 }
 
-function closePopupPremiumImagem() {
-document.getElementById('popupPremiumImagem').style.display = 'none';
-}
 
 let selectedKeyType = null;
 
