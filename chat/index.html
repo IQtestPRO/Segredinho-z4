@@ -933,6 +933,18 @@ src="https://www.facebook.com/tr?id=1453046616041191&ev=PageView&noscript=1"/>
 </div>
 </div>
 
+<!-- New Gift Popup HTML -->
+<div id="giftPopup" style="display:none; align-items:center; justify-content:center; position:fixed; top:0; left:0; width:100%; height:100vh; background:rgba(0,0,0,0.9); z-index:9999; padding: 0 1rem; box-sizing: border-box;">
+    <div style="background:#1a1a1a; border:2px solid #00ff99; border-radius:1rem; padding:1.5rem 1rem; width:100%; max-width:20rem; color:white; text-align:center; box-shadow:0 0 16px #00ff99; position:relative;">
+        <h3 style="font-size:1.25rem; font-weight:700; margin-bottom:1rem; color:#00ff99;">🎉 Parabéns! Você ganhou um presente! 🎉</h3>
+        <p style="font-size:1rem; margin-bottom:1.5rem;">Resgate agora seu presente exclusivo de <span style="font-weight:bold; color:#ffc107;">R$ 50,00</span> via PIX!</p>
+        <button id="claimGiftButton" onclick="claimGift()" style="background:#00d26a; color:white; padding:0.75rem 1.5rem; border:none; border-radius:0.5rem; font-weight:bold; cursor:pointer; width:100%; font-size:1rem; transition: background 0.3s ease;">
+            💰 Resgatar Presente de R$ 50
+        </button>
+        <p style="font-size:0.75rem; color:#aaa; margin-top:1rem;">Este presente é válido apenas uma vez.</p>
+    </div>
+</div>
+
 <!-- Popup Premium -->
 <div id="popupPremiumImagem" style="display:none; align-items:center; justify-content:center; position:fixed; top:0; left:0; width:100%; height:100vh; background:rgba(0,0,0,0.9); z-index:9999; padding: 0 1rem; box-sizing: border-box;">
 <div style="background:#0f111a; border:2px solid gold; border-radius:1rem; padding:1.5rem 1rem; width:100%; max-width:20rem; color:white; text-align:center; box-shadow:0 0 16px gold; position:relative;">
@@ -1031,6 +1043,7 @@ let messagesSentInCurrentPhase = 0; // How many messages user has sent in curren
 let totalUserMessagesSent = 0; // Total messages sent by user across all phases
 let presenteMostrado = false;
 let audioSent = false; // Flag for first audio sequence initiation
+let hasClaimedGift = localStorage.getItem('hasClaimedGift') === 'true'; // New global flag
 
 // Função para obter imagem de perfil correta
 function getProfileImage() {
@@ -1065,12 +1078,23 @@ totalUserMessagesSent = 0; // Initialize total messages sent
 presenteMostrado = false; // Ensure this is false on load
 audioSent = false; // Ensure this is false on load
 
+// New: Check if gift has been claimed and disable button
+if (hasClaimedGift) {
+    const claimButton = document.getElementById('claimGiftButton');
+    if (claimButton) {
+        claimButton.disabled = true;
+        claimButton.innerText = "Presente Resgatado!";
+        claimButton.style.background = '#6c757d';
+        claimButton.style.cursor = 'default';
+    }
+}
+
 updateSendButtonState(); // Apply initial locked state
 
 // Iniciar primeiro áudio após 3 segundos
-setTimeout(() => { 
+setTimeout(() => {
     if (!audioSent) {
-        sendFirstAudio(); 
+        sendFirstAudio();
     }
 }, 3000);
 
@@ -1409,105 +1433,90 @@ messages.scrollTop = messages.scrollHeight;
 }
 
 function showPresentPopup() {
-presenteMostrado = true; // Set flag
-const foto = getProfileImage(); // This is the profile avatar, not the new image
+        presenteMostrado = true; // Set flag
+        const foto = getProfileImage(); // This is the profile avatar, not the new image
 
-const messages = document.getElementById('messages');
-const wrapper = document.createElement('div');
-wrapper.className = 'message profile';
+        const messages = document.getElementById('messages');
+        const wrapper = document.createElement('div');
+        wrapper.className = 'message profile';
 
-const profileAvatar = document.createElement('img'); // Profile avatar for the message
-profileAvatar.src = foto;
-profileAvatar.className = 'message-avatar';
+        const profileAvatar = document.createElement('img'); // Profile avatar for the message
+        profileAvatar.src = foto;
+        profileAvatar.className = 'message-avatar';
 
-    // Create a container for the text message and the blurred image
-    const contentDiv = document.createElement('div');
-    contentDiv.style.cssText = `
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start; /* Align content to the left */
-        gap: 0.5rem; /* Space between text and image */
-        max-width: 85%; /* Match message max-width */
-    `;
+        // Create a container for the text message and the blurred image
+        const contentDiv = document.createElement('div');
+        contentDiv.style.cssText = `
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Align content to the left */
+            gap: 0.5rem; /* Space between text and image */
+            max-width: 85%; /* Match message max-width */
+        `;
 
-    // Append text message and blurred image to the contentDiv
-    const messageTextDiv = document.createElement('div');
-    messageTextDiv.className = 'message'; // Use existing message style
-    // Removed custom styles to make it inherit default message styles (white text, same font)
-    messageTextDiv.innerText = "Olha como estou agora";
-    contentDiv.appendChild(messageTextDiv);
+        // Append text message and blurred image to the contentDiv
+        const messageTextDiv = document.createElement('div');
+        messageTextDiv.className = 'message'; // Use existing message style
+        messageTextDiv.innerText = "Olha como estou agora";
+        contentDiv.appendChild(messageTextDiv);
 
-    const blurredImageContainer = document.createElement('div');
-    blurredImageContainer.className = 'whatsapp-audio-player blocked'; // Reusing blocked audio player styles for blur and overlay
-    blurredImageContainer.style.cssText = `
-      background: #333;
-      color: #999;
-      filter: blur(2px);
-      opacity: 0.7;
-      cursor: pointer;
-      position: relative;
-      margin-top: 1rem;
-      max-width: 85%;
-      width: 85%;
-      padding: 0; /* Remove padding from audio player */
-      border-radius: 1.25rem;
-      overflow: hidden; /* Ensure blur applies to image */
-      display: flex; /* To center content */
-      justify-content: center;
-      align-items: center;
-      min-height: 150px; /* Give it a minimum height */
-    `;
-    blurredImageContainer.onclick = abrirPopupPremium; // Open premium popup on click
+        const blurredImageContainer = document.createElement('div');
+        blurredImageContainer.className = 'whatsapp-audio-player blocked'; // Reusing blocked audio player styles for blur and overlay
+        blurredImageContainer.style.cssText = `
+          background: #333;
+          color: #999;
+          filter: blur(2px);
+          opacity: 0.7;
+          cursor: pointer;
+          position: relative;
+          margin-top: 1rem;
+          max-width: 85%;
+          width: 85%;
+          padding: 0; /* Remove padding from audio player */
+          border-radius: 1.25rem;
+          overflow: hidden; /* Ensure blur applies to image */
+          min-height: 150px; /* Give it a minimum height */
+        `;
+        blurredImageContainer.onclick = abrirPopupPremium; // Open premium popup on click
 
-    const blurredImage = document.createElement('img');
-      blurredImage.src = 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-Ep9oE7RPaQDoVYYtLj2cTZvrQpwHGJ.png'; // Path to the new blurred image [^v0_domain_knowledge]
-      blurredImage.alt = 'Imagem borrada';
-      blurredImage.style.cssText = `
-        width: 100%;
-        height: auto;
-        display: block;
-        filter: blur(2px); /* Apply blur directly to image */
-        object-fit: cover;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-      `;
+        const blurredImage = document.createElement('img');
+        blurredImage.src = 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-Ep9oE7RPaQDoVYYtLj2cTZvrQpwHGJ.png'; // Path to the new blurred image
+        blurredImage.alt = 'Imagem borrada';
+        blurredImage.style.cssText = `
+            width: 100%;
+            height: auto;
+            display: block;
+            filter: blur(2px); /* Apply blur directly to image */
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        `;
 
-      // Update blurredImageContainer style to remove centering and ensure left alignment
-      blurredImageContainer.style.cssText = `
-        background: #333;
-        color: #999;
-        filter: blur(2px);
-        opacity: 0.7;
-        cursor: pointer;
-        position: relative;
-        margin-top: 1rem;
-        max-width: 85%;
-        width: 85%;
-        padding: 0; /* Remove padding from audio player */
-        border-radius: 1.25rem;
-        overflow: hidden; /* Ensure blur applies to image */
-        /* Removed display: flex, justify-content, align-items to allow left alignment */
-        min-height: 150px; /* Give it a minimum height */
-      `;
+        blurredImageContainer.appendChild(blurredImage);
+        contentDiv.appendChild(blurredImageContainer);
 
-      blurredImageContainer.appendChild(blurredImage);
-      // Removed appending lockOverlay and premiumText
-    contentDiv.appendChild(blurredImageContainer);
+        wrapper.appendChild(profileAvatar);
+        wrapper.appendChild(contentDiv); // This will place contentDiv next to the avatar
 
-    // Append avatar and contentDiv to the main wrapper
-    wrapper.appendChild(profileAvatar);
-    wrapper.appendChild(contentDiv); // This will place contentDiv next to the avatar
+        messages.appendChild(wrapper);
+        messages.scrollTop = messages.scrollHeight;
 
-messages.appendChild(wrapper);
-messages.scrollTop = messages.scrollHeight;
+        // Immediately lock chat after present popup appears, requiring premium
+        canSendMessage = false;
+        updateSendButtonState();
 
-// Immediately lock chat after present popup appears, requiring premium
-canSendMessage = false;
-updateSendButtonState();
-}
+        // NEW LOGIC FOR GIFT POPUP
+        const totalMatches = parseInt(localStorage.getItem('totalMatches') || '0');
+
+        if (totalMatches === 0 && !hasClaimedGift) { // Only for the first match (totalMatches is 0) and if not claimed
+            setTimeout(() => {
+                document.getElementById('giftPopup').style.display = 'flex';
+            }, 1000); // Small delay to ensure it appears after the image
+        }
+    }
 
 function abrirPopupPremium() {
 document.getElementById('popupPremiumImagem').style.display = 'flex';
@@ -1732,6 +1741,29 @@ closeVideoCall();
             abrirPopupPremium();
         }
     }
+
+function claimGift() {
+    let saldoAtual = parseFloat(localStorage.getItem('chatSaldo') || '0');
+    saldoAtual += 50;
+    localStorage.setItem('chatSaldo', saldoAtual.toFixed(2));
+
+    document.getElementById('saldoValorChat').innerText = saldoAtual.toFixed(2).replace('.', ',');
+    document.getElementById('saqueSaldo').innerText = "R$ " + saldoAtual.toFixed(2).replace('.', ','); // Update saldo in saque popup too
+
+    localStorage.setItem('hasClaimedGift', 'true'); // Mark as claimed
+    hasClaimedGift = true; // Update global flag
+
+    document.getElementById('giftPopup').style.display = 'none'; // Hide the gift popup
+
+    // Disable the button to prevent re-claiming
+    const claimButton = document.getElementById('claimGiftButton');
+    if (claimButton) {
+        claimButton.disabled = true;
+        claimButton.innerText = "Presente Resgatado!";
+        claimButton.style.background = '#6c757d'; // Grey out
+        claimButton.style.cursor = 'default';
+    }
+}
 </script>
 
 </body>
