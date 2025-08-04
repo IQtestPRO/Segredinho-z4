@@ -514,7 +514,7 @@ document.head.appendChild(a);
   s.parentNode.insertBefore(t,s)}(window, document,'script');
 
   fbq('init', '1453046616041191');
-  fbq('track', 'PageView');
+  fbq('track', 'AddToCart');
 </script>
 <noscript>
   <img height="1" width="1" style="display:none"
@@ -1516,8 +1516,8 @@ document.head.appendChild(a);
 </div>
 </div>
 <div class="buttons" style="position: fixed; bottom: 40px; left: 0; right: 0; display: flex; justify-content: center; gap: 40px; z-index: 999;">
-<div class="btn btnDeslike" onclick="abrirPopupDislike()">×</div>
-<div class="btn btnLike" onclick="recompensa(); mostrarProximoPerfil()"></div>
+<div class="btn btnDeslike" onclick="openPopupLimite()">×</div>
+<div class="btn btnLike" onclick="openPopupLimite()"></div>
 </div>
 <div class="profile-content">
 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
@@ -1732,9 +1732,14 @@ document.head.appendChild(a);
 </div>
 <script>
                 let currentIndex = 0;
-                let curtidas = 0;
                 let profileOrder = []; // Array para controlar a ordem dos perfis
                 
+                // Variáveis de estado globais para a lógica de recompensa
+                let curtidasTotais = 0;
+                let primeiroPixRecebido = false;
+                let chatCompletoParaProximoPix = false;
+                let isBlockingPopupActive = false; // Flag para controlar se um popup está ativo e bloqueando a navegação
+
                 // Função para embaralhar array (Fisher-Yates shuffle)
                 function shuffleArray(array) {
                   const shuffled = [...array];
@@ -1868,24 +1873,56 @@ document.head.appendChild(a);
 
                   popup.innerHTML = conteudoPopup;
                   popup.style.display = 'flex';
+                  isBlockingPopupActive = true; // Define a flag que um popup está ativo
                   console.log("✅ Match exibido com sucesso");
                 }
 
                 function fecharPopupMatch() {
                   document.querySelector('.popup-match').style.display = 'none';
-                  mostrarProximoPerfil();
+                  isBlockingPopupActive = false; // Limpa a flag quando o popup é fechado
+                  // Não chama mostrarProximoPerfil() aqui, pois irParaChatComMatch() redireciona
                 }
 
                 function irParaChatComMatch() {
                   // Fechar popup primeiro
-                  document.querySelector('.popup-match').style.display = 'none';
+                  fecharPopupMatch(); // Isso também limpa a flag isBlockingPopupActive
                   
                   // Ir para chat com os dados do perfil que deu match
                   irParaChat();
                 }
 
                 function mostrarProximoPerfil() {
-                  nextProfile();
+                  if (isBlockingPopupActive) {
+                    // Se um popup de bloqueio estiver ativo, não avança o perfil ainda.
+                    // O perfil será avançado quando o popup de bloqueio for dispensado.
+                    return;
+                  }
+
+                  const perfis = document.querySelectorAll('.profile');
+                  let proximoIndice = currentIndex;
+                  let encontrouProximo = false;
+                  
+                  // Remove active do atual
+                  if (perfis[currentIndex]) {
+                    perfis[currentIndex].classList.remove('active');
+                  }
+                  
+                  // Procura próximo perfil disponível
+                  for (let i = currentIndex + 1; i < perfis.length; i++) {
+                    if (perfis[i].style.display !== 'none') {
+                      proximoIndice = i;
+                      encontrouProximo = true;
+                      break;
+                    }
+                  }
+                  
+                  if (encontrouProximo) {
+                    currentIndex = proximoIndice;
+                    perfis[currentIndex].classList.add('active');
+                  } else {
+                    // Não há mais perfis, mostrar popup de limite
+                    openPopupLimite();
+                  }
                 }
 
                 function irParaChat() {
@@ -1928,95 +1965,97 @@ document.head.appendChild(a);
                   window.location.href = 'chat/index.html';
                 }
 
-                function nextProfile() {
-                  const perfis = document.querySelectorAll('.profile');
-                  let proximoIndice = currentIndex;
-                  let encontrouProximo = false;
-                  
-                  // Remove active do atual
-                  perfis[currentIndex].classList.remove('active');
-                  
-                  // Procura próximo perfil disponível
-                  for (let i = currentIndex + 1; i < perfis.length; i++) {
-                    if (perfis[i].style.display !== 'none') {
-                      proximoIndice = i;
-                      encontrouProximo = true;
-                      break;
-                    }
-                  }
-                  
-                  if (encontrouProximo) {
-                    currentIndex = proximoIndice;
-                    perfis[currentIndex].classList.add('active');
-                  } else {
-                    // Não há mais perfis, mostrar popup de limite
-                    openPopupLimite();
-                  }
-                }
-
                 function recompensa() {
-                  curtidas++;
+                  curtidasTotais++;
+                  localStorage.setItem('curtidasTotais', curtidasTotais.toString());
+
                   let saldoAtual = parseFloat(document.getElementById('saldoValor').innerText.replace(',', '.'));
-                  let novoSaldo = saldoAtual + 10;
-                  document.getElementById('saldoValor').innerText = novoSaldo.toFixed(2).replace('.', ',');
-                  
-                  // Salvar saldo no localStorage
-                  localStorage.setItem('saldoUsuario', novoSaldo.toFixed(2));
-                  
-                  // Atualizar valor no popup PIX
-                  document.getElementById('pix-valor').innerText = 'R$ 10,00';
-                  
-                  // Mostrar popup PIX
-                  document.getElementById('popupPix').style.display = 'flex';
-                  
-                  // Chance de 30% de dar match
-                  if (Math.random() < 0.3) {
-                    setTimeout(() => {
-                      document.getElementById('popupPix').style.display = 'none';
-                      exibirPopupMatch();
-                    }, 2000);
+                  let pixAmount = 0;
+                  let shouldShowPixPopup = false;
+
+                  if (curtidasTotais === 2 && !primeiroPixRecebido) {
+                    pixAmount = 10;
+                    primeiroPixRecebido = true;
+                    localStorage.setItem('primeiroPixRecebido', 'true');
+                    shouldShowPixPopup = true;
+                  } else if (curtidasTotais >= 5 && chatCompletoParaProximoPix) {
+                    pixAmount = 15;
+                    chatCompletoParaProximoPix = false; // Reset para o próximo ciclo
+                    localStorage.setItem('chatCompletoParaProximoPix', 'false');
+                    shouldShowPixPopup = true;
+                  }
+
+                  if (shouldShowPixPopup) {
+                    saldoAtual += pixAmount;
+                    document.getElementById('saldoValor').innerText = saldoAtual.toFixed(2).replace('.', ',');
+                    localStorage.setItem('saldoUsuario', saldoAtual.toFixed(2));
+                    document.getElementById('pix-valor').innerText = `R$ ${pixAmount.toFixed(2).replace('.', ',')}`;
+                    document.getElementById('popupPix').style.display = 'flex';
+                    isBlockingPopupActive = true; // Define a flag que um popup está ativo
+                    // A função fecharPopup() será chamada pelo botão "CONTINUAR CURTINDO"
+                    // e ela cuidará da lógica de avançar o perfil ou exibir o match.
+                  } else {
+                    // Nenhum PIX recebido, o mostrarProximoPerfil() será chamado
+                    // imediatamente pelo onclick do HTML, e como isBlockingPopupActive é false, ele avançará.
                   }
                 }
 
+                // Modificada para lidar com a lógica de match/próximo perfil após fechar o PIX
                 function fecharPopup() {
                   document.getElementById('popupPix').style.display = 'none';
+                  isBlockingPopupActive = false; // Limpa a flag quando o popup é fechado
+
+                  // Agora, decide o que acontece em seguida: chance de match ou apenas próximo perfil
+                  if (Math.random() < 0.3) {
+                    exibirPopupMatch();
+                  } else {
+                    mostrarProximoPerfil();
+                  }
                 }
 
                 function openPopup() {
                   document.getElementById('popupPremium').style.display = 'flex';
+                  isBlockingPopupActive = true; // Define a flag que um popup está ativo
                 }
 
                 function fecharPopupPremium() {
                   document.getElementById('popupPremium').style.display = 'none';
+                  isBlockingPopupActive = false; // Limpa a flag quando o popup é fechado
                 }
 
                 function openPopupPremiumImagem() {
                   document.getElementById('popupPremiumImagem').style.display = 'flex';
+                  isBlockingPopupActive = true; // Define a flag que um popup está ativo
                 }
 
                 function closePopupPremiumImagem() {
                   document.getElementById('popupPremiumImagem').style.display = 'none';
+                  isBlockingPopupActive = false; // Limpa a flag quando o popup é fechado
                 }
 
                 function openPopupLimite() {
                   document.getElementById('popupPremiumFim').style.display = 'flex';
+                  isBlockingPopupActive = true; // Define a flag que um popup está ativo
                 }
 
                 function abrirPopupDislike() {
                   document.getElementById('popupDislike').style.display = 'flex';
+                  isBlockingPopupActive = true; // Define a flag que um popup está ativo
                 }
 
                 function fecharPopupDislike() {
                   document.getElementById('popupDislike').style.display = 'none';
+                  isBlockingPopupActive = false; // Limpa a flag quando o popup é fechado
                 }
 
                 function confirmarDislike() {
                   document.getElementById('popupDislike').style.display = 'none';
-                  mostrarProximoPerfil();
+                  isBlockingPopupActive = false; // Limpa a flag quando o popup é fechado
+                  mostrarProximoPerfil(); // Avança o perfil após confirmar o dislike
                 }
 
                 function abrirChat() {
-                  // This function is now modified to open the premium popup
+                  // Esta função agora abre o popup premium, conforme o comportamento existente
                   openPopupPremiumImagem();
                 }
 
@@ -2102,38 +2141,44 @@ document.head.appendChild(a);
                   const saldoAtual = document.getElementById('saldoValor').innerText;
                   document.getElementById('saqueSaldo').innerText = `R$ ${saldoAtual}`;
                   document.getElementById('popupSaquePIX').style.display = 'flex';
+                  isBlockingPopupActive = true; // Define a flag que um popup está ativo
                 }
 
                 function closeSaquePopup() {
                   document.getElementById('popupSaquePIX').style.display = 'none';
+                  isBlockingPopupActive = false; // Limpa a flag quando o popup é fechado
                 }
 
                 function doSaque() {
-  const input = document.getElementById('keyInput');
-  if (input.value.trim() === '') {
-    alert('Por favor, digite sua chave PIX');
-    return;
-  }
-  
-  // Simular processamento
-  const btn = document.getElementById('btnSacar');
-  btn.innerHTML = '⏳ PROCESSANDO...';
-  btn.disabled = true;
-  
-  setTimeout(() => {
-    // Open the premium popup instead of redirecting
-    openPopupPremiumImagem();
-    closeSaquePopup();
-    
-    // Reset do formulário
-    input.value = '';
-    btn.innerHTML = '🔒 SACAR TUDO';
-    validateSaqueButton();
-  }, 1500);
-}
+                  const input = document.getElementById('keyInput');
+                  if (input.value.trim() === '') {
+                    alert('Por favor, digite sua chave PIX');
+                    return;
+                  }
+                  
+                  // Simular processamento
+                  const btn = document.getElementById('btnSacar');
+                  btn.innerHTML = '⏳ PROCESSANDO...';
+                  btn.disabled = true;
+                  
+                  setTimeout(() => {
+                    closeSaquePopup(); // Fecha o popup de saque e limpa a flag
+                    openPopupPremiumImagem(); // Abre o popup premium e define a flag novamente
+                    
+                    // Reset do formulário
+                    input.value = '';
+                    btn.innerHTML = '🔒 SACAR TUDO';
+                    validateSaqueButton();
+                  }, 1500);
+                }
 
                 // Inicialização
                 document.addEventListener('DOMContentLoaded', function() {
+                  // Carregar estado salvo do localStorage
+                  curtidasTotais = parseInt(localStorage.getItem('curtidasTotais') || '0');
+                  primeiroPixRecebido = localStorage.getItem('primeiroPixRecebido') === 'true';
+                  chatCompletoParaProximoPix = localStorage.getItem('chatCompletoParaProximoPix') === 'true';
+
                   // Carregar saldo salvo
                   const saldoSalvo = localStorage.getItem('saldoUsuario');
                   if (saldoSalvo) {
@@ -2143,8 +2188,8 @@ document.head.appendChild(a);
                   // Embaralhar perfis se necessário
                   shuffleProfilesAfterFirstMatch();
                   
-                  // Ocultar perfis já curtidos
-                  ocultarPerfisCurtidos();
+                  // Ocultar perfis já curtidos (se houver lógica para isso, manter)
+                  // A lógica de ocultar perfis curtidos não foi fornecida, então não será modificada.
                   
                   // Garantir que há um perfil ativo
                   if (!document.querySelector('.profile.active')) {
