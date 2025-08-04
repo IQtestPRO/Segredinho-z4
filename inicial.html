@@ -523,359 +523,6 @@ document.head.appendChild(a);
 <!-- End Meta Pixel Code -->
 
 </head>
-<body class="wp-singular page-template page-template-elementor_canvas page page-id-110 wp-embed-responsive wp-theme-hello-elementor theme-default elementor-default elementor-template-canvas elementor-kit-7 elementor-page elementor-page-110">
-<div class="elementor elementor-110" data-elementor-id="110" data-elementor-post-type="page" data-elementor-type="wp-page">
-<div class="elementor-element elementor-element-fbe466c e-flex e-con-boxed e-con e-parent" data-element_type="container" data-id="fbe466c">
-<div class="e-con-inner">
-<div class="elementor-element elementor-element-f4178dd elementor-widget elementor-widget-html" data-element_type="widget" data-id="f4178dd" data-widget_type="html.default">
-<div class="elementor-widget-container">
-<!DOCTYPE html>
-
-<html lang="pt-BR">
-<head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>
-                Segredinho VIP - Perfis
-              </title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&amp;display=swap" rel="stylesheet"/>
-<style>
-                .profile {
-                  display: none;
-                }
-
-                .profile.active {
-                  display: block;
-                }
-
-                * {
-                  margin: 0;
-                  padding: 0;
-                  box-sizing: border-box;
-                  font-family: 'Poppins', sans-serif;
-                }
-
-                body {
-                  background: #000;
-                  min-height: 100vh;
-                  overflow-x: hidden;
-                }
-
-                header {
-                  height: 60px;
-                  padding: 5px 15px;
-                  position: fixed;
-                  top: 0;
-                  width: 100%;
-                  background: #252525;
-                  color: white;
-                  display: flex;
-                  justify-content: space-between;
-                  align-items: center;
-                  z-index: 1000;
-                }
-
-                header img {
-                  height: 30px;
-                }
-
-                .container {
-                  max-width: 500px;
-                  margin: 90px auto 30px;
-                  padding: 0 15px;
-                }
-
-                .profile {
-                  display: none;
-                }
-
-                .profile.active {
-                  display: block;
-                }
-
-                .profile-header {
-                  position: relative;
-                  height: 400px;
-                  border-radius: 20px;
-                  overflow: hidden;
-                }
-
-                .carousel-container {
-                  width: 100%;
-                  height: 100%;
-                  overflow: hidden;
-                  position: relative;
-                }
-
-                .carousel-images {
-                  display: flex;
-                  transition: transform 0.5s ease-in-out;
-                  height: 100%;
-                }
-
-                .carousel-image {
-                  min-width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  border-radius: 20px;
-                }
-
-                .carousel-btn {
-                  position: absolute;
-                  top: 50%;
-                  transform: translateY(-50%);
-                  background: rgba(0, 0, 0, 0.3);
-                  border: none;
-                  color: white;
-                  font-size: 24px;
-                  padding: 10px;
-                  cursor: pointer;
-                  z-index: 1;
-                }
-
-                .carousel-btn.left {
-                  left: 10px;
-                }
-
-                .carousel-btn.right {
-                  right: 10px;
-                }
-
-                .profile-info {
-                  position: absolute;
-                  bottom: 15px;
-                  left: 15px;
-                  color: white;
-                  background: rgba(0, 0, 0, 0.4);
-                  padding: 10px 15px;
-                  border-radius: 10px;
-                }
-
-                .profile-content {
-                  background: #252525;
-                  color: white;
-                  padding: 20px;
-                  border-radius: 20px;
-                  margin-top: 20px;
-                }
-
-                .info {
-                  background: #444;
-                  color: white;
-                  padding: 7px 12px;
-                  border-radius: 20px;
-                  margin: 5px 5px 0 0;
-                  display: inline-block;
-                  font-size: 14px;
-                }
-
-                .buttons {
-                  display: flex;
-                  justify-content: center;
-                  gap: 40px;
-                  margin: 25px 0;
-                }
-
-                .btn {
-                  width: 60px;
-                  height: 60px;
-                  border-radius: 50%;
-                  background-size: cover;
-                  background-position: center;
-                  cursor: pointer;
-                  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-                }
-
-                .btnLike {
-                  background-image: url('wp-content/uploads/2025/04/coracao.png');
-                }
-
-                .btnDeslike {
-                  background-color: #2c2c2c;
-                  border: 2px solid #444;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  font-size: 32px;
-                  color: #ae00ff;
-                }
-
-                /* Popup PIX */
-                .popup {
-                  display: none;
-                  position: fixed;
-                  top: 0;
-                  left: 0;
-                  width: 100%;
-                  height: 100%;
-                  background: rgba(0, 0, 0, 0.8);
-                  justify-content: center;
-                  align-items: center;
-                  z-index: 9999;
-                }
-
-                .popup-content {
-                  background-color: #10151f;
-                  color: white;
-                  border-radius: 16px;
-                  text-align: center;
-                  padding: 25px;
-                  width: 300px;
-                  border: 2px solid #33ff88;
-                }
-
-                .popup-content button {
-                  background: #00d26a;
-                  color: white;
-                  padding: 12px;
-                  margin-top: 15px;
-                  border-radius: 30px;
-                  font-weight: bold;
-                  cursor: pointer;
-                  border: none;
-                }
-
-
-                /* Popup Saque PIX */
-                #popupSaquePIX {
-                  display: none;
-                  position: fixed;
-                  top: 0;
-                  left: 0;
-                  width: 100vw;
-                  height: 100vh;
-                  background: rgba(0, 0, 0, 0.8);
-                  z-index: 10001;
-                  align-items: center;
-                  justify-content: center;
-                }
-
-                .saque-content {
-
-
-                  width: 380px !important;
-                  max-height: 50vh !important;
-                  overflow: hidden !important;
-                  background: #0f111a;
-                  border-radius: 15px;
-                  padding: 20px;
-                  color: white;
-                  border: 2px solid #e91e63;
-                  box-shadow: 0 0 12px #e91e63;
-                  position: relative;
-                  margin: 0 auto;
-                }
-
-                .saque-content .close-saque {
-                  position: absolute;
-                  top: 15px;
-                  right: 20px;
-                  background: none;
-                  border: none;
-                  color: white;
-                  font-size: 24px;
-                  cursor: pointer;
-                }
-
-                .saque-content h2 {
-                  font-size: 18px;
-                  margin-bottom: 10px;
-                }
-
-                .saque-balance {
-                  background: #10151f;
-                  padding: 15px;
-                  border-radius: 10px;
-                  text-align: center;
-                  margin-bottom: 15px;
-                }
-
-                .saque-balance .value {
-                  font-size: 24px;
-                  color: #e91e63;
-                  font-weight: bold;
-                }
-
-                .saque-options {
-                  display: flex;
-                  gap: 8px;
-                  margin-bottom: 12px;
-                }
-
-                .saque-options button {
-                  flex: 1;
-                  padding: 10px;
-                  border: 1px solid #333;
-                  background: #1f1f2a;
-                  color: white;
-                  border-radius: 8px;
-                  cursor: pointer;
-                  font-size: 14px;
-                }
-
-                .saque-options button.active {
-                  border-color: #e91e63;
-                  color: #e91e63;
-                }
-
-                .saque-input {
-                  width: 100%;
-                  padding: 10px;
-                  border-radius: 8px;
-                  border: 1px solid #333;
-                  background: #1f1f2a;
-                  color: white;
-                  margin-bottom: 15px;
-                }
-
-                .saque-btn {
-                  width: 100%;
-                  padding: 12px;
-                  background: #e91e63;
-                  color: white;
-                  border: none;
-                  border-radius: 8px;
-                  font-weight: bold;
-                  cursor: pointer;
-                }
-
-
-
-                #popupPremiumImagem {
-                  display: none;
-                  position: fixed;
-                  top: 0;
-                  left: 0;
-                  width: 100vw;
-                  height: 100vh;
-                  background: rgba(0, 0, 0, 0.8);
-                  z-index: 10002;
-                  align-items: center;
-                  justify-content: center;
-                }
-              </style>
-
-<!-- Meta Pixel Code -->
-<script>
-  !function(f,b,e,v,n,t,s)
-  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src='https://connect.facebook.net/en_US/fbevents.js';
-  s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s)}(window, document,'script');
-
-  fbq('init', '1453046616041191');
-  fbq('track', 'AddToCart');
-</script>
-<noscript>
-  <img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=1453046616041191&ev=PageView&noscript=1"/>
-</noscript>
-<!-- End Meta Pixel Code -->
-
-</head>
 <body>
 <header style="height: 60px; padding: 10px 20px; position: fixed; top: 0; left: 0; width: 100%; background: #252525; color: white; display: flex; justify-content: space-between; align-items: center; z-index: 1000; box-sizing: border-box; box-shadow: 0 5px 10px rgba(174, 0, 255, 0.5);">
 <div style="display: flex; align-items: center; gap: 10px;">
@@ -1739,6 +1386,7 @@ document.head.appendChild(a);
                 let primeiroPixRecebido = false;
                 let chatCompletoParaProximoPix = false;
                 let isBlockingPopupActive = false; // Flag para controlar se um popup está ativo e bloqueando a navegação
+                let matchScheduled = false; // Nova flag para indicar se um match já foi agendado pelo setTimeout
 
                 // Função para embaralhar array (Fisher-Yates shuffle)
                 function shuffleArray(array) {
@@ -1971,44 +1619,50 @@ document.head.appendChild(a);
 
                   let saldoAtual = parseFloat(document.getElementById('saldoValor').innerText.replace(',', '.'));
                   let pixAmount = 0;
-                  let shouldShowPixPopup = false;
+                  matchScheduled = false; // Reseta a flag de match agendado a cada curtida
 
                   if (curtidasTotais === 2 && !primeiroPixRecebido) {
                     pixAmount = 10;
                     primeiroPixRecebido = true;
                     localStorage.setItem('primeiroPixRecebido', 'true');
-                    shouldShowPixPopup = true;
                   } else if (curtidasTotais >= 5 && chatCompletoParaProximoPix) {
                     pixAmount = 15;
                     chatCompletoParaProximoPix = false; // Reset para o próximo ciclo
                     localStorage.setItem('chatCompletoParaProximoPix', 'false');
-                    shouldShowPixPopup = true;
                   }
 
-                  if (shouldShowPixPopup) {
+                  if (pixAmount > 0) {
                     saldoAtual += pixAmount;
                     document.getElementById('saldoValor').innerText = saldoAtual.toFixed(2).replace('.', ',');
                     localStorage.setItem('saldoUsuario', saldoAtual.toFixed(2));
                     document.getElementById('pix-valor').innerText = `R$ ${pixAmount.toFixed(2).replace('.', ',')}`;
                     document.getElementById('popupPix').style.display = 'flex';
                     isBlockingPopupActive = true; // Define a flag que um popup está ativo
-                    // A função fecharPopup() será chamada pelo botão "CONTINUAR CURTINDO"
-                    // e ela cuidará da lógica de avançar o perfil ou exibir o match.
+
+                    // Lógica original de match com setTimeout, agora dentro da condição de PIX
+                    if (Math.random() < 0.3) {
+                      matchScheduled = true; // Marca que um match foi agendado
+                      setTimeout(() => {
+                        document.getElementById('popupPix').style.display = 'none';
+                        exibirPopupMatch(); // Isso definirá isBlockingPopupActive = true novamente para o popup de match
+                      }, 2000);
+                    }
                   } else {
-                    // Nenhum PIX recebido, o mostrarProximoPerfil() será chamado
-                    // imediatamente pelo onclick do HTML, e como isBlockingPopupActive é false, ele avançará.
+                    // Se não houve PIX, o mostrarProximoPerfil() será chamado imediatamente
+                    // pelo onclick do HTML, e como isBlockingPopupActive é false, ele avançará.
+                    // Não precisamos fazer nada aqui, pois o fluxo natural do onclick já cuida disso.
                   }
                 }
 
-                // Modificada para lidar com a lógica de match/próximo perfil após fechar o PIX
+                // Função fecharPopup() original, com adição da lógica para avançar perfil
+                // APENAS SE NENHUM MATCH FOI AGENDADO PELO setTimeout em recompensa().
                 function fecharPopup() {
                   document.getElementById('popupPix').style.display = 'none';
                   isBlockingPopupActive = false; // Limpa a flag quando o popup é fechado
 
-                  // Agora, decide o que acontece em seguida: chance de match ou apenas próximo perfil
-                  if (Math.random() < 0.3) {
-                    exibirPopupMatch();
-                  } else {
+                  // Se nenhum match foi agendado pelo setTimeout, avança o perfil.
+                  // Caso contrário, o setTimeout já cuidou de exibir o match.
+                  if (!matchScheduled) {
                     mostrarProximoPerfil();
                   }
                 }
