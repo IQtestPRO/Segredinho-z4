@@ -8,7 +8,8 @@
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet" />
 
-  <!-- Meta Pixel Code (sem auto track) -->
+  <!-- Configurando apenas o pixel 774976791854396 com page view único -->
+  <!-- Meta Pixel Code -->
   <script>
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -20,10 +21,11 @@
     s.parentNode.insertBefore(t,s)}(window, document,'script');
 
     fbq('init', '774976791854396');
+    fbq('track', 'PageView');
   </script>
   <noscript>
     <img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=1453046616041191&ev=PageView&noscript=1"/>
+    src="https://www.facebook.com/tr?id=774976791854396&ev=PageView&noscript=1"/>
   </noscript>
   <!-- End Meta Pixel Code -->
 
@@ -88,9 +90,6 @@
 
   <script>
     function acessarSite() {
-      // Disparando PageView no clique, com Test Code
-      fbq('set', 'agent', 'tmgoogletagmanager', { "agent": "tmgoogletagmanager", "test_event_code": "TEST33171" });
-      fbq('track', 'PageView');
       window.location.href = 'bem-vindo.html';
     }
 
