@@ -1,30 +1,58 @@
-# sourcecode6
+# Segredin Online Master
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
+## Deploy no Vercel
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/arthurfonsa22dd-3869s-projects/v0-sourcecode6)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/j2TKC8aD6t5)
+Este projeto está configurado para deploy automático no Vercel.
 
-## Overview
+### Configurações necessárias no Vercel:
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
+1. **Build Command**: `npm run build`
+2. **Output Directory**: `public`
+3. **Install Command**: `npm install` (padrão)
 
-## Deployment
+### Estrutura do projeto:
 
-Your project is live at:
+- `index.html` - Página inicial
+- `bem-vindo.html` - Página de boas-vindas
+- `inicial.html` - Página inicial do usuário
+- `pagamento-aprovado.html` - Página de confirmação de pagamento
+- `registro.html` - Página de registro
+- `editar-perfil.html` - Página de edição de perfil
+- `chat/` - Diretório do chat
+- `assets/` - Recursos estáticos (imagens, áudios, etc.)
+- `wp-content/` - Conteúdo do WordPress
+- `uploads/` - Uploads de mídia
 
-**[https://vercel.com/arthurfonsa22dd-3869s-projects/v0-sourcecode6](https://vercel.com/arthurfonsa22dd-3869s-projects/v0-sourcecode6)**
+### Como fazer deploy:
 
-## Build your app
+1. Conecte seu repositório ao Vercel
+2. Configure as seguintes opções:
+   - **Framework Preset**: Other
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `public`
+3. Faça o deploy
 
-Continue building your app on:
+### Desenvolvimento local:
 
-**[https://v0.dev/chat/projects/j2TKC8aD6t5](https://v0.dev/chat/projects/j2TKC8aD6t5)**
+\`\`\`bash
+npm run dev
+\`\`\`
 
-## How It Works
+Isso iniciará um servidor local na porta 8000.
+\`\`\`
 
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+```plaintext file=".gitignore"
+node_modules/
+.DS_Store
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+public/
+dist/
+build/
+.vercel

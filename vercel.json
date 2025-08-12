@@ -1,0 +1,46 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "public"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/bem-vindo",
+      "dest": "/bem-vindo.html"
+    },
+    {
+      "src": "/inicial",
+      "dest": "/inicial.html"
+    },
+    {
+      "src": "/pagamento-aprovado",
+      "dest": "/pagamento-aprovado.html"
+    },
+    {
+      "src": "/registro",
+      "dest": "/registro.html"
+    },
+    {
+      "src": "/editar-perfil",
+      "dest": "/editar-perfil.html"
+    },
+    {
+      "src": "/chat",
+      "dest": "/chat/index.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ]
+}
