@@ -1,58 +1,74 @@
 # Segredin Online Master
 
+Plataforma online do Segredin VIP.
+
 ## Deploy no Vercel
 
 Este projeto está configurado para deploy automático no Vercel.
 
-### Configurações necessárias no Vercel:
+### Configurações necessárias:
 
-1. **Build Command**: `npm run build`
-2. **Output Directory**: `public`
-3. **Install Command**: `npm install` (padrão)
+- **Framework Preset**: Other
+- **Build Command**: `npm run build`
+- **Output Directory**: `public`
+- **Install Command**: `npm install`
 
-### Estrutura do projeto:
+## Estrutura do Projeto
 
 - `index.html` - Página inicial
 - `bem-vindo.html` - Página de boas-vindas
 - `inicial.html` - Página inicial do usuário
-- `pagamento-aprovado.html` - Página de confirmação de pagamento
+- `pagamento-aprovado.html` - Confirmação de pagamento
 - `registro.html` - Página de registro
-- `editar-perfil.html` - Página de edição de perfil
-- `chat/` - Diretório do chat
-- `assets/` - Recursos estáticos (imagens, áudios, etc.)
-- `wp-content/` - Conteúdo do WordPress
-- `uploads/` - Uploads de mídia
+- `editar-perfil.html` - Edição de perfil
+- `chat/` - Sistema de chat
+- `assets/` - Recursos estáticos
+- `wp-content/` - Conteúdo WordPress
+- `uploads/` - Arquivos enviados
 
-### Como fazer deploy:
+## Como funciona o build
 
-1. Conecte seu repositório ao Vercel
-2. Configure as seguintes opções:
-   - **Framework Preset**: Other
-   - **Build Command**: `npm run build`
-   - **Output Directory**: `public`
-3. Faça o deploy
-
-### Desenvolvimento local:
-
-\`\`\`bash
-npm run dev
-\`\`\`
-
-Isso iniciará um servidor local na porta 8000.
+O script de build cria uma pasta `public` e copia todos os arquivos HTML e recursos necessários para ela.
 \`\`\`
 
 ```plaintext file=".gitignore"
+# Dependencies
 node_modules/
-.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+public/
+dist/
+build/
+
+# Environment variables
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-public/
-dist/
-build/
-.vercel
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+logs
+*.log
+
+# Temporary files
+tmp/
+temp/
