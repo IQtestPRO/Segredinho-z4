@@ -31,7 +31,7 @@ Este projeto está configurado para deploy automático no Vercel.
 O script de build cria uma pasta `public` e copia todos os arquivos HTML e recursos necessários para ela.
 \`\`\`
 
-```plaintext file=".gitignore"
+\`\`\`plaintext file=".gitignore"
 # Dependencies
 node_modules/
 npm-debug.log*
