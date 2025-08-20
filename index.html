@@ -2,10 +2,9 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Mulheres Maduras</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Fonts -->
+  <title>Segredinho - Encontros Discretos</title>
+  <link rel="icon" type="image/png" href="/wp-content/uploads/2025/04/logoCoroa.png">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet" />
 
   <!-- Meta Pixel Code (sem auto track) -->
@@ -28,76 +27,208 @@
   <!-- End Meta Pixel Code -->
 
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body, html {
-      height: 100%; font-family: 'Poppins', sans-serif; background: #000;
-      display: flex; justify-content: center; align-items: center;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    .age-verification {
-      background-color: rgba(255, 255, 255, 0.9);
-      padding: 40px 30px;
-      border-radius: 25px;
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+    }
+    
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
       text-align: center;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
       max-width: 400px;
       width: 90%;
-      transform: translateX(20px);
+      animation: fadeInUp 0.8s ease-out;
     }
-    .age-verification img {
-      width: 100px; margin-bottom: 20px;
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
-    .age-verification h2 {
-      font-size: 24px; color: #6c2894; margin-bottom: 10px;
+    
+    .logo {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
     }
-    .age-verification .site-name {
-      font-family: 'Dancing Script', cursive;
-      font-size: 45px; font-weight: bold; color: #6c2894;
-      background: linear-gradient(45deg, #8319C1, #b941ff, #8319C1);
-      -webkit-background-clip: text; background-clip: text;
-      margin-bottom: 20px; text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
-      letter-spacing: 1px; margin-top: -10px;
-    }
-    .age-verification p {
-      font-size: 16px; color: #333; margin-bottom: 30px;
-    }
-    .btn {
-      display: block; width: 100%; padding: 12px;
-      margin-bottom: 15px;
-      background: linear-gradient(45deg, #8319C1, #b941ff, #8319C1);
-      color: white; border: none; border-radius: 20px;
-      font-size: 16px; font-weight: bold; cursor: pointer;
-      transition: transform 0.3s ease, background-color 0.3s ease;
-    }
-    .btn:hover {
+    
+    .logo:hover {
       transform: scale(1.05);
-      background: linear-gradient(45deg, #6c2894, #a33edc, #6c2894);
     }
-    .btn.secondary { background: #ccc; color: #333; }
-    .btn.secondary:hover { background: #bbb; }
+    
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+      font-size: 32px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 16px;
+      font-weight: 300;
+    }
+    
+    .btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      margin: 10px;
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+    
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn:active {
+      transform: translateY(-1px);
+    }
+    
+    .features {
+      margin-top: 30px;
+      text-align: left;
+    }
+    
+    .feature {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      color: #555;
+      font-size: 14px;
+      opacity: 0;
+      animation: fadeInLeft 0.6s ease-out forwards;
+    }
+    
+    .feature:nth-child(1) { animation-delay: 0.2s; }
+    .feature:nth-child(2) { animation-delay: 0.4s; }
+    .feature:nth-child(3) { animation-delay: 0.6s; }
+    .feature:nth-child(4) { animation-delay: 0.8s; }
+    
+    @keyframes fadeInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    .feature::before {
+      content: "✓";
+      color: #667eea;
+      font-weight: bold;
+      margin-right: 10px;
+      font-size: 16px;
+    }
+    
+    .footer {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+      color: #999;
+      font-size: 12px;
+    }
+    
+    @media (max-width: 480px) {
+      .container {
+        padding: 30px 20px;
+        margin: 20px;
+      }
+      
+      h1 {
+        font-size: 28px;
+      }
+      
+      .btn {
+        display: block;
+        margin: 10px 0;
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="age-verification">
-    <img decoding="async" src="wp-content/uploads/2025/04/logoCoroa.png" alt="Logo Segredinho VIP" />
-    <div class="site-name">Segredinho VIP</div>
-    <h2>Você tem 18 anos ou mais?</h2>
-    <p>Este site é voltado para adultos. Por favor, confirme sua idade para continuar.</p>
-    <button class="btn" onclick="acessarSite()">Sim, tenho</button>
-    <button class="btn secondary" onclick="bloquearAcesso()">Não tenho</button>
+  <div class="container">
+    <img src="/wp-content/uploads/2025/04/logoCoroa.png" alt="Segredinho Logo" class="logo">
+    <h1>Segredinho</h1>
+    <p class="subtitle">Encontros discretos e seguros</p>
+    
+    <div class="features">
+      <div class="feature">Conversas anônimas e seguras</div>
+      <div class="feature">Perfis verificados</div>
+      <div class="feature">100% discreto e privado</div>
+      <div class="feature">Sem julgamentos</div>
+    </div>
+    
+    <a href="/registro.html" class="btn">Começar Agora</a>
+    <a href="/chat/" class="btn">Entrar no Chat</a>
+    
+    <div class="footer">
+      © 2025 Segredinho. Todos os direitos reservados.
+    </div>
   </div>
 
   <script>
-    function acessarSite() {
-      // Disparando PageView no clique, com Test Code
-      fbq('set', 'agent', 'tmgoogletagmanager', { "agent": "tmgoogletagmanager", "test_event_code": "TEST33171" });
-      fbq('track', 'PageView');
-      window.location.href = 'bem-vindo.html';
+    // Simple analytics tracking
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'page_view', {
+        page_title: 'Home',
+        page_location: window.location.href
+      });
     }
-
-    function bloquearAcesso() {
-      alert("Você precisa ter mais de 18 anos para acessar este site.");
-      window.location.href = 'https://www.google.com/';
-    }
+    
+    // Add click tracking for buttons
+    document.querySelectorAll('.btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        const action = this.textContent.trim();
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'click', {
+            event_category: 'navigation',
+            event_label: action
+          });
+        }
+      });
+    });
   </script>
 </body>
 </html>
